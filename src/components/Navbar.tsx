@@ -89,7 +89,7 @@ const Navbar: React.FC = () => {
               <Utensils size={24} className="text-spice-500" />
             </div>
             <span className={`font-display text-xl md:text-2xl font-bold ${scrolled ? 'text-spice-800' : 'text-white'}`}>
-              Singen
+              Bayleaf
             </span>
           </Link>
 

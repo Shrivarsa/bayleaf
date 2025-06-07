@@ -35,9 +35,6 @@ const Footer: React.FC = () => {
               <a href="https://www.instagram.com/bayleafsingen?igsh=Yjg4YWR3YzNveTZq&utm_source=qr" className="text-white hover:text-spice-400 transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-white hover:text-spice-400 transition-colors">
-                <Twitter size={20} />
-              </a>
             </div>
           </div>
 
