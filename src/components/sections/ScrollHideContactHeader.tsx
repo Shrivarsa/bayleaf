@@ -40,8 +40,8 @@ const ScrollHideContactHeader = () => {
         <div className="flex items-center gap-2">
           <Phone size={14} />
           <span className="hidden xl:inline">Call for reservation:</span>
-          <a href="tel:+918807799222" className="hover:underline">
-            +91 8807799222
+          <a href="tel:+49 179 423 2002" className="hover:underline">
+            +49 179 423 2002
           </a>
         </div>
       </div>
@@ -59,12 +59,6 @@ const ScrollHideContactHeader = () => {
           </a>
           <a href="https://www.instagram.com/bayleafsingen?igsh=Yjg4YWR3YzNveTZq&utm_source=qr" aria-label="Instagram" className="hover:text-yellow-400">
             <Instagram size={16} />
-          </a>
-          <a href="#" aria-label="Twitter" className="hover:text-yellow-400">
-            <Twitter size={16} />
-          </a>
-          <a href="#" aria-label="YouTube" className="hover:text-yellow-400">
-            <Youtube size={16} />
           </a>
         </div>
       </div>

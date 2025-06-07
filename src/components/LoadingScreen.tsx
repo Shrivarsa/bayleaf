@@ -9,7 +9,7 @@ const LoadingScreen: React.FC = () => {
   const textRef = useRef<HTMLDivElement>(null);
   const bgLeftRef = useRef<HTMLDivElement>(null);
   const bgRightRef = useRef<HTMLDivElement>(null);
-  const backdropRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     const tl = gsap.timeline();
@@ -30,18 +30,17 @@ const LoadingScreen: React.FC = () => {
     const timer = setTimeout(() => {
       const openCurtain = gsap.timeline({
         onComplete: () => {
-          setTimeout(() => setIsLoading(false), 500);
+          setTimeout(() => setIsLoading(false), 100); // Reduced delay
         }
       });
 
       openCurtain
-        .to(textRef.current, { opacity: 0, duration: 0.6, ease: 'power2.out' }) // Adjusted duration
-        .to(bgLeftRef.current, { x: '-50vw', duration: 2.0, ease: 'power2.out' }, '-=0.2') // Adjusted duration
-        .to(bgRightRef.current, { x: '50vw', duration: 2.0, ease: 'power2.out' }, '-=2.0') // Adjusted duration
-        .to([bgLeftRef.current, bgRightRef.current], { opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3') // Adjusted duration
-        .to(curtainLeftRef.current, { scaleX: 0, duration: 2.0, ease: 'power3.inOut' }, '-=0.4') // Adjusted duration
-        .to(curtainRightRef.current, { scaleX: 0, duration: 2.0, ease: 'power3.inOut' }, '-=2.0') // Adjusted duration
-        .to(backdropRef.current, { opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3'); // Adjusted duration
+        .to(textRef.current, { opacity: 0, duration: 0.6, ease: 'power2.out' })
+        .to(bgLeftRef.current, { x: '-50vw', duration: 2.0, ease: 'power2.out' }, '-=0.2')
+        .to(bgRightRef.current, { x: '50vw', duration: 2.0, ease: 'power2.out' }, '-=2.0')
+        .to([bgLeftRef.current, bgRightRef.current], { opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+        .to(curtainLeftRef.current, { scaleX: 0, duration: 2.0, ease: 'power3.inOut' }, '-=0.4')
+        .to(curtainRightRef.current, { scaleX: 0, duration: 2.0, ease: 'power3.inOut' }, '-=2.0');
     }, 1500);
 
     return () => clearTimeout(timer);
@@ -51,21 +50,15 @@ const LoadingScreen: React.FC = () => {
 
   return (
     <>
-      {/* Backdrop */}
-      <div
-        ref={backdropRef}
-        className="fixed inset-0 bg-white z-[9999]"
-      />
-
       {/* Curtains */}
       <div
         ref={curtainLeftRef}
-        className="fixed top-0 left-0 h-full w-1/2 bg-white z-[10000]"
+        className="fixed top-0 left-0 h-full w-1/2 bg-transparent z-[10000]"
         style={{ transformOrigin: 'left center' }}
       />
       <div
         ref={curtainRightRef}
-        className="fixed top-0 right-0 h-full w-1/2 bg-white z-[10000]"
+        className="fixed top-0 right-0 h-full w-1/2 bg-transparent z-[10000]"
         style={{ transformOrigin: 'right center' }}
       />
 
