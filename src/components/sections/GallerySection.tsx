@@ -364,13 +364,7 @@ const galleryData: GalleryItem[] = [
     "category": "interior",
     "description": "Image titled 'Beautiful restaurant in singenmAugust-Ruf-Straße' showcasing our authentic offerings in food."
   },
-  {
-    "id": "img-54",
-    "title": "Best Biryani in SingenHohentwiel",
-    "imageUrl": "/BAyLeafGallerypics2/Best%20Biryani%20in%20SingenHohentwiel.jpeg",
-    "category": "food",
-    "description": "Image titled 'Best Biryani in SingenHohentwiel' showcasing our authentic offerings in food."
-  },
+
   {
     "id": "img-57",
     "title": "Best onion pakoda near Germany",
@@ -384,13 +378,6 @@ const galleryData: GalleryItem[] = [
     "imageUrl": "/BAyLeafGallerypics2/best%20thali%20in%20singenHohentwiel.jpeg",
     "category": "food",
     "description": "Image titled 'best thali in singenHohentwiel' showcasing our authentic offerings in food."
-  },
-  {
-    "id": "img-59",
-    "title": "Best Thali-Essen in Singen germany",
-    "imageUrl": "/BAyLeafGallerypics2/Best%20Thali-Essen%20in%20Singen%20germany.jpeg",
-    "category": "food",
-    "description": "Image titled 'Best Thali-Essen in Singen germany' showcasing our authentic offerings in food."
   },
   {
     "id": "img-60",
@@ -470,25 +457,11 @@ const galleryData: GalleryItem[] = [
     "description": "Image titled 'Schönes Restaurant in Singen August-Ruf-Straße' showcasing our authentic offerings in food."
   },
   {
-    "id": "img-73",
-    "title": "Singens Best Restaurant",
-    "imageUrl": "/BAyLeafGallerypics2/Singens%20Best%20Restaurant.jpeg",
-    "category": "interior",
-    "description": "Image titled 'Singens Best Restaurant' showcasing our authentic offerings in food."
-  },
-  {
     "id": "img-74",
     "title": "spitzenmäßig Chicken-65 SingenDeutschland",
     "imageUrl": "/BAyLeafGallerypics2/spitzenm%C3%A4%C3%9Fig%20Chicken-65%20SingenDeutschland.jpeg",
     "category": "food",
     "description": "Image titled 'spitzenmäßig Chicken-65 SingenDeutschland' showcasing our authentic offerings in food."
-  },
-  {
-    "id": "img-76",
-    "title": "Südindisches Essen SingenGermany",
-    "imageUrl": "/BAyLeafGallerypics2/S%C3%BCdindisches%20Essen%20SingenGermany.jpeg",
-    "category": "food",
-    "description": "Image titled 'Südindisches Essen SingenGermany' showcasing our authentic offerings in food."
   },
   {
     "id": "img-77",
@@ -510,13 +483,6 @@ const galleryData: GalleryItem[] = [
     "imageUrl": "/BAyLeafGallerypics2/Taste%20the%20Traditional%20In%20SingenHohentwiel.jpeg",
     "category": "food",
     "description": "Image titled 'Taste the Traditional In SingenHohentwiel' showcasing our authentic offerings in food."
-  },
-  {
-    "id": "img-81",
-    "title": "The singens Frist south indian restaurant",
-    "imageUrl": "/BAyLeafGallerypics2/The%20singens%20Frist%20south%20indian%20restaurant.jpeg",
-    "category": "interior",
-    "description": "Image titled 'The singens Frist south indian restaurant' showcasing our authentic offerings in food."
   },
   {
     "id": "img-82",
