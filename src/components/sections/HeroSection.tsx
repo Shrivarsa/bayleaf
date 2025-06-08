@@ -32,7 +32,7 @@ const HeroSection: React.FC = () => {
       style={{ 
         minHeight: '100vh', 
         height: '100vh',
-        backgroundImage: 'url(/IMG_3552-Photoroom.png)',
+        backgroundImage: 'url(Untitleddesign.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
