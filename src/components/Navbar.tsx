@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-scroll';
-import { Menu, X, Utensils } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../context/translations';
 
@@ -13,63 +13,34 @@ const Navbar: React.FC = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
-  const navItems = [
+  const navItems = useMemo(() => [
     { id: 'home', label: translations.navbar.home[language] },
     { id: 'about', label: translations.navbar.about[language] },
     { id: 'menu', label: translations.navbar.menu[language] },
     { id: 'gallery', label: translations.navbar.gallery[language] },
     { id: 'contact', label: translations.navbar.contact[language] },
-  ];
+  ], [language]);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const updateHeaderState = () => {
       const offset = window.scrollY;
-      
-      // Update scrolled state
-      if (offset > 80) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-      
-      // Update contact header visibility state (only on large screens)
       const isLargeScreen = window.innerWidth >= 1024;
-      if (isLargeScreen) {
-        if (offset > 100) {
-          setContactHeaderVisible(false);
-        } else {
-          setContactHeaderVisible(true);
-        }
-      } else {
-        setContactHeaderVisible(false);
-      }
+      setScrolled(offset > 80);
+      setContactHeaderVisible(isLargeScreen && offset <= 100);
     };
 
-    const handleResize = () => {
-      // Update contact header visibility on resize
-      const isLargeScreen = window.innerWidth >= 1024;
-      if (!isLargeScreen) {
-        setContactHeaderVisible(false);
-      } else if (window.scrollY <= 100) {
-        setContactHeaderVisible(true);
-      }
-    };
+    window.addEventListener('scroll', updateHeaderState);
+    window.addEventListener('resize', updateHeaderState);
+    updateHeaderState();
 
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
-    
-    // Initial check
-    handleScroll();
-    handleResize();
-    
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', updateHeaderState);
+      window.removeEventListener('resize', updateHeaderState);
     };
   }, []);
 
   return (
-    <nav 
+    <nav
       className={`fixed left-0 w-full z-50 transition-all duration-300 ${
         scrolled ? 'nav-scrolled py-2' : 'py-4 bg-transparent'
       } ${contactHeaderVisible ? 'lg:top-[40px]' : 'lg:top-0'} top-0`}
@@ -84,13 +55,16 @@ const Navbar: React.FC = () => {
             offset={contactHeaderVisible ? -120 : -80}
             duration={100}
             className="flex items-center cursor-pointer"
+            role="button"
+            aria-label="Scroll to home"
           >
-            <div className="bg-white p-2 rounded-full mr-2">
-              <Utensils size={24} className="text-spice-500" />
+            <div className="mr-2">
+              <img
+                src="/logo.png"
+                alt="Bayleaf Logo"
+                className="w-32 h-20 md:w-40 md:h-24 object-contain rounded-xl"
+              />
             </div>
-            <span className={`font-display text-xl md:text-2xl font-bold ${scrolled ? 'text-spice-800' : 'text-white'}`}>
-              Bayleaf
-            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -110,55 +84,87 @@ const Navbar: React.FC = () => {
                 {item.label}
               </Link>
             ))}
-            
-            {/* Language Buttons */}
+
+            {/* Desktop Language Toggle */}
             <div className="flex space-x-2">
               <button
                 onClick={() => toggleLanguage('en')}
                 className={`flex items-center px-3 py-1 rounded-md transition-colors ${
-                  language === 'en' 
-                    ? 'bg-spice-500 text-white' 
-                    : scrolled ? 'text-gray-800' : 'text-white'
+                  language === 'en'
+                    ? 'bg-spice-500 text-white'
+                    : scrolled
+                    ? 'text-gray-800'
+                    : 'text-white'
                 } hover:text-spice-500 ${language !== 'en' && 'hover:bg-gray-100'}`}
               >
                 <span className="font-medium">EN</span>
               </button>
-              
               <button
                 onClick={() => toggleLanguage('de')}
                 className={`flex items-center px-3 py-1 rounded-md transition-colors ${
-                  language === 'de' 
-                    ? 'bg-spice-500 text-white' 
-                    : scrolled ? 'text-gray-800' : 'text-white'
+                  language === 'de'
+                    ? 'bg-spice-500 text-white'
+                    : scrolled
+                    ? 'text-gray-800'
+                    : 'text-white'
                 } hover:text-spice-500 ${language !== 'de' && 'hover:bg-gray-100'}`}
               >
                 <span className="font-medium">DE</span>
               </button>
             </div>
-            
-            <a 
-              href="#booking" 
-              className="btn-primary text-sm"
-            >
+
+            <a href="#booking" className="btn-primary text-sm">
               {translations.navbar.bookTable[language]}
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-white focus:outline-none"
-            onClick={toggleMenu}
-            aria-label="Toggle mobile menu"
-          >
-            {isOpen ? (
-              <X size={24} className={scrolled ? 'text-gray-800' : 'text-white'} />
-            ) : (
-              <Menu size={24} className={scrolled ? 'text-gray-800' : 'text-white'} />
+          {/* Mobile Menu Toggle */}
+          <div className="md:hidden flex flex-col items-end">
+            <button
+              className="focus:outline-none"
+              onClick={toggleMenu}
+              aria-label="Toggle mobile menu"
+            >
+              {isOpen ? (
+                <X size={24} className={scrolled ? 'text-gray-800' : 'text-white'} />
+              ) : (
+                <Menu size={24} className={scrolled ? 'text-gray-800' : 'text-white'} />
+              )}
+            </button>
+
+            {/* Language Toggle Below Hamburger Icon */}
+            {!isOpen && (
+              <div className="flex space-x-2 mt-2">
+                <button
+                  onClick={() => toggleLanguage('en')}
+                  className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                    language === 'en'
+                      ? 'bg-spice-500 text-white'
+                      : scrolled
+                      ? 'text-gray-800'
+                      : 'text-white'
+                  } hover:text-spice-500 ${language !== 'en' && 'hover:bg-gray-100'}`}
+                >
+                  EN
+                </button>
+                <button
+                  onClick={() => toggleLanguage('de')}
+                  className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                    language === 'de'
+                      ? 'bg-spice-500 text-white'
+                      : scrolled
+                      ? 'text-gray-800'
+                      : 'text-white'
+                  } hover:text-spice-500 ${language !== 'de' && 'hover:bg-gray-100'}`}
+                >
+                  DE
+                </button>
+              </div>
             )}
-          </button>
+          </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Dropdown Menu */}
         {isOpen && (
           <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg py-4 px-4 transition-all duration-300 ease-in-out">
             <div className="flex flex-col space-y-4">
@@ -176,30 +182,9 @@ const Navbar: React.FC = () => {
                   {item.label}
                 </Link>
               ))}
-              
-              {/* Language Buttons for Mobile */}
-              <div className="flex space-x-2 py-2">
-                <button
-                  onClick={() => toggleLanguage('en')}
-                  className={`flex items-center px-3 py-1 rounded-md ${
-                    language === 'en' ? 'bg-spice-500 text-white' : 'text-gray-800'
-                  } hover:text-spice-500 ${language !== 'en' && 'hover:bg-gray-100'} transition-colors`}
-                >
-                  <span className="font-medium">EN</span>
-                </button>
-                
-                <button
-                  onClick={() => toggleLanguage('de')}
-                  className={`flex items-center px-3 py-1 rounded-md ${
-                    language === 'de' ? 'bg-spice-500 text-white' : 'text-gray-800'
-                  } hover:text-spice-500 ${language !== 'de' && 'hover:bg-gray-100'} transition-colors`}
-                >
-                  <span className="font-medium">DE</span>
-                </button>
-              </div>
-              
-              <a 
-                href="#booking" 
+
+              <a
+                href="#booking"
                 className="btn-primary text-center"
                 onClick={closeMenu}
               >

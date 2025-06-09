@@ -2,15 +2,99 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <title>Singen | Authentic South Indian Cuisine in Germany</title>
-    <meta name="description" content="Experience authentic South Indian cuisine at Madras Palace in the heart of Germany. Traditional flavors, modern ambiance.">
+    
+    <!-- Primary SEO Meta Tags -->
+    <title>Bay Leaf EU | South Indian Restaurant in Singen | Authentic Dosas & Biryani</title>
+    <meta name="description" content="Bay Leaf EU - Visit the first South Indian restaurant in Singen, Germany. Enjoy crispy dosas, spicy biryanis, and weekend buffet in a beautiful ambiance.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bayleaf-singen.com/">
+    <meta property="og:title" content="Bay Leaf EU | South Indian Restaurant in Singen | Authentic Dosas & Biryani">
+    <meta property="og:description" content="Bay Leaf EU - Visit the first South Indian restaurant in Singen, Germany. Enjoy crispy dosas, spicy biryanis, and weekend buffet in a beautiful ambiance.">
+    <meta property="og:image" content="/og-image.jpg">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="de_DE">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bayleaf-singen.com/">
+    <meta property="twitter:title" content="Bay Leaf EU | South Indian Restaurant in Singen | Authentic Dosas & Biryani">
+    <meta property="twitter:description" content="Bay Leaf EU - Visit the first South Indian restaurant in Singen, Germany. Enjoy crispy dosas, spicy biryanis, and weekend buffet in a beautiful ambiance.">
+    <meta property="twitter:image" content="/twitter-image.jpg">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="keywords" content="South Indian Restaurant Singen, Dosa Singen, Biryani Singen, Indian Buffet Singen, Indian Restaurant Germany, authentic Indian cuisine, weekend buffet, crispy dosas, spicy biryanis">
+    <meta name="author" content="Bay Leaf Restaurant">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://bayleaf-singen.com/">
+    
+    <!-- Local Business Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "Bay Leaf",
+      "description": "First South Indian Restaurant in Singen, Germany offering authentic dosa, biryani, and traditional cuisine",
+      "url": "https://bayleaf-singen.com",
+      "telephone": "+49-XXXX-XXXXX",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Your Street Address",
+        "addressLocality": "Singen",
+        "addressRegion": "Baden-Württemberg",
+        "postalCode": "78224",
+        "addressCountry": "DE"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "47.7616",
+        "longitude": "8.8400"
+      },
+      "cuisine": "South Indian",
+      "priceRange": "$$",
+      "servesCuisine": "Indian",
+      "hasMenu": "https://bayleaf-singen.com/menu",
+      "acceptsReservations": true,
+      "openingHours": [
+        "Mo-Su 11:00-22:00"
+      ],
+      "paymentAccepted": "Cash, Credit Card",
+      "currenciesAccepted": "EUR"
+    }
+    </script>
+
+    <!-- Hreflang for multilingual support -->
+    <link rel="alternate" hreflang="en" href="https://bayleaf-singen.com/" />
+    <link rel="alternate" hreflang="de" href="https://bayleaf-singen.com/de/" />
+    <link rel="alternate" hreflang="x-default" href="https://bayleaf-singen.com/" />
+    
+    <!-- Performance optimizations -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    
+    <!-- Mobile optimization -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#D4AF37">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
   </head>
   <body>
+    <!-- Hidden structured content for SEO -->
+    <div style="display: none;">
+      <h1>Authentic Indian Food Singen</h1>
+      <h2>Tasty Indian food restaurant</h2>
+      <h3>First South Indian Restaurant in Singen, Germany</h3>
+    </div>
+    
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
