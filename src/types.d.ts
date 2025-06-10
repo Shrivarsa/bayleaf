@@ -8,7 +8,7 @@ export interface MenuItem {
   price: number;
   spiceLevel: 1 | 2 | 3;
   imageUrl: string;
-  category: 'starters' | 'mains' | 'desserts' | 'drinks';
+  category: 'appetizers' | 'starters' | 'dosai' | 'mains' | 'biryani' | 'tandoori' | 'breads' | 'desserts';
   isVegetarian: boolean;
   isSpecial?: boolean;
 }

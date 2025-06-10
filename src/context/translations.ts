@@ -190,15 +190,23 @@ export const translations = {
       de: 'Unsere Speisekarte'
     },
     subtitle: {
-      en: 'Discover the rich and diverse flavors of South India through our carefully crafted menu.',
-      de: 'Entdecken Sie die reichhaltigen und vielfältigen Aromen Südindiens durch unsere sorgfältig zusammengestellte Speisekarte.'
+      en: 'A table full of South Indian culinary delights',
+      de: 'Ein Tisch voller südindischer kulinarischer Köstlichkeiten'
+    },
+    description: {
+      en: 'Discover the rich and diverse flavors of South India through our carefully crafted menu, featuring traditional recipes passed down through generations.',
+      de: 'Entdecken Sie die reichhaltigen und vielfältigen Aromen Südindiens durch unsere sorgfältig zusammengestellte Speisekarte mit traditionellen Rezepten, die über Generationen weitergegeben wurden.'
     },
     categories: {
       all: { en: 'All', de: 'Alle' },
-      starters: { en: 'Starters', de: 'Vorspeisen' },
-      mains: { en: 'Mains', de: 'Hauptgerichte' },
-      desserts: { en: 'Desserts', de: 'Nachspeisen' },
-      drinks: { en: 'Drinks', de: 'Getränke' }
+      appetizers: { en: 'Appetizers', de: 'Vorspeisen' },
+      starters: { en: 'Starters', de: 'Starter' },
+      dosai: { en: 'Dosai', de: 'Dosai' },
+      mains: { en: 'Main Courses', de: 'Hauptgerichte' },
+      biryani: { en: 'Biryani', de: 'Biryani' },
+      tandoori: { en: 'Tandoori', de: 'Tandoori' },
+      breads: { en: 'Breads', de: 'Brote' },
+      desserts: { en: 'Desserts', de: 'Nachspeisen' }
     },
     labels: {
       vegetarian: { en: 'Vegetarian', de: 'Vegetarisch' },
@@ -206,8 +214,8 @@ export const translations = {
       chefsSpecial: { en: "Chef's Special", de: 'Empfehlung des Küchenchefs' }
     },
     viewFullMenu: {
-      en: 'View Full Menu',
-      de: 'Vollständige Speisekarte'
+      en: 'Download Full Menu',
+      de: 'Vollständige Speisekarte Herunterladen'
     }
   },
   gallery: {
