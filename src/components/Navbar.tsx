@@ -24,29 +24,18 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
-      
-      // Update scrolled state
-      if (offset > 80) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-      
-      // Update contact header visibility state (only on large screens)
+
+      setScrolled(offset > 80);
+
       const isLargeScreen = window.innerWidth >= 1024;
       if (isLargeScreen) {
-        if (offset > 100) {
-          setContactHeaderVisible(false);
-        } else {
-          setContactHeaderVisible(true);
-        }
+        setContactHeaderVisible(offset <= 100);
       } else {
         setContactHeaderVisible(false);
       }
     };
 
     const handleResize = () => {
-      // Update contact header visibility on resize
       const isLargeScreen = window.innerWidth >= 1024;
       if (!isLargeScreen) {
         setContactHeaderVisible(false);
@@ -57,11 +46,10 @@ const Navbar: React.FC = () => {
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
-    
-    // Initial check
+
     handleScroll();
     handleResize();
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
@@ -69,7 +57,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav 
+    <nav
       className={`fixed left-0 w-full z-50 transition-all duration-300 ${
         scrolled ? 'nav-scrolled py-2' : 'py-4 bg-transparent'
       } ${contactHeaderVisible ? 'lg:top-[40px]' : 'lg:top-0'} top-0`}
@@ -85,9 +73,9 @@ const Navbar: React.FC = () => {
             duration={100}
             className="flex items-center cursor-pointer"
           >
-            <img 
-              src="/logo.png" 
-              alt="Singen Restaurant Logo" 
+            <img
+              src="/logo.png"
+              alt="Singen Restaurant Logo"
               className="h-20 w-32 md:h-24 md:w-40 object-contain"
             />
           </Link>
@@ -109,32 +97,36 @@ const Navbar: React.FC = () => {
                 {item.label}
               </Link>
             ))}
-            
+
             {/* Language Buttons */}
             <div className="flex space-x-2">
               <button
                 onClick={() => toggleLanguage('en')}
                 className={`flex items-center px-3 py-1 rounded-md transition-colors ${
-                  language === 'en' 
-                    ? 'bg-spice-500 text-white' 
-                    : scrolled ? 'text-gray-800' : 'text-white'
-                } hover:text-spice-500 ${language !== 'en' && 'hover:bg-gray-100'}`}
+                  language === 'en'
+                    ? 'bg-spice-500 text-white'
+                    : scrolled
+                    ? 'text-gray-800'
+                    : 'text-white hover:bg-gray-100 hover:text-spice-500'
+                }`}
               >
                 <span className="font-medium">EN</span>
               </button>
-              
+
               <button
                 onClick={() => toggleLanguage('de')}
                 className={`flex items-center px-3 py-1 rounded-md transition-colors ${
-                  language === 'de' 
-                    ? 'bg-spice-500 text-white' 
-                    : scrolled ? 'text-gray-800' : 'text-white'
-                } hover:text-spice-500 ${language !== 'de' && 'hover:bg-gray-100'}`}
+                  language === 'de'
+                    ? 'bg-spice-500 text-white'
+                    : scrolled
+                    ? 'text-gray-800'
+                    : 'text-white hover:bg-gray-100 hover:text-spice-500'
+                }`}
               >
                 <span className="font-medium">DE</span>
               </button>
             </div>
-            
+
             <Link
               to="contact"
               spy={true}
@@ -147,21 +139,51 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-white focus:outline-none"
-            onClick={toggleMenu}
-            aria-label="Toggle mobile menu"
-          >
-            {isOpen ? (
-              <X size={24} className={scrolled ? 'text-gray-800' : 'text-white'} />
-            ) : (
-              <Menu size={24} className={scrolled ? 'text-gray-800' : 'text-white'} />
-            )}
-          </button>
+          {/* Mobile Menu Icon + Language Toggle */}
+          <div className="md:hidden flex flex-col items-end space-y-2">
+            <button
+              className="text-white focus:outline-none"
+              onClick={toggleMenu}
+              aria-label="Toggle mobile menu"
+            >
+              {isOpen ? (
+                <X size={24} className={scrolled ? 'text-gray-800' : 'text-white'} />
+              ) : (
+                <Menu size={24} className={scrolled ? 'text-gray-800' : 'text-white'} />
+              )}
+            </button>
+
+            {/* Language Toggle (Below Hamburger in Mobile) */}
+            <div className="flex space-x-2">
+              <button
+                onClick={() => toggleLanguage('en')}
+                className={`px-3 py-1 rounded-md text-sm transition-colors ${
+                  language === 'en'
+                    ? 'bg-spice-500 text-white'
+                    : scrolled
+                    ? 'text-gray-800'
+                    : 'text-white hover:bg-gray-100 hover:text-spice-500'
+                }`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => toggleLanguage('de')}
+                className={`px-3 py-1 rounded-md text-sm transition-colors ${
+                  language === 'de'
+                    ? 'bg-spice-500 text-white'
+                    : scrolled
+                    ? 'text-gray-800'
+                    : 'text-white hover:bg-gray-100 hover:text-spice-500'
+                }`}
+              >
+                DE
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Dropdown Navigation */}
         {isOpen && (
           <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg py-4 px-4 transition-all duration-300 ease-in-out">
             <div className="flex flex-col space-y-4">
@@ -179,28 +201,7 @@ const Navbar: React.FC = () => {
                   {item.label}
                 </Link>
               ))}
-              
-              {/* Language Buttons for Mobile */}
-              <div className="flex space-x-2 py-2">
-                <button
-                  onClick={() => toggleLanguage('en')}
-                  className={`flex items-center px-3 py-1 rounded-md ${
-                    language === 'en' ? 'bg-spice-500 text-white' : 'text-gray-800'
-                  } hover:text-spice-500 ${language !== 'en' && 'hover:bg-gray-100'} transition-colors`}
-                >
-                  <span className="font-medium">EN</span>
-                </button>
-                
-                <button
-                  onClick={() => toggleLanguage('de')}
-                  className={`flex items-center px-3 py-1 rounded-md ${
-                    language === 'de' ? 'bg-spice-500 text-white' : 'text-gray-800'
-                  } hover:text-spice-500 ${language !== 'de' && 'hover:bg-gray-100'} transition-colors`}
-                >
-                  <span className="font-medium">DE</span>
-                </button>
-              </div>
-              
+
               <Link
                 to="contact"
                 spy={true}

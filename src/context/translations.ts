@@ -65,7 +65,7 @@ export const translations = {
   },
   about: {
     title: {
-      en: 'Vanakkam und herzlich Willkommen!  ',
+      en: 'Vanakkam und Heartly Welcome!  ',
       de: 'Vanakkam und herzlich Willkommen!  '
     },
     subtitle: {
@@ -135,10 +135,10 @@ export const translations = {
     },
     stats: {
       experience: {
-        number: '15',
+        number: '10+',
         label: {
-          en: 'Years of Experience',
-          de: 'Jahre Erfahrung'
+          en: 'Events',
+          de: 'Anzahl der Ereignisse'
         },
         subtext: {
           en: 'Since 2010',
