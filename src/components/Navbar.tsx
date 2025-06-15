@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-scroll';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Phone } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../context/translations';
 
@@ -98,33 +98,53 @@ const Navbar: React.FC = () => {
               </Link>
             ))}
 
-            {/* Language Buttons */}
-            <div className="flex space-x-2">
-              <button
-                onClick={() => toggleLanguage('en')}
-                className={`flex items-center px-3 py-1 rounded-md transition-colors ${
-                  language === 'en'
-                    ? 'bg-spice-500 text-white'
-                    : scrolled
-                    ? 'text-gray-800'
-                    : 'text-white hover:bg-gray-100 hover:text-spice-500'
-                }`}
-              >
-                <span className="font-medium">EN</span>
-              </button>
+            {/* Language Buttons and Phone Numbers */}
+            <div className="flex flex-col items-center space-y-2">
+              {/* Language Buttons */}
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => toggleLanguage('en')}
+                  className={`flex items-center px-3 py-1 rounded-md transition-colors ${
+                    language === 'en'
+                      ? 'bg-spice-500 text-white'
+                      : scrolled
+                      ? 'text-gray-800'
+                      : 'text-white hover:bg-gray-100 hover:text-spice-500'
+                  }`}
+                >
+                  <span className="font-medium">EN</span>
+                </button>
 
-              <button
-                onClick={() => toggleLanguage('de')}
-                className={`flex items-center px-3 py-1 rounded-md transition-colors ${
-                  language === 'de'
-                    ? 'bg-spice-500 text-white'
-                    : scrolled
-                    ? 'text-gray-800'
-                    : 'text-white hover:bg-gray-100 hover:text-spice-500'
-                }`}
-              >
-                <span className="font-medium">DE</span>
-              </button>
+                <button
+                  onClick={() => toggleLanguage('de')}
+                  className={`flex items-center px-3 py-1 rounded-md transition-colors ${
+                    language === 'de'
+                      ? 'bg-spice-500 text-white'
+                      : scrolled
+                      ? 'text-gray-800'
+                      : 'text-white hover:bg-gray-100 hover:text-spice-500'
+                  }`}
+                >
+                  <span className="font-medium">DE</span>
+                </button>
+              </div>
+
+              {/* Phone Numbers for Reservation and Events */}
+              <div className="flex flex-col items-center text-xs">
+                <div className={`flex items-center space-x-1 ${scrolled ? 'text-gray-800' : 'text-white'}`}>
+                  <Phone size={12} />
+                  <span className="font-medium">For Reservation and Events:</span>
+                </div>
+                <div className={`flex space-x-2 ${scrolled ? 'text-gray-700' : 'text-gray-200'}`}>
+                  <a href="tel:+497731667855" className="hover:text-spice-500 transition-colors">
+                    +49 7731 66785
+                  </a>
+                  <span>/</span>
+                  <a href="tel:+491794232002" className="hover:text-spice-500 transition-colors">
+                    +49 179 423 2002
+                  </a>
+                </div>
+              </div>
             </div>
 
             <Link

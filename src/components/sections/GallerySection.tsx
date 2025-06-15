@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-scroll';
-import { Image, X, ChevronDown, Eye, EyeOff } from 'lucide-react';
+import { Image, X, ChevronDown, Eye, EyeOff, Quote } from 'lucide-react';
+import { translations } from '../../context/translations';
 
 interface GalleryItem {
   id: string;
@@ -11,8 +12,11 @@ interface GalleryItem {
   description: string;
 }
 
-const galleryData: GalleryItem[] = [
+interface GallerySectionProps {
+  language?: 'en' | 'de';
+}
 
+const galleryData: GalleryItem[] = [
   {
     id: "img-1",
     title: "Affordable Indian foods in Singen",
@@ -491,11 +495,9 @@ const galleryData: GalleryItem[] = [
     "category": "food",
     "description": "Image titled 'Topnotch Dosa in singenGermany' showcasing our authentic offerings in food."
   }
-
 ];
 
-
-const GallerySection: React.FC = () => {
+const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
   const [filter, setFilter] = useState('all');
   const [showAll, setShowAll] = useState(false);
@@ -510,7 +512,7 @@ const GallerySection: React.FC = () => {
 
   const displayedImages = showAll ? filteredImages : filteredImages.slice(0, 9);
 
-  const categories = ['all', 'food', 'restaurant'];
+  const categories = ['all', 'food', 'restaurant', 'events'];
 
   const handleImageError = (imageId: string) => {
     setImageErrors(prev => new Set([...prev, imageId]));
@@ -545,158 +547,239 @@ const GallerySection: React.FC = () => {
   return (
     <section id="gallery" className="relative py-24" style={{ backgroundColor: '#ffd647' }}>
       <div className="container mx-auto px-4 relative z-10">
-        {/* Section Header */}
-        <div ref={textRef} className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3 }}
-            className="flex items-center justify-center mb-4"
-          >
-            <Image className="mr-2 text-spice-600" size={20} />
-            <span className="uppercase tracking-widest text-sm text-spice-600">Our Visual Journey</span>
-          </motion.div>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: 0.05 }}
-            className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
-          >
-            Our Gallery
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-            className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed"
-          >
-            Take a visual journey through our restaurant, cuisine, and cultural events
-          </motion.p>
-        </div>
-
-        {/* Filter Buttons */}
-        <motion.div 
-          className="flex justify-center flex-wrap gap-4 my-12"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.3, delay: 0.15 }}
-        >
-          {categories.map((category, index) => (
-            <motion.button
-              key={category}
-              onClick={() => {
-                setFilter(category);
-                setShowAll(false);
-              }}
-              className={`px-6 py-2 rounded-full text-sm font-medium capitalize transition-all ${
-                filter === category 
-                  ? 'bg-spice-600 text-white shadow' 
-                  : 'bg-cream-200 text-gray-700 hover:bg-spice-200'
-              }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2, delay: index * 0.05 }}
+        {/* White Container */}
+        <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 lg:p-16">
+          {/* Section Header */}
+          <div ref={textRef} className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3 }}
+              className="flex items-center justify-center mb-4"
             >
-              {category}
-            </motion.button>
-          ))}
-        </motion.div>
+              <Image className="mr-2 text-spice-600" size={20} />
+              <span className="uppercase tracking-widest text-sm text-spice-600">
+                {translations.gallery.subtitle[language]}
+              </span>
+            </motion.div>
 
-        {/* Gallery Grid */}
-        <motion.div 
-          ref={galleryRef}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-6"
-          layout
-        >
-          <AnimatePresence>
-            {displayedImages.map((item, index) => (
-              <motion.div
-                key={item.id}
-                layout
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.3, delay: index * 0.02 }}
-                onClick={() => setSelectedImage(item)}
-                className="cursor-pointer group"
-              >
-                <div className="relative overflow-hidden rounded-lg shadow-md aspect-square">
-                  <ImageComponent
-                    item={item}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                    <div className="text-center p-2">
-                      <h3 className="text-white font-display text-xs sm:text-sm md:text-base mb-1">{item.title}</h3>
-                      <p className="text-white/80 text-xs hidden sm:block">{item.description}</p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: 0.05 }}
+              className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-800"
+            >
+              {translations.gallery.title[language]}
+            </motion.h2>
 
-        {/* View More/Less Button */}
-        {filteredImages.length > 9 && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+              className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed"
+            >
+              {translations.gallery.description[language]}
+            </motion.p>
+          </div>
+
+          {/* Filter Buttons */}
           <motion.div 
-            className="text-center mt-8"
+            className="flex justify-center flex-wrap gap-4 my-12"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.3, delay: 0.15 }}
           >
-            <motion.button
-              onClick={() => setShowAll(!showAll)}
-              className="px-8 py-3 bg-spice-600 text-white rounded-full font-medium hover:bg-spice-700 transition-colors flex items-center gap-2 mx-auto"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {showAll ? (
-                <>
-                  <EyeOff size={18} />
-                  View Less
-                </>
-              ) : (
-                <>
-                  <Eye size={18} />
-                  View More ({filteredImages.length - 9} more items)
-                </>
-              )}
-            </motion.button>
+            {categories.map((category, index) => (
+              <motion.button
+                key={category}
+                onClick={() => {
+                  setFilter(category);
+                  setShowAll(false);
+                }}
+                className={`px-6 py-2 rounded-full text-sm font-medium capitalize transition-all ${
+                  filter === category 
+                    ? 'bg-spice-600 text-white shadow' 
+                    : 'bg-cream-200 text-gray-700 hover:bg-spice-200'
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2, delay: index * 0.05 }}
+              >
+                {translations.gallery.categories[category as keyof typeof translations.gallery.categories][language]}
+              </motion.button>
+            ))}
           </motion.div>
-        )}
 
-        {/* Scroll Down Indicator - positioned after gallery */}
-        <motion.div 
-          className="text-center mt-16 z-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-          layout
-        >
-          <div className="scroll-indicator mx-auto mb-4">
-            <div className="scroll-indicator-progress" />
-          </div>
-          <Link
-            to="contact"
-            spy={true}
-            smooth={true}
-            offset={-80}
-            duration={800}
-            className="text-gray-600 flex flex-col items-center cursor-pointer hover:text-spice-600 transition-colors mx-auto w-fit"
+          {/* Gallery Grid */}
+          <motion.div 
+            ref={galleryRef}
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-6"
+            layout
           >
-            <span className="text-sm uppercase tracking-wider mb-2">Book Your Experience</span>
-            <ChevronDown size={20} />
-          </Link>
-        </motion.div>
+            <AnimatePresence>
+              {displayedImages.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.3, delay: index * 0.02 }}
+                  onClick={() => setSelectedImage(item)}
+                  className="cursor-pointer group"
+                >
+                  <div className="relative overflow-hidden rounded-lg shadow-md aspect-square">
+                    <ImageComponent
+                      item={item}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                      <div className="text-center p-2">
+                        <h3 className="text-white font-display text-xs sm:text-sm md:text-base mb-1">{item.title}</h3>
+                        <p className="text-white/80 text-xs hidden sm:block">{item.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* View More/Less Button */}
+          {filteredImages.length > 9 && (
+            <motion.div 
+              className="text-center mt-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.15 }}
+            >
+              <motion.button
+                onClick={() => setShowAll(!showAll)}
+                className="px-8 py-3 bg-spice-600 text-white rounded-full font-medium hover:bg-spice-700 transition-colors flex items-center gap-2 mx-auto"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {showAll ? (
+                  <>
+                    <EyeOff size={18} />
+                    {translations.gallery.viewLess[language]}
+                  </>
+                ) : (
+                  <>
+                    <Eye size={18} />
+                    {translations.gallery.viewMore[language]} ({filteredImages.length - 9} {translations.gallery.moreItems[language]})
+                  </>
+                )}
+              </motion.button>
+            </motion.div>
+          )}
+
+          {/* Quote Section */}
+          <motion.div 
+            className="mt-20 mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="relative">
+                {/* Quote Icon */}
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="flex justify-center mb-8"
+                >
+                  <div className="bg-spice-600 p-4 rounded-full">
+                    <Quote className="text-white" size={32} />
+                  </div>
+                </motion.div>
+
+                {/* Tamil Quote */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  className="mb-6"
+                >
+                  <p 
+                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-spice-800 leading-relaxed"
+                    dangerouslySetInnerHTML={{ 
+                      __html: translations.gallery.quote.tamil[language] 
+                    }}
+                  />
+                </motion.div>
+
+                {/* English Translation */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  className="mb-4"
+                >
+                  <p 
+                    className="text-lg md:text-xl text-gray-700 italic leading-relaxed max-w-3xl mx-auto"
+                    dangerouslySetInnerHTML={{ 
+                      __html: translations.gallery.quote.english[language] 
+                    }}
+                  />
+                </motion.div>
+
+                {/* Source */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                >
+                  <p className="text-sm text-gray-600 font-medium">
+                    {translations.gallery.quote.source[language]}
+                  </p>
+                </motion.div>
+
+                {/* Decorative Elements */}
+                <div className="absolute -top-4 -left-4 w-8 h-8 border-l-2 border-t-2 border-spice-300 opacity-50"></div>
+                <div className="absolute -bottom-4 -right-4 w-8 h-8 border-r-2 border-b-2 border-spice-300 opacity-50"></div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Scroll Down Indicator */}
+          <motion.div 
+            className="text-center mt-16 z-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            layout
+          >
+            <div className="scroll-indicator mx-auto mb-4">
+              <div className="scroll-indicator-progress" />
+            </div>
+            <Link
+              to="contact"
+              spy={true}
+              smooth={true}
+              offset={-80}
+              duration={800}
+              className="text-gray-600 flex flex-col items-center cursor-pointer hover:text-spice-600 transition-colors mx-auto w-fit"
+            >
+              <span className="text-sm uppercase tracking-wider mb-2">
+                {translations.gallery.scrollDown[language]}
+              </span>
+              <ChevronDown size={20} />
+            </Link>
+          </motion.div>
+        </div>
 
         {/* Lightbox Modal */}
         <AnimatePresence>
@@ -729,7 +812,7 @@ const GallerySection: React.FC = () => {
                   <h3 className="text-2xl font-display mb-2">{selectedImage.title}</h3>
                   <p className="text-gray-600">{selectedImage.description}</p>
                   <span className="text-sm text-gray-500 mt-2 block capitalize">
-                    Category: {selectedImage.category}
+                    {language === 'de' ? 'Kategorie' : 'Category'}: {selectedImage.category}
                   </span>
                 </div>
               </motion.div>

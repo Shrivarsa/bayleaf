@@ -1,12 +1,11 @@
 export const translations = {
-    
   common: {
     close: { en: "Close", de: "Schließen" },
     continue: { en: "Continue", de: "Weiter" },
     viewMore: { en: "View More", de: "Mehr anzeigen" },
     viewLess: { en: "View Less", de: "Weniger anzeigen" },
-    
   },
+  
   navbar: {
     home: {
       en: 'Home',
@@ -33,6 +32,7 @@ export const translations = {
       de: 'Tisch Reservieren'
     }
   },
+  
   hero: {
     tagline: {
       en: 'Authentic Indian Cuisine',
@@ -43,8 +43,8 @@ export const translations = {
       de: 'Bayleaf Restaurant'
     },
     description: {
-      en: 'Experience the authentic flavors of India with our traditional recipes and premium spices, bringing the essence of Indian culinary art to your table.',
-      de: 'Erleben Sie die authentischen Aromen Indiens mit unseren traditionellen Rezepten und erstklassigen Gewürzen, die das Wesen der indischen Kochkunst auf Ihren Tisch bringen.'
+      en: 'Experience the authentic flavors of South India with our traditional recipes and premium spices, bringing the essence of Tamil culinary art to your table.',
+      de: 'Erleben Sie die authentischen Aromen Südindiens mit unseren traditionellen Rezepten und erstklassigen Gewürzen und bringen Sie die Essenz der tamilischen Kochkunst auf Ihren Tisch.'
     },
     exploreMenu: {
       en: 'Explore Menu',
@@ -63,10 +63,11 @@ export const translations = {
       de: 'Nach Unten Scrollen'
     }
   },
+  
   about: {
     title: {
-      en: 'Vanakkam und Heartly Welcome!  ',
-      de: 'Vanakkam und herzlich Willkommen!  '
+      en: 'வணக்கம் 🙏',
+      de: 'Vanakkam! 🙏'
     },
     subtitle: {
       en: 'Our Story',
@@ -76,15 +77,14 @@ export const translations = {
       en: 'From the vibrant streets of Chennai to the heart of Germany, we bring authentic South Indian flavors with a passion for tradition and quality.',
       de: 'Von den lebhaften Straßen Chennais bis ins Herz Deutschlands bringen wir authentische südindische Aromen mit einer Leidenschaft für Tradition und Qualität.'
     },
-    // Added missing story section translations
     story: {
       title: {
         en: 'Our Story',
         de: 'Unsere Geschichte'
       },
       content: {
-        en: 'At Bay Leaf in Singen, we bring you centuries-old South Indian recipes, preserved in their authentic form yet thoughtfully presented for German palates. Every dish tells a story of tradition—from Tamil grandmothers kitchens to your table in Baden-Württemberg.  ',
-        de: 'Im Bay Leaf in Singen servieren wir Ihnen jahrhundertealte südindische Rezepte, authentisch und dennoch liebevoll für den deutschen Gaumen zubereitet. Jedes Gericht erzählt eine Geschichte der Tradition – aus der Küche tamilischer Großmütter bis auf Ihren Tisch in Baden-Württemberg.'
+        en: 'At Bay Leaf in Singen, we bring you centuries-old South Indian recipes, preserved in their authentic form yet thoughtfully presented for German palates. Every dish tells a story of tradition—from Tamil grandmothers kitchens to your table in Singen.',
+        de: 'Im Bay Leaf in Singen servieren wir Ihnen jahrhundertealte südindische Rezepte, authentisch und dennoch liebevoll für den deutschen Gaumen zubereitet. Jedes Gericht erzählt eine Geschichte der Tradition – aus der Küche tamilischer Großmütter bis auf Ihren Tisch in Singen.'
       }
     },
     legacy: {
@@ -93,11 +93,11 @@ export const translations = {
         de: 'Der Tradition treu, Ihren Geschmack respektierend'
       },
       story: {
-        en: 'We honor authentic South Indian hospitality while ensuring an experience that resonates with German expectations. Our restaurant concept draws from Tamil family traditions, where warmth and genuine care were perfected over generations in the welcoming homes of South India.We carefully preserve these time-honored hospitality values—from the unhurried pace of traditional Tamil dining to the meticulous attention to detail that defines South Indian service culture. Yet we thoughtfully present this authentic atmosphere with German comfort preferences in mind, creating spaces that feel both exotic and familiar while maintaining the soul of genuine Tamil hospitality.',
+        en: 'We honor authentic South Indian hospitality while ensuring an experience that resonates with German expectations. Our restaurant concept draws from Tamil family traditions, where warmth and genuine care were perfected over generations in the welcoming homes of South India. We carefully preserve these time-honored hospitality values—from the unhurried pace of traditional Tamil dining to the meticulous attention to detail that defines South Indian service culture. Yet we thoughtfully present this authentic atmosphere with German comfort preferences in mind, creating spaces that feel both exotic and familiar while maintaining the soul of genuine Tamil hospitality.',
         de: 'Wir würdigen authentische südindische Gastfreundschaft und sorgen gleichzeitig für ein Erlebnis, das deutschen Erwartungen entspricht. Unser Restaurantkonzept schöpft aus tamilischen Familientraditionen, in denen Herzlichkeit und aufrichtige Fürsorge über Generationen hinweg in den einladenden Häusern Südindiens perfektioniert wurden. Wir bewahren diese althergebrachten Werte der Gastfreundschaft sorgfältig – vom gemütlichen Tempo traditioneller tamilischer Küche bis hin zur akribischen Liebe zum Detail, die die südindische Servicekultur ausmacht. Gleichzeitig schaffen wir diese authentische Atmosphäre mit Blick auf deutsche Komfortvorlieben und schaffen Räume, die sich sowohl exotisch als auch vertraut anfühlen und gleichzeitig den Geist echter tamilischer Gastfreundschaft bewahren.'
       },
       continuation: {
-        en: 'This approach creates a cultural bridge between traditions, where South Indian warmth meets German appreciation for quality and craftsmanship. Our restaurant ambiance offers the same cozy intimacy that Germans cherish in their traditional Gaststuben, while our service style reflects the genuine care found in Tamil family homes. ',
+        en: 'This approach creates a cultural bridge between traditions, where South Indian warmth meets German appreciation for quality and craftsmanship. Our restaurant ambiance offers the same cozy intimacy that Germans cherish in their traditional Gaststuben, while our service style reflects the genuine care found in Tamil family homes.',
         de: 'Dieser Ansatz schlägt eine kulturelle Brücke zwischen Traditionen, wo südindische Wärme auf deutsche Wertschätzung für Qualität und Handwerkskunst trifft. Unser Restaurantambiente bietet die gleiche gemütliche Atmosphäre, die Deutsche in ihren traditionellen Gaststuben schätzen, während unser Servicestil die echte Fürsorge tamilischer Familien widerspiegelt.'
       }
     },
@@ -135,14 +135,14 @@ export const translations = {
     },
     stats: {
       experience: {
-        number: '10+',
+        number: '10',
         label: {
           en: 'Events',
           de: 'Anzahl der Ereignisse'
         },
         subtext: {
-          en: 'Since 2010',
-          de: 'Seit 2010'
+          en: '',
+          de: ''
         }
       },
       recipes: {
@@ -157,7 +157,7 @@ export const translations = {
         }
       },
       customers: {
-        number: '1000',
+        number: '200',
         label: {
           en: 'Happy Customers',
           de: 'Zufriedene Kunden'
@@ -168,22 +168,22 @@ export const translations = {
         }
       }
     },
-    // Added missing quote section translations
     quote: {
       text: {
-        en: 'யாதும் ஊரே, யாவரும் கேளிர் எல்லா ஊரும் நம் ஊர்தான், எல்லோரும் நம் உறவுகள் தான்;',
+        en: 'யாதும் ஊரே, யாவரும் கேளிர்',
         de: 'Jede Stadt ist unsere Stadt, jeder ist unser Verwandter.'
       },
       author: {
         en: 'Kaniyan Pungundranar',
         de: 'Kaniyan Pungundranar'
-      },
+      }
     },
     cta: {
       en: 'Discover Our Menu',
       de: 'Entdecken Sie Unser Menü'
     }
   },
+  
   menu: {
     title: {
       en: 'Our Menu',
@@ -216,24 +216,74 @@ export const translations = {
     viewFullMenu: {
       en: 'Download Full Menu',
       de: 'Vollständige Speisekarte Herunterladen'
+    },
+    quote: {
+      tamil: {
+        en: 'மருந்தென வேண்டாவாம் யாக்கைக்கு அருந்தியது<br />அற்றது போற்றி உணின்',
+        de: '"Der Körper braucht keine Medizin, wenn man mit Zurückhaltung isst,<br />erst nachdem das bereits gegessene Essen verdaut ist."'
+      },
+      english: {
+        en: '"The body needs no medicine if one eats with restraint,<br />only after the food already eaten is digested."',
+        de: '"Der Körper braucht keine Medizin, wenn man mit Zurückhaltung isst,<br />erst nachdem das bereits gegessene Essen verdaut ist."'
+      },
+      source: {
+        en: '- திருக்குறள் (Thirukkural 942)',
+        de: '- திருக்குறள் (Thirukkural 942)'
+      }
     }
   },
+  
   gallery: {
     title: {
       en: 'Our Gallery',
       de: 'Unsere Galerie'
     },
     subtitle: {
+      en: 'Our Visual Journey',
+      de: 'Unsere Visuelle Reise'
+    },
+    description: {
       en: 'Take a visual journey through our restaurant, cuisine, and cultural events',
       de: 'Begeben Sie sich auf eine visuelle Reise durch unser Restaurant, unsere Küche und kulturelle Veranstaltungen'
     },
     categories: {
       all: { en: 'All', de: 'Alle' },
-      food: { en: 'Food', de: 'Speisen' },
+      food: { en: 'Food', de: 'Essen' },
       restaurant: { en: 'Restaurant', de: 'Restaurant' },
       events: { en: 'Events', de: 'Veranstaltungen' }
+    },
+    viewMore: {
+      en: 'View More',
+      de: 'Mehr anzeigen'
+    },
+    viewLess: {
+      en: 'View Less',
+      de: 'Weniger anzeigen'
+    },
+    moreItems: {
+      en: 'more items',
+      de: 'weitere Artikel'
+    },
+    scrollDown: {
+      en: 'Book Your Experience',
+      de: 'Buchen Sie Ihr Erlebnis'
+    },
+    quote: {
+      tamil: {
+        en: 'கண்ணொடு கண்ணினை நோக்கொளி உண்டோ<br />உள்ளொடு உள்ளம் கலந்தமை அன்றி',
+        de: 'கண்ணொடு கண்ணினை நோக்கொளி உண்டோ<br />உள்ளொடு உள்ளம் கலந்தமை அன்றி'
+      },
+      english: {
+        en: '"Is there light when eyes look into eyes?<br />Only when hearts unite with hearts."',
+        de: '"Gibt es Licht, wenn Augen in Augen blicken?<br />Nur wenn sich Herzen mit Herzen vereinen."'
+      },
+      source: {
+        en: '- திருக்குறள் (Thirukkural 1100)',
+        de: '- திருக்குறள் (Thirukkural 1100)'
+      }
     }
   },
+  
   contact: {
     title: {
       en: 'Contact Us',

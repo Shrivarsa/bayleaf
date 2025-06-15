@@ -32,14 +32,15 @@ const HeroSection: React.FC = () => {
       style={{
         minHeight: '100vh',
         height: '100vh',
-        backgroundImage: 'url(Untitleddesign.png)',
-        backgroundSize: 'cover',
+        backgroundImage: 'url(FinalKolam-Photoroom.png)',
+        backgroundSize: 'contain', // Changed from 'cover' to 'contain' to fit entire image
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: '#fed647' // Changed to your specified color
       }}
     >
       {/* Yellow Tint Overlay */}
-      <div className="absolute inset-0 z-0" style={{ backgroundColor: 'rgba(254, 214, 71, 0.8)' }} />
+<div className="absolute inset-0 z-0" style={{ backgroundColor: 'rgba(254, 214, 71, 0.6)' }} />
 
       {/* Rotating Plate Image */}
       <div
@@ -98,19 +99,20 @@ const HeroSection: React.FC = () => {
         )}
       </button>
 
-      {/* Scroll Down Arrow */}
+      {/* Prominent Scroll Down Button - Positioned to the right of Thiruvalluvar statue */}
       <Link
         to="menu"
         spy={true}
         smooth={true}
         offset={-80}
         duration={500}
-        className="absolute bottom-2 right-2 z-[200] text-white hover:text-yellow-300 transition-all cursor-pointer"
+        className="absolute bottom-16 xs:bottom-20 sm:bottom-24 md:bottom-32 lg:bottom-40 left-48 xs:left-52 sm:left-56 md:left-72 lg:left-96 z-[200] group cursor-pointer"
       >
-        <ArrowDown className="animate-bounce block sm:hidden" size={24} />
-        <div className="hidden sm:flex items-center gap-2 text-sm font-medium">
-          <ArrowDown size={24} className="animate-bounce" />
-          <span>Scroll for more</span>
+        <div className="flex flex-col items-center gap-2 p-4 bg-white/20 backdrop-blur-sm rounded-full border-2 border-white/30 hover:bg-white/30 hover:border-white/50 transition-all duration-300 hover:scale-110 shadow-lg">
+          <ArrowDown size={32} className="text-brown-700 animate-bounce group-hover:text-brown-800" />
+          <span className="text-brown-700 font-medium text-sm group-hover:text-brown-800 whitespace-nowrap">
+            Scroll Down for More
+          </span>
         </div>
       </Link>
 

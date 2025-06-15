@@ -34,14 +34,14 @@ const ScrollHideContactHeader = () => {
           <Mail size={14} />
           <span className="hidden xl:inline">Mail Us:</span>
           <a href="mailto:info@rajabhogam.com" className="hover:underline">
-            info@bayleaf.com
+             info@bay-leaf.eu
           </a>
         </div>
         <div className="flex items-center gap-2">
           <Phone size={14} />
           <span className="hidden xl:inline">Call for reservation:</span>
           <a href="tel:+49 179 423 2002" className="hover:underline">
-            +49 179 423 2002
+            +49 7731 66785 / +49 179 423 2002
           </a>
         </div>
       </div>

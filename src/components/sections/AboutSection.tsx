@@ -258,7 +258,7 @@ const AboutSection: React.FC = () => {
                   className="w-full h-[200px] sm:h-[250px] lg:h-[400px] xl:h-[500px] object-contain mx-auto"
                 />
                 <div className="text-center mt-4">
-                  <p className="text-sm sm:text-base font-medium text-gray-800">Brihadisvara Temple</p>
+                  <p className="text-sm sm:text-base font-medium text-gray-800">Peruvudaiyar Koil</p>
                   <p className="text-xs sm:text-sm text-gray-600">Click to learn more</p>
                 </div>
               </div>
@@ -285,8 +285,8 @@ const AboutSection: React.FC = () => {
                 whileHover={{ y: -10 }}
                 className="bg-white/90 p-4 sm:p-6 lg:p-8 rounded-lg shadow-md transform transition-all duration-300 hover:shadow-xl"
               >
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-${feature.color}-500 text-white flex items-center justify-center mb-3 sm:mb-4`}>
-                  <span className="font-bold text-lg sm:text-xl">{index + 1}</span>
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-${feature.color} text-white flex items-center justify-center mb-3 sm:mb-4`}>
+                  <span className="font-bold text-lg sm:text-xl">{}</span>
                 </div>
                 <h3 className="font-display text-lg sm:text-xl mb-2 sm:mb-3 text-gray-900">
                   {feature.title[language]}
@@ -313,13 +313,21 @@ const AboutSection: React.FC = () => {
             <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-spice-300 absolute bottom-2 sm:bottom-4 right-3 sm:right-6 font-serif">"</div>
             
             <blockquote className="relative z-10">
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-light text-gray-800 mb-4 sm:mb-6 leading-relaxed italic px-4 sm:px-6 lg:px-8">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-light text-gray-800 mb-4 sm:mb-6 leading-relaxed italic px-4 sm:px-6 lg:px-8 whitespace-pre-line">
                 {translations.about.quote.text[language]}
               </p>
               <footer className="flex flex-col items-center">
-                <cite className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-spice-600 not-italic">
+                <cite className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-spice-600 not-italic mb-2">
                   {translations.about.quote.author[language]}
                 </cite>
+                <a
+                  href="https://en.wikipedia.org/wiki/Kaniyan_Pungundranar"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs sm:text-sm text-spice-500 hover:text-spice-700 underline transition-colors duration-300 hover:no-underline"
+                >
+                  Click here to learn more
+                </a>
               </footer>
             </blockquote>
           </div>

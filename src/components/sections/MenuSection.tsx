@@ -126,6 +126,30 @@ const MenuSection: React.FC = () => {
             {translations.menu.description[language]}
           </motion.p>
 
+          {/* Tamil Quote Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="mb-12 max-w-3xl mx-auto"
+          >
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-orange-200">
+              <div className="text-center">
+                <p 
+                  className="text-2xl md:text-3xl font-bold text-spice-700 mb-4 leading-relaxed" 
+                  style={{ fontFamily: 'serif' }}
+                  dangerouslySetInnerHTML={{ __html: translations.menu.quote.tamil[language] }}
+                />
+                <div className="mt-6">
+                  <p className="text-sm text-spice-600">
+                    {translations.menu.quote.source[language]}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
           {/* Scroll-based Rotating Table Image */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -214,7 +238,7 @@ const MenuSection: React.FC = () => {
           </motion.div>
 
           {/* Desktop version - show all menus */}
-          <div className="hidden lg:block">
+          <div className="hidden lg:block mt-16">
             <div className="grid gap-8">
               {menuImages.slice(1).map((menuImage, index) => (
                 <motion.div
