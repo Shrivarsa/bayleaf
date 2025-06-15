@@ -86,15 +86,22 @@ const AboutSection: React.FC = () => {
             </span>
           </motion.div>
 
-          <motion.h2
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 px-2"
+            className="flex items-center justify-center gap-4 mb-4 sm:mb-6 px-2"
           >
-            {translations.about.title[language]}
-          </motion.h2>
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
+              {translations.about.title[language]}
+            </h2>
+            <img 
+              src="/this.png" 
+              alt="Restaurant logo" 
+              className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-28 xl:h-28 object-contain"
+            />
+          </motion.div>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -154,7 +161,7 @@ const AboutSection: React.FC = () => {
                   {translations.about.stats.experience.number}+
                 </div>
                 <h4 className="font-medium text-gray-900 text-xs sm:text-sm">{translations.about.stats.experience.label[language]}</h4>
-                <p className="text-xs text-gray-500 mt-1">{translations.about.stats.experience.subtext[language]}</p>
+            
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -180,7 +187,7 @@ const AboutSection: React.FC = () => {
                   {translations.about.stats.customers.number}+
                 </div>
                 <h4 className="font-medium text-gray-900 text-xs sm:text-sm">{translations.about.stats.customers.label[language]}</h4>
-                <p className="text-xs text-gray-500 mt-1">{translations.about.stats.customers.subtext[language]}</p>
+  
               </motion.div>
             </div>
           </motion.div>

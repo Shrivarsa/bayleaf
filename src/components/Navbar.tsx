@@ -62,16 +62,16 @@ const Navbar: React.FC = () => {
         scrolled ? 'nav-scrolled py-2' : 'py-4 bg-transparent'
       } ${contactHeaderVisible ? 'lg:top-[40px]' : 'lg:top-0'} top-0`}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-2 md:px-4">
         <div className="flex justify-between items-center">
-          {/* Logo */}
+          {/* Logo - moved further left */}
           <Link
             to="home"
             spy={true}
             smooth={true}
             offset={contactHeaderVisible ? -120 : -80}
             duration={100}
-            className="flex items-center cursor-pointer"
+            className="flex items-center cursor-pointer -ml-4 md:-ml-6"
           >
             <img
               src="/logo.png"
@@ -127,23 +127,6 @@ const Navbar: React.FC = () => {
                 >
                   <span className="font-medium">DE</span>
                 </button>
-              </div>
-
-              {/* Phone Numbers for Reservation and Events */}
-              <div className="flex flex-col items-center text-xs">
-                <div className={`flex items-center space-x-1 ${scrolled ? 'text-gray-800' : 'text-white'}`}>
-                  <Phone size={12} />
-                  <span className="font-medium">For Reservation and Events:</span>
-                </div>
-                <div className={`flex space-x-2 ${scrolled ? 'text-gray-700' : 'text-gray-200'}`}>
-                  <a href="tel:+497731667855" className="hover:text-spice-500 transition-colors">
-                    +49 7731 66785
-                  </a>
-                  <span>/</span>
-                  <a href="tel:+491794232002" className="hover:text-spice-500 transition-colors">
-                    +49 179 423 2002
-                  </a>
-                </div>
               </div>
             </div>
 

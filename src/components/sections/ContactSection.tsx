@@ -148,7 +148,7 @@ const ContactSection: React.FC = () => {
     {
       icon: <Phone size={20} />,
       title: translations.contact.info.phone[language],
-      content: "+49 179 423 2002"
+      content: "Call for reservation / events:+49 7731 66785 / +49 179 423 2002"
     },
     {
       icon: <Mail size={20} />,

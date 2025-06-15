@@ -39,7 +39,7 @@ const ScrollHideContactHeader = () => {
         </div>
         <div className="flex items-center gap-2">
           <Phone size={14} />
-          <span className="hidden xl:inline">Call for reservation:</span>
+          <span className="hidden xl:inline">Call for reservation / events:</span>
           <a href="tel:+49 179 423 2002" className="hover:underline">
             +49 7731 66785 / +49 179 423 2002
           </a>

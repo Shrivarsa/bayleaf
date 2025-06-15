@@ -66,8 +66,8 @@ export const translations = {
   
   about: {
     title: {
-      en: 'வணக்கம் 🙏',
-      de: 'Vanakkam! 🙏'
+      en: 'வணக்கம் ',
+      de: 'வணக்கம் '
     },
     subtitle: {
       en: 'Our Story',
@@ -162,10 +162,7 @@ export const translations = {
           en: 'Happy Customers',
           de: 'Zufriedene Kunden'
         },
-        subtext: {
-          en: 'Monthly',
-          de: 'Monatlich'
-        }
+        
       }
     },
     quote: {
@@ -219,16 +216,16 @@ export const translations = {
     },
     quote: {
       tamil: {
-        en: 'மருந்தென வேண்டாவாம் யாக்கைக்கு அருந்தியது<br />அற்றது போற்றி உணின்',
-        de: '"Der Körper braucht keine Medizin, wenn man mit Zurückhaltung isst,<br />erst nachdem das bereits gegessene Essen verdaut ist."'
+        en: 'மருந்தென வேண்டாவாம் யாக்கைக்கு அருந்தியது அற்றது போற்றி உணின்',
+        de: '"Der Körper braucht keine Medizin, wenn man mit Zurückhaltung isst,erst nachdem das bereits gegessene Essen verdaut ist."'
       },
       english: {
         en: '"The body needs no medicine if one eats with restraint,<br />only after the food already eaten is digested."',
         de: '"Der Körper braucht keine Medizin, wenn man mit Zurückhaltung isst,<br />erst nachdem das bereits gegessene Essen verdaut ist."'
       },
       source: {
-        en: '- திருக்குறள் (Thirukkural 942)',
-        de: '- திருக்குறள் (Thirukkural 942)'
+        en: 'திருவள்ளுவர்',
+        de: 'Thiruvalluvar '
       }
     }
   },
@@ -271,15 +268,11 @@ export const translations = {
     quote: {
       tamil: {
         en: 'கண்ணொடு கண்ணினை நோக்கொளி உண்டோ<br />உள்ளொடு உள்ளம் கலந்தமை அன்றி',
-        de: 'கண்ணொடு கண்ணினை நோக்கொளி உண்டோ<br />உள்ளொடு உள்ளம் கலந்தமை அன்றி'
-      },
-      english: {
-        en: '"Is there light when eyes look into eyes?<br />Only when hearts unite with hearts."',
-        de: '"Gibt es Licht, wenn Augen in Augen blicken?<br />Nur wenn sich Herzen mit Herzen vereinen."'
+        de: 'Es gibt kein Auge in Auge, kein Herz in Herz.'
       },
       source: {
-        en: '- திருக்குறள் (Thirukkural 1100)',
-        de: '- திருக்குறள் (Thirukkural 1100)'
+        en: '- Thiruvalluvar',
+        de: '- திருவள்ளுவர்'
       }
     }
   },

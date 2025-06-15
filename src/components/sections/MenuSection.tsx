@@ -40,6 +40,15 @@ const MenuSection: React.FC = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [showAllMenus, setShowAllMenus] = useState(false);
   const [selectedImage, setSelectedImage] = useState<typeof menuImages[0] | null>(null);
+  const [showQuoteTooltip, setShowQuoteTooltip] = useState(true);
+
+  // Auto-hide quote tooltip after 5 seconds
+  useEffect(() => {
+    if (showQuoteTooltip) {
+      const timer = setTimeout(() => setShowQuoteTooltip(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showQuoteTooltip]);
 
   // On mobile, show only first image initially
   const displayedMenus = showAllMenus ? menuImages : [menuImages[0]];
@@ -93,19 +102,6 @@ const MenuSection: React.FC = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <div ref={textRef} className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center justify-center mb-4"
-          >
-            <Menu className="mr-2 text-spice-600" size={20} />
-            <span className="uppercase tracking-widest text-sm text-spice-600">
-              {translations.menu.subtitle[language]}
-            </span>
-          </motion.div>
-
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -126,28 +122,18 @@ const MenuSection: React.FC = () => {
             {translations.menu.description[language]}
           </motion.p>
 
-          {/* Tamil Quote Section */}
+          {/* Menu Subtitle above Rotating Table */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.25 }}
-            className="mb-12 max-w-3xl mx-auto"
+            className="flex items-center justify-center mb-6"
           >
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-orange-200">
-              <div className="text-center">
-                <p 
-                  className="text-2xl md:text-3xl font-bold text-spice-700 mb-4 leading-relaxed" 
-                  style={{ fontFamily: 'serif' }}
-                  dangerouslySetInnerHTML={{ __html: translations.menu.quote.tamil[language] }}
-                />
-                <div className="mt-6">
-                  <p className="text-sm text-spice-600">
-                    {translations.menu.quote.source[language]}
-                  </p>
-                </div>
-              </div>
-            </div>
+            <Menu className="mr-2 text-spice-600" size={16} />
+            <span className="uppercase tracking-widest text-sm text-spice-600 font-medium">
+              {translations.menu.subtitle[language]}
+            </span>
           </motion.div>
 
           {/* Scroll-based Rotating Table Image */}
@@ -172,6 +158,50 @@ const MenuSection: React.FC = () => {
               />
             </div>
           </motion.div>
+
+          {/* Tamil Quote Section - Styled like HeroSection */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="text-center"
+          >
+            <a
+              href="https://en.wikipedia.org/wiki/Kural"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-block"
+              title="Learn more about this quote"
+            >
+              <p className="text-brown-700 font-bold italic text-xs sm:text-base md:text-xl mb-2 group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-transform duration-200 leading-tight">
+                {
+                  (() => {
+                    const quoteText = translations.menu.quote.tamil[language];
+                    if (!quoteText) return '';
+                    const words = quoteText.split(' ');
+                    const breakPoint = typeof window !== 'undefined' && window.innerWidth < 375 ? 2 : 
+                                     typeof window !== 'undefined' && window.innerWidth < 400 ? 3 : 4;
+                    if (words.length <= breakPoint) return quoteText;
+                    return (
+                      <>
+                        {words.slice(0, breakPoint).join(' ')}<br />
+                        {words.slice(breakPoint).join(' ')}
+                      </>
+                    );
+                  })()
+                }
+              </p>
+              {showQuoteTooltip && (
+                <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-black/90 text-yellow-300 text-xs px-2 py-1 rounded-lg z-30 whitespace-nowrap pointer-events-none">
+                  Want to learn about this quote? Click here!
+                </span>
+              )}
+            </a>
+            <p className="text-black/80 text-xs">
+              - {translations.menu.quote.source[language]}
+            </p>
+          </motion.div>
         </div>
 
         <motion.div 
@@ -180,7 +210,7 @@ const MenuSection: React.FC = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
         >
           <div className="grid gap-8">
             {displayedMenus.map((menuImage, index) => (
@@ -216,7 +246,7 @@ const MenuSection: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
             className="text-center mt-8 lg:hidden"
           >
             <button
@@ -274,7 +304,7 @@ const MenuSection: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
           className="text-center mt-16"
         >
           <Link

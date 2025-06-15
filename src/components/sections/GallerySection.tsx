@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-scroll';
-import { Image, X, ChevronDown, Eye, EyeOff, Quote } from 'lucide-react';
-import { translations } from '../../context/translations';
+import { Image, X, ChevronDown, Eye, EyeOff, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { translations } from '../../context/translations'; // Adjust path as needed
 
 interface GalleryItem {
   id: string;
@@ -17,48 +17,7 @@ interface GallerySectionProps {
 }
 
 const galleryData: GalleryItem[] = [
-  {
-    id: "img-1",
-    title: "Affordable Indian foods in Singen",
-    imageUrl: "/BAyLeafGallerypics1/Affordable%20Indian%20foods%20in%20Singen.webp",
-    category: "food",
-    description: "Image titled 'Affordable Indian foods in Singen' showcasing our authentic offerings in food."
-  },
-  {
-    id: "img-2",
-    title: "AffordableIndianmealsinSingen",
-    imageUrl: "/BAyLeafGallerypics1/AffordableIndianmealsinSingen.jpg",
-    category: "food",
-    description: "Image titled 'AffordableIndianmealsinSingen' showcasing our authentic offerings in food."
-  },
-  {
-    id: "img-3",
-    title: "Aloo palak ,Bestes Restaurant in Singen",
-    imageUrl: "/BAyLeafGallerypics1/AloopalakBestesRestaurantinSingrn.jpg",
-    category: "restaurant",
-    description: "Image titled 'Aloo palak ,Bestes Restaurant in Singen' showcasing our authentic offerings in restaurant."
-  },
-  {
-    id: "img-4",
-    title: "Authentisches traditionelles Restaurant in Singen",
-    imageUrl: "/BAyLeafGallerypics1/Authentisches%20traditionelles%20Restaurant%20in%20Singen.jpg",
-    category: "restaurant",
-    description: "Image titled 'Authentisches traditionelles Restaurant in Singen' showcasing our authentic offerings in restaurant."
-  },
-  {
-    id: "img-5",
-    title: "Beautiful Dining Restaurant in Deutschland",
-    imageUrl: "/BAyLeafGallerypics1/BeautifulDiningRestaurantinDeutschland.jpg",
-    category: "restaurant",
-    description: "Image titled 'Beautiful Dining Restaurant in Deutschland' showcasing our authentic offerings in restaurant."
-  },
-  {
-    id: "img-6",
-    title: "Beautiful dining restaurant in singen, Deutschland",
-    imageUrl: "/BAyLeafGallerypics1/BeautifulldiningrestaurantinsingenDeutschland.jpg",
-    category: "restaurant",
-    description: "Image titled 'Beautiful dining restaurant in singen, Deutschland' showcasing our authentic offerings in restaurant."
-  },
+
   {
     id: "img-7",
     title: "Best aloo paratha, singen, Hohentwiel",
@@ -500,23 +459,83 @@ const galleryData: GalleryItem[] = [
 const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
   const [filter, setFilter] = useState('all');
-  const [showAll, setShowAll] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+  const [showQuoteTooltip, setShowQuoteTooltip] = useState(false);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   
   const textRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
+  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
 
   const filteredImages = filter === 'all' 
     ? galleryData 
     : galleryData.filter(item => item.category === filter);
 
-  const displayedImages = showAll ? filteredImages : filteredImages.slice(0, 9);
-
   const categories = ['all', 'food', 'restaurant', 'events'];
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (isAutoPlaying && filteredImages.length > 1) {
+      autoPlayRef.current = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % filteredImages.length);
+      }, 2000);
+    } else if (autoPlayRef.current) {
+      clearInterval(autoPlayRef.current);
+    }
+
+    return () => {
+      if (autoPlayRef.current) {
+        clearInterval(autoPlayRef.current);
+      }
+    };
+  }, [isAutoPlaying, filteredImages.length]);
+
+  // Pause auto-play on hover
+  const handleMouseEnter = () => {
+    if (autoPlayRef.current) {
+      clearInterval(autoPlayRef.current);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (isAutoPlaying && filteredImages.length > 1) {
+      autoPlayRef.current = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % filteredImages.length);
+      }, 2000);
+    }
+  };
 
   const handleImageError = (imageId: string) => {
     setImageErrors(prev => new Set([...prev, imageId]));
   };
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % filteredImages.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + filteredImages.length) % filteredImages.length);
+  };
+
+  const goToImage = (index: number) => {
+    setCurrentImageIndex(index);
+  };
+
+  // Reset current index when filter changes
+  React.useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [filter]);
+
+  // Tooltip effect
+  React.useEffect(() => {
+    const timer = setTimeout(() => setShowQuoteTooltip(true), 3000);
+    const hideTimer = setTimeout(() => setShowQuoteTooltip(false), 8000);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(hideTimer);
+    };
+  }, []);
 
   const ImageComponent = ({ item, className, ...props }: { item: GalleryItem; className?: string; [key: string]: any }) => {
     const hasError = imageErrors.has(item.id);
@@ -544,22 +563,35 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
     );
   };
 
+  // Get current images to display (4 for desktop, 1 for mobile)
+  const getCurrentImages = () => {
+    const startIndex = currentImageIndex;
+    const images = [];
+    for (let i = 0; i < 4; i++) {
+      const index = (startIndex + i) % filteredImages.length;
+      images.push(filteredImages[index]);
+    }
+    return images;
+  };
+
+  const currentImages = getCurrentImages();
+
   return (
-    <section id="gallery" className="relative py-24" style={{ backgroundColor: '#ffd647' }}>
+    <section id="gallery" className="relative py-12" style={{ backgroundColor: '#ffd647' }}>
       <div className="container mx-auto px-4 relative z-10">
         {/* White Container */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 lg:p-16">
+        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 lg:p-10">
           {/* Section Header */}
-          <div ref={textRef} className="text-center mb-16">
+          <div ref={textRef} className="text-center mb-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3 }}
-              className="flex items-center justify-center mb-4"
+              className="flex items-center justify-center mb-3"
             >
-              <Image className="mr-2 text-spice-600" size={20} />
-              <span className="uppercase tracking-widest text-sm text-spice-600">
+              <Image className="mr-2 text-spice-600" size={18} />
+              <span className="uppercase tracking-widest text-xs text-spice-600">
                 {translations.gallery.subtitle[language]}
               </span>
             </motion.div>
@@ -569,7 +601,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: 0.05 }}
-              className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-800"
+              className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-800"
             >
               {translations.gallery.title[language]}
             </motion.h2>
@@ -579,7 +611,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: 0.1 }}
-              className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed"
+              className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto mb-6 leading-relaxed"
             >
               {translations.gallery.description[language]}
             </motion.p>
@@ -587,7 +619,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
 
           {/* Filter Buttons */}
           <motion.div 
-            className="flex justify-center flex-wrap gap-4 my-12"
+            className="flex justify-center flex-wrap gap-3 my-8"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -598,9 +630,8 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
                 key={category}
                 onClick={() => {
                   setFilter(category);
-                  setShowAll(false);
                 }}
-                className={`px-6 py-2 rounded-full text-sm font-medium capitalize transition-all ${
+                className={`px-4 py-2 rounded-full text-xs font-medium capitalize transition-all ${
                   filter === category 
                     ? 'bg-spice-600 text-white shadow' 
                     : 'bg-cream-200 text-gray-700 hover:bg-spice-200'
@@ -616,73 +647,174 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
             ))}
           </motion.div>
 
-          {/* Gallery Grid */}
-          <motion.div 
-            ref={galleryRef}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-6"
-            layout
-          >
-            <AnimatePresence>
-              {displayedImages.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.3, delay: index * 0.02 }}
-                  onClick={() => setSelectedImage(item)}
-                  className="cursor-pointer group"
-                >
-                  <div className="relative overflow-hidden rounded-lg shadow-md aspect-square">
-                    <ImageComponent
-                      item={item}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                      <div className="text-center p-2">
-                        <h3 className="text-white font-display text-xs sm:text-sm md:text-base mb-1">{item.title}</h3>
-                        <p className="text-white/80 text-xs hidden sm:block">{item.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.div>
-
-          {/* View More/Less Button */}
-          {filteredImages.length > 9 && (
+          {/* Gallery Slideshow */}
+          {filteredImages.length > 0 && (
             <motion.div 
-              className="text-center mt-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, delay: 0.15 }}
+              className="mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
-              <motion.button
-                onClick={() => setShowAll(!showAll)}
-                className="px-8 py-3 bg-spice-600 text-white rounded-full font-medium hover:bg-spice-700 transition-colors flex items-center gap-2 mx-auto"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {showAll ? (
+              {/* Desktop View - 4 Images Grid */}
+              <div className="hidden md:block relative bg-gray-100 rounded-xl overflow-hidden shadow-lg mb-4 max-w-4xl mx-auto">
+                <div className="grid grid-cols-2 gap-1.5 p-1.5">
+                  <AnimatePresence mode="wait">
+                    {currentImages.map((item, index) => (
+                      <motion.div
+                        key={`${item.id}-${currentImageIndex}-${index}`}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        className="aspect-[4/3] relative overflow-hidden rounded-md cursor-pointer group"
+                        onClick={() => setSelectedImage(item)}
+                      >
+                        <ImageComponent
+                          item={item}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300" />
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <h4 className="text-white font-semibold text-xs truncate">
+                            {item.title}
+                          </h4>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
+
+                {/* Desktop Navigation Arrows */}
+                {filteredImages.length > 4 && (
                   <>
-                    <EyeOff size={18} />
-                    {translations.gallery.viewLess[language]}
-                  </>
-                ) : (
-                  <>
-                    <Eye size={18} />
-                    {translations.gallery.viewMore[language]} ({filteredImages.length - 9} {translations.gallery.moreItems[language]})
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-all z-10 group"
+                    >
+                      <ChevronLeft size={20} className="text-gray-700 group-hover:text-spice-600" />
+                    </button>
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-all z-10 group"
+                    >
+                      <ChevronRight size={20} className="text-gray-700 group-hover:text-spice-600" />
+                    </button>
                   </>
                 )}
-              </motion.button>
+
+                {/* Auto-play indicator */}
+                <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs flex items-center gap-1">
+                  <div className={`w-1.5 h-1.5 rounded-full ${isAutoPlaying ? 'bg-green-400 animate-pulse' : 'bg-gray-400'}`} />
+                  <span className="hidden sm:inline">Auto-play {isAutoPlaying ? 'ON' : 'OFF'}</span>
+                  <span className="sm:hidden">{isAutoPlaying ? 'ON' : 'OFF'}</span>
+                </div>
+
+                {/* Image counter */}
+                <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs">
+                  {Math.floor(currentImageIndex / 4) + 1} / {Math.ceil(filteredImages.length / 4)}
+                </div>
+              </div>
+
+              {/* Mobile View - Single Vertical Image */}
+              <div className="md:hidden relative bg-gray-100 rounded-xl overflow-hidden shadow-lg mb-4 max-w-sm mx-auto">
+                <div className="aspect-[3/4] relative">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentImageIndex}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute inset-0"
+                    >
+                      <ImageComponent
+                        item={filteredImages[currentImageIndex]}
+                        className="w-full h-full object-cover cursor-pointer"
+                        onClick={() => setSelectedImage(filteredImages[currentImageIndex])}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+
+                  {/* Mobile Navigation Arrows */}
+                  {filteredImages.length > 1 && (
+                    <>
+                      <button
+                        onClick={prevImage}
+                        className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-md hover:bg-white transition-all z-10 group"
+                      >
+                        <ChevronLeft size={20} className="text-gray-700 group-hover:text-spice-600" />
+                      </button>
+                      <button
+                        onClick={nextImage}
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-md hover:bg-white transition-all z-10 group"
+                      >
+                        <ChevronRight size={20} className="text-gray-700 group-hover:text-spice-600" />
+                      </button>
+                    </>
+                  )}
+
+                  {/* Mobile Image Counter */}
+                  <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs">
+                    {currentImageIndex + 1} / {filteredImages.length}
+                  </div>
+
+                  {/* Mobile Image Info Overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                    <h3 className="text-white font-display text-lg">
+                      {filteredImages[currentImageIndex]?.title}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+
+              {/* Thumbnail Navigation - Both Desktop and Mobile */}
+              {filteredImages.length > 1 && (
+                <div className="flex justify-center gap-1 overflow-x-auto pb-2">
+                  {filteredImages.map((item, index) => (
+                    <motion.button
+                      key={item.id}
+                      onClick={() => goToImage(index)}
+                      className={`flex-shrink-0 w-12 h-9 md:w-16 md:h-12 rounded-md overflow-hidden border-2 transition-all ${
+                        index === currentImageIndex 
+                          ? 'border-spice-600 shadow-lg' 
+                          : 'border-gray-300 hover:border-spice-400'
+                      }`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <ImageComponent
+                        item={item}
+                        className="w-full h-full object-cover"
+                      />
+                    </motion.button>
+                  ))}
+                </div>
+              )}
+
+              {/* Auto-play Control */}
+              <div className="text-center mt-4">
+                <button
+                  onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm text-gray-700 transition-all"
+                >
+                  {isAutoPlaying ? <Eye size={16} /> : <EyeOff size={16} />}
+                  {isAutoPlaying ? 'Pause Auto-play' : 'Resume Auto-play'}
+                </button>
+              </div>
+
+              {/* Click to Enlarge Hint */}
+              <p className="text-center text-gray-500 text-xs mt-3">
+                {language === 'de' ? 'Klicken Sie auf das Bild zum Vergrößern' : 'Click on image to enlarge'}
+              </p>
             </motion.div>
           )}
 
-          {/* Quote Section */}
+          {/* Enhanced Quote Section - Styled like Hero */}
           <motion.div 
-            className="mt-20 mb-16"
+            className="mt-12 mb-10"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -690,66 +822,50 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
           >
             <div className="max-w-4xl mx-auto text-center">
               <div className="relative">
-                {/* Quote Icon */}
-                <motion.div
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="flex justify-center mb-8"
+                {/* Quote Link - Styled like Hero */}
+                <a
+                  href="https://en.wikipedia.org/wiki/Kural"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative inline-block"
+                  title="Learn more about this quote"
                 >
-                  <div className="bg-spice-600 p-4 rounded-full">
-                    <Quote className="text-white" size={32} />
-                  </div>
-                </motion.div>
+                  {/* Tamil Quote - Using Hero styling */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    className="mb-4"
+                  >
+                    <p 
+  className="text-[0.65rem] sm:text-base md:text-lg lg:text-xl mb-2 group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-all duration-200 leading-tight max-w-xs sm:max-w-none mx-auto"
+  dangerouslySetInnerHTML={{ 
+    __html: translations.gallery.quote.tamil[language] 
+  }}
+/>
 
-                {/* Tamil Quote */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                  className="mb-6"
-                >
-                  <p 
-                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-spice-800 leading-relaxed"
-                    dangerouslySetInnerHTML={{ 
-                      __html: translations.gallery.quote.tamil[language] 
-                    }}
-                  />
-                </motion.div>
+                  </motion.div>
 
-                {/* English Translation */}
+                  {/* Tooltip */}
+                  {showQuoteTooltip && (
+                    <span className="absolute -top-12 left-1/2 -translate-x-1/2 bg-black/90 text-yellow-300 text-sm px-3 py-2 rounded-lg z-30 whitespace-nowrap">
+                      Want to learn about this quote? Click here!
+                    </span>
+                  )}
+                </a>
+
+                {/* Source - Using Hero styling */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.4 }}
-                  className="mb-4"
                 >
-                  <p 
-                    className="text-lg md:text-xl text-gray-700 italic leading-relaxed max-w-3xl mx-auto"
-                    dangerouslySetInnerHTML={{ 
-                      __html: translations.gallery.quote.english[language] 
-                    }}
-                  />
-                </motion.div>
-
-                {/* Source */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                >
-                  <p className="text-sm text-gray-600 font-medium">
+                  <p className="text-black text-xs sm:text-sm md:text-base max-w-xs sm:max-w-none mx-auto">
                     {translations.gallery.quote.source[language]}
                   </p>
                 </motion.div>
-
-                {/* Decorative Elements */}
-                <div className="absolute -top-4 -left-4 w-8 h-8 border-l-2 border-t-2 border-spice-300 opacity-50"></div>
-                <div className="absolute -bottom-4 -right-4 w-8 h-8 border-r-2 border-b-2 border-spice-300 opacity-50"></div>
               </div>
             </div>
           </motion.div>
@@ -781,25 +897,26 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
           </motion.div>
         </div>
 
-        {/* Lightbox Modal */}
+        {/* Enhanced Lightbox Modal */}
         <AnimatePresence>
           {selectedImage && (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+              className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4"
               onClick={() => setSelectedImage(null)}
             >
               <motion.div
-                initial={{ scale: 0.8, y: 50 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.8, y: 50 }}
-                className="relative max-w-4xl w-full bg-white rounded-lg overflow-hidden"
+                initial={{ scale: 0.8, y: 50, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                exit={{ scale: 0.8, y: 50, opacity: 0 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="relative max-w-4xl w-full bg-white rounded-xl overflow-hidden shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
               >
                 <button 
-                  className="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-70 transition-all z-10"
+                  className="absolute top-4 right-4 text-white bg-black bg-opacity-60 backdrop-blur-sm p-2 rounded-full hover:bg-opacity-80 transition-all z-10 shadow-lg"
                   onClick={() => setSelectedImage(null)}
                 >
                   <X size={24} />
@@ -808,12 +925,17 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
                   item={selectedImage}
                   className="w-full max-h-[70vh] object-cover"
                 />
-                <div className="p-6">
-                  <h3 className="text-2xl font-display mb-2">{selectedImage.title}</h3>
-                  <p className="text-gray-600">{selectedImage.description}</p>
-                  <span className="text-sm text-gray-500 mt-2 block capitalize">
-                    {language === 'de' ? 'Kategorie' : 'Category'}: {selectedImage.category}
-                  </span>
+                <div className="p-6 bg-gradient-to-r from-white to-gray-50">
+                  <h3 className="text-2xl font-display mb-2 text-gray-800">{selectedImage.title}</h3>
+                  <p className="text-gray-600 mb-3">{selectedImage.description}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-500">
+                      {language === 'de' ? 'Kategorie' : 'Category'}:
+                    </span>
+                    <span className="text-sm font-medium text-spice-600 capitalize bg-spice-100 px-2 py-1 rounded-full">
+                      {selectedImage.category}
+                    </span>
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
