@@ -35,7 +35,8 @@ const HeroSection: React.FC = () => {
         backgroundSize: 'contain',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundColor: '#fed647'
+        backgroundColor: '#fed647',
+        clipPath: 'inset(0 0 0 0)'
       }}
     >
       {/* Yellow Tint Overlay */}
@@ -72,7 +73,7 @@ const HeroSection: React.FC = () => {
       </div>
 
       {/* Thiruvalluvar Image - Enhanced mobile positioning */}
-      <div className="absolute bottom-0 left-0 w-40 h-40 xs:w-48 xs:h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-[28rem] lg:h-[28rem] z-[100] -ml-12 xs:-ml-16 sm:-ml-24 md:-ml-32 lg:-ml-40 -mb-8 xs:-mb-12 sm:-mb-20 md:-mb-24 lg:-mb-28">
+      <div className="absolute bottom-0 left-0 w-40 h-40 xs:w-48 xs:h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-[28rem] lg:h-[28rem] z-50 -ml-12 xs:-ml-16 sm:-ml-24 md:-ml-32 lg:-ml-40 -mb-8 xs:-mb-12 sm:-mb-20 md:-mb-24 lg:-mb-28">
         <img
           src="/thiruvalluvar wo bg final.png"
           alt="Thiruvalluvar"

@@ -168,7 +168,7 @@ const MenuSection: React.FC = () => {
             className="text-center"
           >
             <a
-              href="https://en.wikipedia.org/wiki/Kural"
+              href="https://www.thirukural.ai/kural/942"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative inline-block"

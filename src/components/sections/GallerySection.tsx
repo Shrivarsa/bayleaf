@@ -824,7 +824,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
               <div className="relative">
                 {/* Quote Link - Styled like Hero */}
                 <a
-                  href="https://en.wikipedia.org/wiki/Kural"
+                  href="https://en.m.wikipedia.org/wiki/Maturaikk%C4%81%C3%B1ci"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group relative inline-block"

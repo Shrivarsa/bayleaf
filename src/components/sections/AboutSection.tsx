@@ -292,8 +292,12 @@ const AboutSection: React.FC = () => {
                 whileHover={{ y: -10 }}
                 className="bg-white/90 p-4 sm:p-6 lg:p-8 rounded-lg shadow-md transform transition-all duration-300 hover:shadow-xl"
               >
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-${feature.color} text-white flex items-center justify-center mb-3 sm:mb-4`}>
-                  <span className="font-bold text-lg sm:text-xl">{}</span>
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full ${
+                  feature.color === 'spice' ? 'bg-spice-500' :
+                  feature.color === 'leaf' ? 'bg-leaf-500' :
+                  'bg-chili-500'
+                } text-white flex items-center justify-center mb-3 sm:mb-4`}>
+                  <span className="font-bold text-lg sm:text-xl">{index + 1}</span>
                 </div>
                 <h3 className="font-display text-lg sm:text-xl mb-2 sm:mb-3 text-gray-900">
                   {feature.title[language]}

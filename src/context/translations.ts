@@ -35,8 +35,8 @@ export const translations = {
   
   hero: {
     tagline: {
-      en: 'Authentic Indian Cuisine',
-      de: 'Authentische Indische Küche'
+      en: 'Authentic South Indian Cuisine',
+      de: 'Authentische südindische Küche'
     },
     title: {
       en: 'Bayleaf Restaurant',
@@ -267,12 +267,12 @@ export const translations = {
     },
     quote: {
       tamil: {
-        en: 'கண்ணொடு கண்ணினை நோக்கொளி உண்டோ<br />உள்ளொடு உள்ளம் கலந்தமை அன்றி',
-        de: 'Es gibt kein Auge in Auge, kein Herz in Herz.'
+        en: 'நுண்ணிதி னுணர்ந்த நுழைந்த நோக்கிற்<br>கண்ணுள் வினைஞர்',
+        de: 'Der Visionär, der mit einem scharfen Verständnis eingetreten ist,'
       },
       source: {
-        en: '- Thiruvalluvar',
-        de: '- திருவள்ளுவர்'
+        en: '- Maduraikanchi',
+        de: '- மதுரைக் காஞ்சி'
       }
     }
   },
