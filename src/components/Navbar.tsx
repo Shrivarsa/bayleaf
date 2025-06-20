@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
     >
       <div className="container mx-auto px-2 md:px-4">
         <div className="flex justify-between items-center">
-          {/* Logo - moved further left */}
+          {/* Logo - made bigger horizontally */}
           <Link
             to="home"
             spy={true}
@@ -76,7 +76,7 @@ const Navbar: React.FC = () => {
             <img
               src="/logo.png"
               alt="Singen Restaurant Logo"
-              className="h-20 w-32 md:h-24 md:w-40 object-contain"
+              className="h-20 w-48 md:h-24 md:w-56 object-contain"
             />
           </Link>
 
