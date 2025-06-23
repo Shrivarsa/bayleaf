@@ -2,23 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Favicon for all browsers and search engines - Updated with larger sizes -->
-    <link rel="icon" type="image/png" sizes="500x500" href="/BLR.png" />
-    <link rel="icon" type="image/png" sizes="300x300" href="/BLR.png" />
-    <link rel="icon" type="image/png" sizes="300x300" href="/BLR.png" />
-    <link rel="icon" type="image/png" sizes="300x300" href="/BLR.png" />
-    <link rel="icon" type="image/png" sizes="300x300" href="/BLR.png" />
-    <link rel="icon" type="image/png" sizes="300x300" href="/BLR.png" />
-    <link rel="shortcut icon" href="/BLR.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/BLR.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="/BLR.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="/BLR.png" />
-    <link rel="apple-touch-icon" sizes="120x120" href="/BLR.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="/BLR.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="/BLR.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="/BLR.png" />
-    <link rel="apple-touch-icon" sizes="60x60" href="/BLR.png" />
-    <link rel="apple-touch-icon" sizes="57x57" href="/BLR.png" />
+    <!-- Primary favicon for Google Search (must be at least 48x48px) -->
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    
+    <!-- Apple touch icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
+    
+    <!-- Traditional favicon for older browsers -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
@@ -53,18 +49,22 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://bayleaf-singen.com/">
     
-    <!-- Local Business Schema -->
+    <!-- Local Business Schema with Logo -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Restaurant",
-      "name": "Bay Leaf",
+      "name": "Bay Leaf EU",
+      "alternateName": "Bay Leaf Restaurant",
       "description": "First South Indian Restaurant in Singen, Germany offering authentic dosa, biryani, and traditional cuisine",
       "url": "https://bayleaf-singen.com",
-      "telephone": "+49-XXXX-XXXXX",
+      "logo": "https://bayleaf-singen.com/favicon-192x192.png",
+      "image": "https://bayleaf-singen.com/favicon-192x192.png",
+      "telephone": "+49 7731 66785",
+      "email": "info@bay-leaf.eu",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "Your Street Address",
+        "streetAddress": "August-Ruf-Straße 16",
         "addressLocality": "Singen",
         "addressRegion": "Baden-Württemberg",
         "postalCode": "78224",
@@ -76,12 +76,12 @@
         "longitude": "8.8400"
       },
       "cuisine": "South Indian",
-      "priceRange": "$$",
+      "priceRange": "$",
       "servesCuisine": "Indian",
       "hasMenu": "https://bayleaf-singen.com/menu",
       "acceptsReservations": true,
       "openingHours": [
-        "Mo-Su 11:00-22:00"
+        "Mo-Su 11:30-22:00"
       ],
       "paymentAccepted": "Cash, Credit Card",
       "currenciesAccepted": "EUR"
@@ -110,6 +110,9 @@
       <h1>Authentic Indian Food Singen</h1>
       <h2>Tasty Indian food restaurant</h2>
       <h3>First South Indian Restaurant in Singen, Germany</h3>
+      <p>Contact: +49 7731 66785 / +49 179 423 2002</p>
+      <p>Email: info@bay-leaf.eu</p>
+      <p>Address: August-Ruf-Straße 16, 78224 Singen</p>
     </div>
     
     <div id="root"></div>
