@@ -145,8 +145,8 @@ const HeroSection: React.FC = () => {
         </div>
       </Link>
 
-      {/* Foreground Content - Enhanced mobile layout */}
-      <div className="absolute inset-0 z-20">
+      {/* Foreground Content - Enhanced mobile layout with FIXED Z-INDEX */}
+      <div className="absolute inset-0 z-[100]">
         <div className="
           text-gray-900 max-w-[calc(100vw-1rem)]
           absolute top-[15%] left-2 text-left
@@ -168,14 +168,16 @@ const HeroSection: React.FC = () => {
             {translations.hero.description[language]}
           </p>
 
-          <div className="flex flex-row gap-2 xs:gap-3">
+          {/* FIXED BUTTON CONTAINER with higher z-index and pointer-events */}
+          <div className="flex flex-row gap-2 xs:gap-3 relative z-[300] pointer-events-auto">
             <Link
               to="menu"
               spy={true}
               smooth={true}
               offset={-80}
               duration={0}
-              className="bg-spice-500 text-white rounded-md font-medium hover:bg-spice-600 active:bg-spice-700 transition-all text-xs py-1.5 px-2 xs:py-2 xs:px-3 sm:text-sm w-[7rem] xs:w-[8rem] text-center"
+              className="bg-spice-500 text-white rounded-md font-medium hover:bg-spice-600 active:bg-spice-700 transition-all text-xs py-1.5 px-2 xs:py-2 xs:px-3 sm:text-sm sm:py-3 sm:px-4 w-[7rem] xs:w-[8rem] sm:w-auto text-center cursor-pointer select-none"
+              style={{ pointerEvents: 'auto' }}
             >
               {translations.hero.exploreMenu[language]}
             </Link>
@@ -185,15 +187,16 @@ const HeroSection: React.FC = () => {
               smooth={true}
               offset={-80}
               duration={0}
-              className="bg-white text-spice-500 py-1.5 px-2 xs:py-2 xs:px-3 rounded-md font-medium hover:bg-opacity-90 active:bg-opacity-80 transition-all text-xs sm:text-sm w-[7rem] xs:w-[8rem] text-center"
+              className="bg-white text-spice-500 py-1.5 px-2 xs:py-2 xs:px-3 sm:py-3 sm:px-4 rounded-md font-medium hover:bg-opacity-90 active:bg-opacity-80 transition-all text-xs sm:text-sm w-[7rem] xs:w-[8rem] sm:w-auto text-center cursor-pointer select-none"
+              style={{ pointerEvents: 'auto' }}
             >
               {translations.hero.bookTable[language]}
             </Link>
           </div>
         </div>
 
-        {/* Quote Section - Enhanced mobile responsiveness */}
-        <div className="absolute bottom-1 xs:bottom-2 sm:bottom-8 lg:bottom-2 left-1/2 -translate-x-1/2 w-full max-w-[calc(100vw-0.5rem)] z-30 px-1 xs:px-2 sm:px-4 text-center">
+        {/* Quote Section - Enhanced mobile responsiveness with proper z-index */}
+        <div className="absolute bottom-1 xs:bottom-2 sm:bottom-8 lg:bottom-2 left-1/2 -translate-x-1/2 w-full max-w-[calc(100vw-0.5rem)] z-[150] px-1 xs:px-2 sm:px-4 text-center">
           <a
             href="https://en.wikipedia.org/wiki/Kural"
             target="_blank"
