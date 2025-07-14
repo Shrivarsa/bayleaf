@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    xsi:schemaLocation="
+        http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- Home – English ⇄ German -->
+  <url>
+    <loc>https://www.bay-leaf.eu/</loc>
+    <lastmod>2025-07-14T09:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.00</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bay-leaf.eu/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.bay-leaf.eu/de/"/>
+  </url>
+
+  <!-- About / Über uns -->
+  <url>
+    <loc>https://www.bay-leaf.eu/about</loc>
+    <lastmod>2025-07-14T09:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bay-leaf.eu/about"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.bay-leaf.eu/de/uber-uns"/>
+  </url>
+
+  <!-- Menu / Speisekarte -->
+  <url>
+    <loc>https://www.bay-leaf.eu/menu</loc>
+    <lastmod>2025-07-14T09:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bay-leaf.eu/menu"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.bay-leaf.eu/de/speisekarte"/>
+  </url>
+
+  <!-- Gallery / Galerie -->
+  <url>
+    <loc>https://www.bay-leaf.eu/gallery</loc>
+    <lastmod>2025-07-14T09:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bay-leaf.eu/gallery"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.bay-leaf.eu/de/galerie"/>
+  </url>
+
+  <!-- Contact / Kontakt -->
+  <url>
+    <loc>https://www.bay-leaf.eu/contact</loc>
+    <lastmod>2025-07-14T09:00:00+00:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.60</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bay-leaf.eu/contact"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.bay-leaf.eu/de/kontakt"/>
+  </url>
+
+  <!-- Reservation page (if separate) -->
+  <url>
+    <loc>https://www.bay-leaf.eu/reservations</loc>
+    <lastmod>2025-07-14T09:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bay-leaf.eu/reservations"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.bay-leaf.eu/de/reservierung"/>
+  </url>
+
+  <!-- German home (already cross‑linked above, but optional standalone listing) -->
+  <url>
+    <loc>https://www.bay-leaf.eu/de/</loc>
+    <lastmod>2025-07-14T09:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.bay-leaf.eu/de/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bay-leaf.eu/"/>
+  </url>
+
+</urlset>
