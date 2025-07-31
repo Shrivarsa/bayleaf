@@ -74,7 +74,7 @@ const Navbar: React.FC = () => {
             className="flex items-center cursor-pointer -ml-4 md:-ml-6"
           >
             <img
-              src="/logo.png"
+              src="/favicon.png"
               alt="Singen Restaurant Logo"
               className="h-20 w-48 md:h-24 md:w-56 object-contain"
             />
