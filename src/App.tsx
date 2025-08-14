@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { LoadingProvider } from './context/LoadingContext';
-import LoadingScreen from './components/LoadingScreen';
 import Navbar from './components/Navbar';
 import HeroSection from './components/sections/HeroSection';
 import AboutSection from './components/sections/AboutSection';
@@ -17,8 +16,6 @@ function App() {
     <LoadingProvider>
       <LanguageProvider>
       <div className="app">
-        {/* Loading Screen with Curtain Animation */}
-        <LoadingScreen />
         
         {/* Main Content */}
         <ScrollHideContactHeader />

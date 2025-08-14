@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Disallow build files and development directories
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /dist/
+Disallow: /.env*
+Disallow: /vite.config.*
+Disallow: /tsconfig.*
+
+# Sitemap location
+Sitemap: https://www.bay-leaf.eu/sitemap.xml
+
+# Additional information for crawlers
+# Restaurant/food service site - allow image indexing
+Allow: /assets/
+Allow: /images/
