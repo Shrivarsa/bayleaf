@@ -1,6 +1,16 @@
 User-agent: *
 Allow: /
 
+# Allow specific crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
 # Disallow build files and development directories
 Disallow: /node_modules/
 Disallow: /src/
@@ -9,10 +19,24 @@ Disallow: /.env*
 Disallow: /vite.config.*
 Disallow: /tsconfig.*
 
+# Allow important SEO files
+Allow: /sitemap*.xml
+Allow: /robots.txt
+Allow: /favicon.ico
+Allow: /manifest.json
+
 # Sitemap location
+Sitemap: https://www.bay-leaf.eu/sitemap-index.xml
 Sitemap: https://www.bay-leaf.eu/sitemap.xml
+Sitemap: https://www.bay-leaf.eu/sitemap-images.xml
 
 # Additional information for crawlers
 # Restaurant/food service site - allow image indexing
 Allow: /assets/
 Allow: /images/
+Allow: /Menu/
+Allow: /BAyLeafGallerypics1/
+Allow: /BAyLeafGallerypics2/
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1

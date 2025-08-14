@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   
   <!-- Main Page -->
   <url>
     <loc>https://www.bay-leaf.eu/</loc>
-    <lastmod>2025-08-14</lastmod>
+    <lastmod>2025-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.bay-leaf.eu/faviconv2.png</image:loc>
+      <image:title>Bay Leaf EU - South Indian Restaurant in Singen</image:title>
+      <image:caption>Authentic South Indian cuisine in Singen, Germany</image:caption>
+    </image:image>
   </url>
   
   <!-- Hero Section -->
   <url>
     <loc>https://www.bay-leaf.eu/#hero</loc>
-    <lastmod>2025-08-14</lastmod>
+    <lastmod>2025-01-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -23,7 +30,7 @@
   <!-- About Section -->
   <url>
     <loc>https://www.bay-leaf.eu/#about</loc>
-    <lastmod>2025-08-14</lastmod>
+    <lastmod>2025-01-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -31,7 +38,7 @@
   <!-- Menu Section -->
   <url>
     <loc>https://www.bay-leaf.eu/#menu</loc>
-    <lastmod>2025-08-14</lastmod>
+    <lastmod>2025-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -39,7 +46,7 @@
   <!-- Gallery Section -->
   <url>
     <loc>https://www.bay-leaf.eu/#gallery</loc>
-    <lastmod>2025-08-14</lastmod>
+    <lastmod>2025-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -47,9 +54,17 @@
   <!-- Contact Section -->
   <url>
     <loc>https://www.bay-leaf.eu/#contact</loc>
-    <lastmod>2025-08-14</lastmod>
+    <lastmod>2025-01-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  
+  <!-- German Language Version -->
+  <url>
+    <loc>https://www.bay-leaf.eu/de/</loc>
+    <lastmod>2025-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   
 </urlset>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <url>
+    <loc>https://www.bay-leaf.eu/</loc>
+    
+    <!-- Restaurant Logo -->
+    <image:image>
+      <image:loc>https://www.bay-leaf.eu/faviconv2.png</image:loc>
+      <image:title>Bay Leaf Restaurant Logo</image:title>
+      <image:caption>Bay Leaf EU - First South Indian Restaurant in Singen, Germany</image:caption>
+    </image:image>
+    
+    <!-- Menu Images -->
+    <image:image>
+      <image:loc>https://www.bay-leaf.eu/Menu/1%20Final%20menu%20A4%20-1.jpg</image:loc>
+      <image:title>Bay Leaf Menu Page 1 - South Indian Dishes</image:title>
+      <image:caption>Authentic South Indian menu featuring dosas, biryanis, and traditional curries</image:caption>
+    </image:image>
+    
+    <image:image>
+      <image:loc>https://www.bay-leaf.eu/Menu/2%20Final%20menu%20A4%20-2.jpg</image:loc>
+      <image:title>Bay Leaf Menu Page 2 - Vegetarian and Non-Vegetarian Options</image:title>
+      <image:caption>Extensive menu with vegetarian and non-vegetarian South Indian specialties</image:caption>
+    </image:image>
+    
+    <image:image>
+      <image:loc>https://www.bay-leaf.eu/Menu/3%20Final%20menu%20A4%20-3.jpg</image:loc>
+      <image:title>Bay Leaf Menu Page 3 - Traditional South Indian Cuisine</image:title>
+      <image:caption>Traditional Tamil and South Indian dishes prepared with authentic spices</image:caption>
+    </image:image>
+    
+    <image:image>
+      <image:loc>https://www.bay-leaf.eu/Menu/4%20Final%20menu%20A4%20-4.jpg</image:loc>
+      <image:title>Bay Leaf Menu Page 4 - Desserts and Specialties</image:title>
+      <image:caption>South Indian desserts and chef's special recommendations</image:caption>
+    </image:image>
+    
+    <image:image>
+      <image:loc>https://www.bay-leaf.eu/Menu/5%20Drinks.jpg</image:loc>
+      <image:title>Bay Leaf Drinks Menu - Traditional and Modern Beverages</image:title>
+      <image:caption>Traditional Indian drinks and modern beverage options</image:caption>
+    </image:image>
+    
+    <!-- Gallery Food Images -->
+    <image:image>
+      <image:loc>https://www.bay-leaf.eu/BAyLeafGallerypics1/BestalooparathasingenHohentwiel.jpg</image:loc>
+      <image:title>Best Aloo Paratha in Singen Hohentwiel</image:title>
+      <image:caption>Authentic aloo paratha served at Bay Leaf Restaurant in Singen</image:caption>
+    </image:image>
+    
+    <image:image>
+      <image:loc>https://www.bay-leaf.eu/BAyLeafGallerypics1/chickenbriyaniTraditionalfoodinsingen.webp</image:loc>
+      <image:title>Chicken Biryani - Traditional Food in Singen</image:title>
+      <image:caption>Aromatic chicken biryani prepared with traditional South Indian spices</image:caption>
+    </image:image>
+    
+    <image:image>
+      <image:loc>https://www.bay-leaf.eu/BAyLeafGallerypics1/South%20Indian%20breakfast%20in%20Singen.jpg</image:loc>
+      <image:title>South Indian Breakfast in Singen</image:title>
+      <image:caption>Traditional South Indian breakfast items including dosa, idli, and sambar</image:caption>
+    </image:image>
+    
+    <!-- Restaurant Interior Images -->
+    <image:image>
+      <image:loc>https://www.bay-leaf.eu/BAyLeafGallerypics2/Beautiful%20restaurant%20in%20singenmAugust-Ruf-Stra%C3%9Fe.jpeg</image:loc>
+      <image:title>Beautiful Restaurant Interior in Singen August-Ruf-Straße</image:title>
+      <image:caption>Elegant dining atmosphere at Bay Leaf Restaurant in Singen</image:caption>
+    </image:image>
+    
+    <image:image>
+      <image:loc>https://www.bay-leaf.eu/BAyLeafGallerypics2/Das%20erste%20s%C3%BCdindische%20Restaurant%20in%20Singen.jpeg</image:loc>
+      <image:title>Das erste südindische Restaurant in Singen</image:title>
+      <image:caption>The first South Indian restaurant in Singen, Germany</image:caption>
+    </image:image>
+    
+  </url>
+</urlset>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { LoadingProvider } from './context/LoadingContext';
+import SEOHead from './components/SEOHead';
 import Navbar from './components/Navbar';
 import HeroSection from './components/sections/HeroSection';
 import AboutSection from './components/sections/AboutSection';
@@ -15,6 +16,7 @@ function App() {
   return (
     <LoadingProvider>
       <LanguageProvider>
+      <SEOHead />
       <div className="app">
         
         {/* Main Content */}
