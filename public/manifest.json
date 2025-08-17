@@ -1,0 +1,30 @@
+{
+  "name": "Bay Leaf EU - South Indian Restaurant",
+  "short_name": "Bay Leaf EU",
+  "description": "Authentic South Indian Restaurant in Singen, Germany",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fed647",
+  "theme_color": "#E59B19",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/faviconv2.png", 
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "restaurant", "business"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "related_applications": [],
+  "prefer_related_applications": false
+}
