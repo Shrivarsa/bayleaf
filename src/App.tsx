@@ -42,7 +42,6 @@ function App() {
   return (
     <LoadingProvider>
       <LanguageProvider>
-        {/* Main Content */}
         <ScrollHideContactHeader />
         <Navbar />
         

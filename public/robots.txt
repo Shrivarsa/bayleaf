@@ -8,8 +8,16 @@ Allow: /assets/
 # Disallow admin or sensitive areas (if any)
 # Disallow: /admin/
 
+# Allow important SEO files
+Allow: /sitemap*.xml
+Allow: /robots.txt
+Allow: /favicon.ico
+Allow: /manifest.json
+
 # Sitemap location
+Sitemap: https://www.bay-leaf.eu/sitemap-index.xml
 Sitemap: https://www.bay-leaf.eu/sitemap.xml
+Sitemap: https://www.bay-leaf.eu/sitemap-images.xml
 
 # Crawl delay (optional)
 Crawl-delay: 1
