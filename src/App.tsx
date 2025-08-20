@@ -9,16 +9,30 @@ import ContactSection from './components/sections/ContactSection';
 import Footer from './components/Footer';
 import { LanguageProvider } from './context/LanguageContext';
 import ScrollHideContactHeader from './components/sections/ScrollHideContactHeader';
+import ImagePopup from './components/ImagePopup'; // Changed from VideoPopup to ImagePopup
 
 function App() {
-  
+  // State for the image popup
+  const [showImagePopup, setShowImagePopup] = useState(false);
+
+  useEffect(() => {
+    // Show popup every time user visits
+    setShowImagePopup(true);
+
+    // Optionally, use localStorage or delay as in your original code
+  }, []);
+
+  // Handler to close the popup
+  const handleCloseImagePopup = () => {
+    setShowImagePopup(false);
+  };
+
   return (
     <LoadingProvider>
       <LanguageProvider>
-        {/* Main Content */}
         <ScrollHideContactHeader />
         <Navbar />
-        
+
         <main>
           <HeroSection />
           <AboutSection />
@@ -26,9 +40,16 @@ function App() {
           <GallerySection />
           <ContactSection />
         </main>
-        
+
         <Footer />
 
+        {/* Use the ImagePopup component */}
+        <ImagePopup
+          imageUrl="/onam_final.jpeg" // Replace with your actual image path
+          isOpen={showImagePopup}
+          onClose={handleCloseImagePopup}
+          alt="Onam Festival"
+        />
       </LanguageProvider>
     </LoadingProvider>
   );
