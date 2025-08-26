@@ -152,7 +152,7 @@ const MenuSection: React.FC = () => {
               }}
             >
               <img 
-                src="/c1.png" 
+                src="/Menutable1.png" 
                 alt="Traditional South Indian table setting"
                 className="w-full h-full object-contain"
               />
