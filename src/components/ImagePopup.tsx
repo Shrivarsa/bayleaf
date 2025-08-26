@@ -32,6 +32,15 @@ const ImagePopup: React.FC<ImagePopupProps> = ({
 
   const handleClose = () => {
     onClose();
+    const hash = window.location.hash;
+    if (hash) {
+      const el = document.querySelector(hash);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 50); // small delay to ensure popup unmount finishes
+      }
+    }
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
