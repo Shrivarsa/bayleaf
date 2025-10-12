@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-scroll';
-import { Image, X, ChevronDown, Eye, EyeOff, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Image, X, Eye, EyeOff, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext'; // Assuming useLanguage is imported like this
 import { translations } from '../../context/translations'; // Adjust path as needed
 
 interface GalleryItem {
@@ -13,14 +14,34 @@ interface GalleryItem {
   alt?: string; 
 }
 
+// Define Props including the required ref and id for App.tsx scroll logic
 interface GallerySectionProps {
-  language?: 'en' | 'de';
+  id: string;
 }
+
+const categoryTranslations = {
+  all: {
+    en: 'All',
+    de: 'Alle'
+  },
+  food: {
+    en: 'Food',
+    de: 'Essen'
+  },
+  restaurant: {
+    en: 'Restaurant',
+    de: 'Restaurant'
+  },
+  interior: {
+    en: 'Interior',
+    de: 'Innenraum'
+  }
+};
 
 const galleryData: GalleryItem[] = [
   {
     id: "img-7",
-    title: "",
+    title: "Best Aloo Paratha",
     imageUrl: "/BAyLeafGallerypics1/BestalooparathasingenHohentwiel.jpg",
     category: "food",
     description: "'Best aloo paratha, singen, Hohentwiel' showcasing our authentic offerings in food.",
@@ -28,47 +49,47 @@ const galleryData: GalleryItem[] = [
   },
   {
     id: "img-8",
-    title: "",
+    title: "Non-Vegetarian Dishes",
     imageUrl: "/BAyLeafGallerypics1/BestnichtvegetarischfoodsSingen.jpg",
     category: "food",
-    description: "  'Best nicht vegetarisch foods, Singen' showcasing our authentic offerings in food.",
+    description: " 'Best nicht vegetarisch foods, Singen' showcasing our authentic offerings in food.",
     alt: "Best nicht vegetarisch foods, Singen"
   },
   {
     id: "img-9",
-    title: "",
+    title: "Best Restaurant Nearby",
     imageUrl: "/BAyLeafGallerypics1/Bestes%20Restaurant%20in%20der%20N%C3%A4he.jpg",
     category: "restaurant",
-    description: "  'Bestes Restaurant in der Nähe' showcasing our authentic offerings in restaurant.",
+    description: " 'Bestes Restaurant in der Nähe' showcasing our authentic offerings in restaurant.",
     alt: "Bestes Restaurant in der Nähe"
   },
   {
     id: "img-10",
-    title: "",
+    title: "Chettinad Chicken",
     imageUrl: "/BAyLeafGallerypics1/chettinadchickenTraditionalfoodSingen.jpeg",
     category: "food",
-    description: "  'chettinad chicken Traditional food, Singen' showcasing our authentic offerings in food.",
+    description: " 'chettinad chicken Traditional food, Singen' showcasing our authentic offerings in food.",
     alt: "chettinad chicken Traditional food, Singen" 
   },
   {
     id: "img-11",
-    title: "",
+    title: "Chettinad Mutton Kuzhambu",
     imageUrl: "/BAyLeafGallerypics1/ChettinadMuttonKuzhambuTraditionellessingen.jpg",
     category: "food",
-    description: "  'Chettinad Mutton Kuzhambu, Traditionliches singen' showcasing our authentic offerings in food.",
-    alt: "Chettinad Mutton Kuzhambu, Traditionliches singen"
+    description: " 'Chettinad Mutton Kuzhambu, Traditionelles singen' showcasing our authentic offerings in food.",
+    alt: "Chettinad Mutton Kuzhambu, Traditionelles singen"
   },
   {
     id: "img-12",
-    title: "",
+    title: "Chicken Biryani",
     imageUrl: "/BAyLeafGallerypics1/chickenbriyaniTraditionalfoodinsingen.webp",
     category: "food",
-    description: "  'chicken briyani Traditional food in Singen' showcasing our authentic offerings in food.",
+    description: " 'chicken briyani Traditional food in Singen' showcasing our authentic offerings in food.",
     alt: "chicken briyani Traditional food in Singen"
   },
   {
     id: "img-13",
-    title: "",
+    title: "Chicken Gongura",
     imageUrl: "/BAyLeafGallerypics1/chickengonguraInSingenHohentwiel.jpg",
     category: "food",
     description: " 'chicken gongura In Singen, Hohentwiel' showcasing our authentic offerings in food.",
@@ -76,450 +97,450 @@ const galleryData: GalleryItem[] = [
   },
   {
     id: "img-14",
-    title: "",
+    title: "Chicken Gravy",
     imageUrl: "/BAyLeafGallerypics1/chicken%20gravy%20best%20non%20veg%20restaurant.webp",
     category: "restaurant",
-    description: "  'chicken gravy best non veg restaurant' showcasing our authentic offerings in restaurant.",
+    description: " 'chicken gravy best non veg restaurant' showcasing our authentic offerings in restaurant.",
     alt: "chicken gravy best non veg restaurant"
   },
   {
     id: "img-15",
-    title: "",
+    title: "Chicken Chettinad Curry",
     imageUrl: "/BAyLeafGallerypics1/Chicken-Chettinad-Curry%20in%20Singenpic.jpg",
     category: "food",
-    description: "  'Chicken Chettinad Curry in Singenpic' showcasing our authentic offerings in food.",
+    description: " 'Chicken Chettinad Curry in Singenpic' showcasing our authentic offerings in food.",
     alt: "Chicken Chettinad Curry in Singenpic"
   },
   {
     id: "img-16",
-    title: "",
+    title: "Chicken Malai Kebab",
     imageUrl: "/BAyLeafGallerypics1/Chickenmalaikebabchickenreshmikebabmurgmalaikebab.jpg",
     category: "food",
-    description: "  'Chicken malai kebab chicken reshmi kebab murg malai' showcasing our authentic offerings in food.",
+    description: " 'Chicken malai kebab chicken reshmi kebab murg malai' showcasing our authentic offerings in food.",
     alt: "Chicken malai kebab chicken reshmi kebab murg malai"
   },
   {
     id: "img-17",
-    title: "",
+    title: "Beautiful Dining Atmosphere",
     imageUrl: "/BAyLeafGallerypics1/DasschöneAmbientebeimEssenSingen.webp",
     category: "restaurant",
-    description: "  'Das schöne Ambiente beim Essen, Singen' showcasing our authentic offerings in restaurant.",
+    description: " 'Das schöne Ambiente beim Essen, Singen' showcasing our authentic offerings in restaurant.",
     alt: "Das schöne Ambiente beim Essen, Singen"
   },
   {
     id: "img-18",
-    title: "",
+    title: "A Traditional Restaurant",
     imageUrl: "/BAyLeafGallerypics1/Ein traditionelles Restaurant in Singen.webp",
     category: "restaurant",
-    description: "  'Ein traditionelles Restaurant in Singen' showcasing our authentic offerings in restaurant.",
+    description: " 'Ein traditionelles Restaurant in Singen' showcasing our authentic offerings in restaurant.",
     alt: "Ein traditionelles Restaurant in Singen"
   },
   {
     id: "img-19",
-    title: "",
+    title: "A Wonderful Restaurant in Germany",
     imageUrl: "/BAyLeafGallerypics1/Ein%20wundersch%C3%B6nes%20Restaurant%20in%20Deutschland.JPG",
     category: "restaurant",
-    description: "  'Ein wunderschönes Restaurant in Deutschland' showcasing our authentic offerings in restaurant.",
+    description: " 'Ein wunderschönes Restaurant in Deutschland' showcasing our authentic offerings in restaurant.",
     alt: "Ein wunderschönes Restaurant in Deutschland"
   },
   {
     id: "img-21",
-    title: "",
+    title: "Eral Milagu (Prawn Pepper)",
     imageUrl: "/BAyLeafGallerypics1/eral milaguTraditional foodsSingen pic.jpg",
     category: "food",
-    description: "  'eral milagu, Traditinil foods, Singen pic' showcasing our authentic offerings in food.",
+    description: " 'eral milagu, Traditinil foods, Singen pic' showcasing our authentic offerings in food.",
     alt: "eral milagu, Traditinil foods, Singen pic"
   },
   {
     id: "img-22",
-    title: "",
+    title: "Eral Thoku (Prawn Stir Fry)",
     imageUrl: "/BAyLeafGallerypics1/eral thoku must trySingen.jpg",
     category: "food",
-    description: "  'eral thoku must try, Singen' showcasing our authentic offerings in food.",
+    description: " 'eral thoku must try, Singen' showcasing our authentic offerings in food.",
     alt: "eral thoku must try, Singen"
   },
   {
     id: "img-23",
-    title: "",
+    title: "Eral Fry (Prawn Pepper Fry)",
     imageUrl: "/BAyLeafGallerypics1/eral fry in SingenHohentwiel.jpg",
     category: "food",
-    description: "  'eral prawn pepper fry in Singen' showcasing our authentic offerings in food.",
+    description: " 'eral prawn pepper fry in Singen' showcasing our authentic offerings in food.",
     alt: "eral prawn pepper fry in Singen"
   },
   {
     id: "img-24",
-    title: "",
+    title: "First Authentic Indian Food",
     imageUrl: "/BAyLeafGallerypics1/First%20authentic%20Indian%20food%20in%20Singen.jpg",
     category: "food",
-    description: "  'First authentic Indian food in Singen' showcasing our authentic offerings in food.",
+    description: " 'First authentic Indian food in Singen' showcasing our authentic offerings in food.",
     alt: "First authentic Indian food in Singen"
   },
-
   {
     id: "img-26",
-    title: "",
+    title: "Murg Malai Kabab",
     imageUrl: "/BAyLeafGallerypics1/Murg-Malai-KababSingenAugust-Ruf-Straße.jpg",
     category: "food",
-    description: "  'Murg-Malai-Kabab,Singen,August-Ruf-Straße' showcasing our authentic offerings in food.",
+    description: " 'Murg-Malai-Kabab,Singen,August-Ruf-Straße' showcasing our authentic offerings in food.",
     alt: "Murg-Malai-Kabab,Singen,August-Ruf-Straße"
   },
   {
     id: "img-27",
-    title: "",
+    title: "Mutton Biryani (Spicy)",
     imageUrl: "/BAyLeafGallerypics1/mutton briyani Würzige BiryaniSingen.jpg",
     category: "food",
-    description: "  'mutton briyani Würzige Biryani,Singen' showcasing our authentic offerings in food.",
+    description: " 'mutton briyani Würzige Biryani,Singen' showcasing our authentic offerings in food.",
     alt: "mutton briyani Würzige Biryani,Singen"
   },
   {
     id: "img-28",
-    title: "",
+    title: "Mutton Kurma",
     imageUrl: "/BAyLeafGallerypics1/mutton kurma First of its kind foodsSingen .jpg",
     category: "food",
-    description: "  'mutton kurma First of its kind foods,Singen' showcasing our authentic offerings in food.",
+    description: " 'mutton kurma First of its kind foods,Singen' showcasing our authentic offerings in food.",
     alt: "mutton kurma First of its kind foods,Singen"
   },
   {
     id: "img-29",
-    title: "",
+    title: "Mutton Vindaloo",
     imageUrl: "/BAyLeafGallerypics1/mutton vindaloo Nicht-vegetarische GerichteSingen.webp",
     category: "food",
-    description: "  'mutton vindaloo Nicht-vegetarische Gerichte,Singen' showcasing our authentic offerings in food.",
+    description: " 'mutton vindaloo Nicht-vegetarische Gerichte,Singen' showcasing our authentic offerings in food.",
     alt: "mutton vindaloo Nicht-vegetarische Gerichte,Singen"
   },
   {
     id: "img-31",
-    title: "",
+    title: "Paruppu Keerai (Vegetarian)",
     imageUrl: "/BAyLeafGallerypics1/paruppu keerai vegetarisches GerichtSingen.jpg",
     category: "food",
-    description: "  'paruppu keerai vegetarisches Gericht,Singen' showcasing our authentic offerings in food.",
+    description: " 'paruppu keerai vegetarisches Gericht,Singen' showcasing our authentic offerings in food.",
     alt: "paruppu keerai vegetarisches Gericht,Singen"
   },
   {
     id: "img-32",
-    title: "",
+    title: "Paruppu Rasam (Vegetarian)",
     imageUrl: "/BAyLeafGallerypics1/paruppu rasam vegetarisches GerichtSingen.webp",
     category: "food",
-    description: "  'paruppu rasam vegetarisches Gericht,Singen' showcasing our authentic offerings in food.",
+    description: " 'paruppu rasam vegetarisches Gericht,Singen' showcasing our authentic offerings in food.",
     alt: "paruppu rasam vegetarisches Gericht,Singen"
   },
   {
     id: "img-33",
-    title: "",
+    title: "Pepper Chicken (Spicy)",
     imageUrl: "/BAyLeafGallerypics1/pepper%20chicken%20Scharfe%20s%C3%BCdindische%20Gerichte%20in%20Singen.jpg",
     category: "food",
-    description: "  'pepper chicken Scharfe südindische Gerichte in Singen' showcasing our authentic offerings in food.",
+    description: " 'pepper chicken Scharfe südindische Gerichte in Singen' showcasing our authentic offerings in food.",
     alt: "pepper chicken Scharfe südindische Gerichte in Singen"
   },
   {
     id: "img-34",
-    title: "",
+    title: "Pepper Mutton (Spicy)",
     imageUrl: "/BAyLeafGallerypics1/PepperMutton%20Spicy%20south%20Indian%20foods%20in%20Singen.jpg",
     category: "food",
-    description: "  'PepperMutton Spicy south Indian foods in Singen' showcasing our authentic offerings in food.",
+    description: " 'PepperMutton Spicy south Indian foods in Singen' showcasing our authentic offerings in food.",
     alt: "PepperMutton Spicy south Indian foods in Singen"
   },
   {
     id: "img-35",
-    title: "",
+    title: "Prawn Curry (Seafood)",
     imageUrl: "/BAyLeafGallerypics1/prawncurrybestseafoodsSingen.jpg",
     category: "food",
-    description: "  'prawn curry best best sea foods,Singen' showcasing our authentic offerings in food.",
+    description: " 'prawn curry best best sea foods,Singen' showcasing our authentic offerings in food.",
     alt: "prawn curry best best sea foods,Singen"
   },
   {
     id: "img-36",
-    title: "",
+    title: "Beautiful Atmosphere",
     imageUrl: "/BAyLeafGallerypics1/Sch%C3%B6nes%20Ambiente%20in%20Singen.jpg",
     category: "restaurant",
-    description: "  'Schönes Ambiente in Singen' showcasing our authentic offerings in restaurant.",
+    description: " 'Schönes Ambiente in Singen' showcasing our authentic offerings in restaurant.",
     alt: "Schönes Ambiente in Singen"
   },
   {
     id: "img-37",
-    title: "",
+    title: "Fine Dining",
     imageUrl: "/BAyLeafGallerypics1/SchönesSpeisenSingenGermany.jpeg",
     category: "food",
-    description: "  'Schönes Speisen,Singen,Germany' showcasing our authentic offerings in food.",
+    description: " 'Schönes Speisen,Singen,Germany' showcasing our authentic offerings in food.",
     alt: "Schönes Speisen,Singen,Germany"
   },
   {
     id: "img-38",
-    title: "",
+    title: "Beautiful South Indian Restaurant",
     imageUrl: "/BAyLeafGallerypics1/Sch%C3%B6nes%20s%C3%BCdindisches%20Restaurant%20in%20Singen.png",
     category: "restaurant",
-    description: "  'Schönes südindisches Restaurant in Singen' showcasing our authentic offerings in restaurant.",
+    description: " 'Schönes südindisches Restaurant in Singen' showcasing our authentic offerings in restaurant.",
     alt: "Schönes südindisches Restaurant in Singen"
   },
   {
     id: "img-39",
-    title: "",
+    title: "Seafoods",
     imageUrl: "/BAyLeafGallerypics1/seafoodsSingenGermany.jpg",
     category: "food",
-    description: "  'sea foods,Singen,Germany' showcasing our authentic offerings in food.",
+    description: " 'sea foods,Singen,Germany' showcasing our authentic offerings in food.",
     alt: "sea foods,Singen,Germany"
   },
   {
     id: "img-40",
-    title: "",
+    title: "South Indian Breakfast",
     imageUrl: "/BAyLeafGallerypics1/South%20Indian%20breakfast%20in%20Singen.jpg",
     category: "food",
-    description: "  'South Indian breakfast in Singen' showcasing our authentic offerings in food.",
+    description: " 'South Indian breakfast in Singen' showcasing our authentic offerings in food.",
     alt: "South Indian breakfast in Singen"
   },
   {
     id: "img-41",
-    title: "",
+    title: "South Indian Foods",
     imageUrl: "/BAyLeafGallerypics1/SouthIndianFoodsSingenAugustRufStraße.jpg",
     category: "food",
-    description: "  'South Indian Foods,Singen,August-Ruf-Straße' showcasing our authentic offerings in food.",
+    description: " 'South Indian Foods,Singen,August-Ruf-Straße' showcasing our authentic offerings in food.",
     alt: "South Indian Foods,Singen,August-Ruf-Straße"
   },
   {
     id: "img-42",
-    title: "",
+    title: "Spicy South Indian Foods",
     imageUrl: "/BAyLeafGallerypics1/SpicysouthIndianfoodsinSingen.jpg",
     category: "food",
-    description: "  'Spicy south Indian foods in Singen' showcasing our authentic offerings in food.",
+    description: " 'Spicy south Indian foods in Singen' showcasing our authentic offerings in food.",
     alt: "Spicy south Indian foods in Singen"
   },
   {
     id: "img-43",
-    title: "",
+    title: "South Indian Breakfast (German)",
     imageUrl: "/BAyLeafGallerypics1/S%C3%BCdindisches%20Fr%C3%BChst%C3%BCck%20Singen.jpg",
     category: "food",
-    description: "  'Südindisches Frühstück Singen' showcasing our authentic offerings in food.",
+    description: " 'Südindisches Frühstück Singen' showcasing our authentic offerings in food.",
     alt: "Südindisches Frühstück Singen"
   },
   {
     id: "img-44",
-    title: "",
+    title: "Aloo Chana",
     imageUrl: "/BAyLeafGallerypics1/TasteAlooChanaSingenHohentwiel.jpg",
     category: "food",
-    description: "  'Taste Aloo-Chana,Singen,Hohentwiel' showcasing our authentic offerings in food.",
+    description: " 'Taste Aloo-Chana,Singen,Hohentwiel' showcasing our authentic offerings in food.",
     alt: "Taste Aloo-Chana,Singen,Hohentwiel"
   },
   {
     id: "img-45",
-    title: "",
+    title: "Beef Milagu",
     imageUrl: "/BAyLeafGallerypics1/TastebeefmilaguSingenRestaurant.png",
     category: "restaurant",
-    description: "  'Taste beef milagu,Singen Restaurant' showcasing our authentic offerings in restaurant.",
+    description: " 'Taste beef milagu,Singen Restaurant' showcasing our authentic offerings in restaurant.",
     alt: "Taste beef milagu,Singen Restaurant"
   },
   {
     id: "img-46",
-    title: "",
+    title: "Best Veg Foods",
     imageUrl: "/BAyLeafGallerypics1/Thebestvegfoodsinsingenhohentwiel.jpg",
     category: "food",
-    description: "  'The best veg foods in singen,hohentwiel' showcasing our authentic offerings in food.",
+    description: " 'The best veg foods in singen,hohentwiel' showcasing our authentic offerings in food.",
     alt: "The best veg foods in singen,hohentwiel"
   },
   {
     id: "img-47",
-    title: "",
+    title: "Best Veg Foods (Singen)",
     imageUrl: "/BAyLeafGallerypics1/ThebestvegfoodsSingen.jpg",
     category: "food",
-    description: "  'The best veg foods,Singen' showcasing our authentic offerings in food.",
+    description: " 'The best veg foods,Singen' showcasing our authentic offerings in food.",
     alt: "The best veg foods,Singen"
   },
   {
     id: "img-48",
-    title: "",
+    title: "Traditional Kitchen",
     imageUrl: "/BAyLeafGallerypics1/TraditionelleKücheRestaurantSingen.jpg",
     category: "restaurant",
-    description: "  'Traditionelle Küche Restaurant,Singen' showcasing our authentic offerings in restaurant."
+    description: " 'Traditionelle Küche Restaurant,Singen' showcasing our authentic offerings in restaurant."
     , alt: "Traditionelle Küche Restaurant,Singen"
   },
   {
     id: "img-49",
-    title: "",
+    title: "Vegetable Biryani",
     imageUrl: "/BAyLeafGallerypics1/VegetableBiryaniSingenHohentwiel.jpg",
     category: "food",
-    description: "  'Vegetable-Biryani,Singen,Hohentwiel' showcasing our authentic offerings in food."
+    description: " 'Vegetable-Biryani,Singen,Hohentwiel' showcasing our authentic offerings in food."
     , alt: "Vegetable-Biryani,Singen,Hohentwiel"
   },
   {
     id: "img-50",
-    title: "",
+    title: "Vendakai Kulambu (Homemade)",
     imageUrl: "/BAyLeafGallerypics1/vendaikaikulammbulikehomemadeSingen.jpg",
     category: "food",
-    description: "  'vendakiai kulambu like homemade,Singen' showcasing our authentic offerings in food."
+    description: " 'vendakiai kulambu like homemade,Singen' showcasing our authentic offerings in food."
     , alt: "vendakiai kulambu like homemade,Singen"
   },
   {
     id: "img-51",
-    title: "",
+    title: "Authentic Biryani",
     imageUrl: "/BAyLeafGallerypics2/Authentische%20Biryani%20in%20SingenHohentwiel.jpeg",
     category: "food",
-    description: "  'Authentische Biryani in SingenHohentwiel' showcasing our authentic offerings in food."
+    description: " 'Authentische Biryani in SingenHohentwiel' showcasing our authentic offerings in food."
     , alt: "Authentische Biryani in SingenHohentwiel"
   },
   {
     id: "img-52",
-    title: "",
+    title: "Authentic Indian Sweets",
     imageUrl: "/BAyLeafGallerypics2/Authentische%20indische%20S%C3%BC%C3%9Figkeiten%20in%20Singen.jpeg",
     category: "food",
-    description: "  'Authentische indische Süßigkeiten in Singen' showcasing our authentic offerings in food."
+    description: " 'Authentische indische Süßigkeiten in Singen' showcasing our authentic offerings in food."
     , alt: "Authentische indische Süßigkeiten in Singen"
   },
   {
     id: "img-53",
-    title: "",
+    title: "Beautiful Restaurant Interior",
     imageUrl: "/BAyLeafGallerypics2/Beautiful%20restaurant%20in%20singenmAugust-Ruf-Stra%C3%9Fe.jpeg",
     category: "interior",
-    description: "  'Beautiful restaurant in singenmAugust-Ruf-Straße' showcasing our authentic offerings in food."
+    description: " 'Beautiful restaurant in singenmAugust-Ruf-Straße' showcasing our authentic offerings in food."
     , alt: "Beautiful restaurant in singenmAugust-Ruf-Straße"
   },
-
   {
     id: "img-57",
-    title: "",
+    title: "Best Onion Pakoda",
     imageUrl: "/BAyLeafGallerypics2/Best%20onion%20pakoda%20near%20Germany.jpeg",
     category: "food",
-    description: "  'Best onion pakoda near Germany' showcasing our authentic offerings in food."
+    description: " 'Best onion pakoda near Germany' showcasing our authentic offerings in food."
     , alt: "Best onion pakoda near Germany"
   },
   {
     id: "img-58",
-    title: "",
+    title: "Best Thali",
     imageUrl: "/BAyLeafGallerypics2/best%20thali%20in%20singenHohentwiel.jpeg",
     category: "food",
-    description: "  'best thali in singenHohentwiel' showcasing our authentic offerings in food."
-    , alt: "best thali in singenHohentwiel"      
+    description: " 'best thali in singenHohentwiel' showcasing our authentic offerings in food."
+    , alt: "best thali in singenHohentwiel"      
   },
   {
     id: "img-60",
-    title: "",
+    title: "Best Dosa",
     imageUrl: "/BAyLeafGallerypics2/Beste%20Dosa%20in%20SingenAugust-Ruf-Stra%C3%9Fe.jpeg",
     category: "food",
-    description: "  'Beste Dosa in SingenAugust-Ruf-Straße' showcasing our authentic offerings in food."
+    description: " 'Beste Dosa in SingenAugust-Ruf-Straße' showcasing our authentic offerings in food."
     , alt: "Beste Dosa in SingenAugust-Ruf-Straße"
   },
   {
     id: "img-61",
-    title: "",
+    title: "First South Indian Restaurant",
     imageUrl: "/BAyLeafGallerypics2/Das%20erste%20s%C3%BCdindische%20Restaurant%20in%20Singen.jpeg",
     category: "interior",
-    description: "  'Das erste südindische Restaurant in Singen' showcasing our authentic offerings in food."
+    description: " 'Das erste südindische Restaurant in Singen' showcasing our authentic offerings in food."
     , alt: "Das erste südindische Restaurant in Singen"
   },
   {
     id: "img-62",
-    title: "",
+    title: "Enjoy The Taste",
     imageUrl: "/BAyLeafGallerypics2/Enjoy%20the%20taste%20in%20Singen.jpeg",
     category: "food",
-    description: "  'Enjoy the taste in Singen' showcasing our authentic offerings in food."
+    description: " 'Enjoy the taste in Singen' showcasing our authentic offerings in food."
     , alt: "Enjoy the taste in Singen"
   },
   {
     id: "img-63",
-    title: "",
+    title: "Experience Traditional Taste",
     imageUrl: "/BAyLeafGallerypics2/Erlebe%20den%20traditionellen%20Geschmack%20in%20Singen.jpeg",
     category: "food",
-    description: "  'Erlebe den traditionellen Geschmack in Singen' showcasing our authentic offerings in food."
+    description: " 'Erlebe den traditionellen Geschmack in Singen' showcasing our authentic offerings in food."
     , alt: "Erlebe den traditionellen Geschmack in Singen"
   },
   {
     id: "img-65",
-    title: "",
+    title: "Good Foods",
     imageUrl: "/BAyLeafGallerypics2/Good%20foods%20in%20SingenGermany.jpeg",
     category: "food",
-    description: "  'Good foods in SingenGermany' showcasing our authentic offerings in food."
+    description: " 'Good foods in SingenGermany' showcasing our authentic offerings in food."
     , alt: "Good foods in SingenGermany"
   },
   {
     id: "img-67",
-    title: "",
+    title: "Good Thali",
     imageUrl: "/BAyLeafGallerypics2/Good%20thali%20in%20singenHohentwiel.jpeg",
     category: "food",
-    description: "  'Good thali in singenHohentwiel' showcasing our authentic offerings in food."
+    description: " 'Good thali in singenHohentwiel' showcasing our authentic offerings in food."
     , alt: "Good thali in singenHohentwiel"
   },
   {
     id: "img-68",
-    title: "",
+    title: "Good Food (German)",
     imageUrl: "/BAyLeafGallerypics2/Gutes%20Essen%20in%20SingenDeutschland.jpeg",
     category: "food",
-    description: "  'Gutes Essen in SingenDeutschland' showcasing our authentic offerings in food."
+    description: " 'Gutes Essen in SingenDeutschland' showcasing our authentic offerings in food."
     , alt: "Gutes Essen in SingenDeutschland"
   },
   {
     id: "img-69",
-    title: "",
+    title: "Indian Restaurant Interior",
     imageUrl: "/BAyLeafGallerypics2/Indian%20restaurant%20Singen%20Hohentwiel.jpeg",
     category: "interior",
-    description: "  'Indian restaurant Singen Hohentwiel' showcasing our authentic offerings in food."
+    description: " 'Indian restaurant Singen Hohentwiel' showcasing our authentic offerings in food."
     , alt: "Indian restaurant Singen Hohentwiel"
   },
   {
     id: "img-70",
-    title: "",
+    title: "Indian Cuisine",
     imageUrl: "/BAyLeafGallerypics2/Indische%20K%C3%BCche%20August-Ruf-Stra%C3%9Fe.jpeg",
     category: "interior",
-    description: "  'Indische Küche August-Ruf-Straße' showcasing our authentic offerings in food."
+    description: " 'Indische Küche August-Ruf-Straße' showcasing our authentic offerings in food."
     , alt: "Indische Küche August-Ruf-Straße"
   },
   {
     id: "img-71",
-    title: "",
+    title: "Kesari Indian Sweet",
     imageUrl: "/BAyLeafGallerypics2/Kesari%20Indian%20sweet%20now%20in%20singen.jpeg",
     category: "food",
-    description: "  'Kesari Indian sweet now in singen' showcasing our authentic offerings in food."
+    description: " 'Kesari Indian sweet now in singen' showcasing our authentic offerings in food."
     , alt: "Kesari Indian sweet now in singen"
   },
   {
     "id": "img-72",
-    "title": "",
+    "title": "Beautiful Restaurant",
     "imageUrl": "/BAyLeafGallerypics2/Sch%C3%B6nes%20Restaurant%20in%20Singen%20August-Ruf-Stra%C3%9Fe.jpeg",
     "category": "interior",
-    "description": "  'Schönes Restaurant in Singen August-Ruf-Straße' showcasing our authentic offerings in food."
-
+    "description": " 'Schönes Restaurant in Singen August-Ruf-Straße' showcasing our authentic offerings in food."
+    , alt: "Schönes Restaurant in Singen August-Ruf-Stra%C3%9Fe"
   },
   {
     id: "img-74",
-    title: "",
+    title: "Chicken 65",
     imageUrl: "/BAyLeafGallerypics2/spitzenm%C3%A4%C3%9Fig%20Chicken-65%20SingenDeutschland.jpeg",
     category: "food",
-    description: "  'spitzenmäßig Chicken-65 SingenDeutschland' showcasing our authentic offerings in food."
+    description: " 'spitzenmäßig Chicken-65 SingenDeutschland' showcasing our authentic offerings in food."
     , alt: "spitzenmäßig Chicken-65 SingenDeutschland"
   },
   {
     id: "img-77",
-    title: "",
+    title: "Taste Kola",
     imageUrl: "/BAyLeafGallerypics2/Taste%20Kola%20in%20singen%20August-Ruf-Stra%C3%9Fe.jpeg",
     category: "food",
-    description: "  'Taste Kola in singen August-Ruf-Straße' showcasing our authentic offerings in food."
+    description: " 'Taste Kola in singen August-Ruf-Straße' showcasing our authentic offerings in food."
     , alt: "Taste Kola in singen August-Ruf-Straße"
   },
   {
     id: "img-78",
-    title: "",
+    title: "Taste Paneer",
     imageUrl: "/BAyLeafGallerypics2/Taste%20the%20panner%20in%20August-Ruf-Stra%C3%9Fe.jpeg",
     category: "food",
-    description: "  'Taste the panner in August-Ruf-Straße' showcasing our authentic offerings in food."
+    description: " 'Taste the panner in August-Ruf-Straß"
     , alt: "Taste the panner in August-Ruf-Straße"
   },
   {
     id: "img-79",
-    title: "",
+    title: "Taste the Traditional",
     imageUrl: "/BAyLeafGallerypics2/Taste%20the%20Traditional%20In%20SingenHohentwiel.jpeg",
     category: "food",
-    description: "  'Taste the Traditional In SingenHohentwiel' showcasing our authentic offerings in food."
+    description: " 'Taste the Traditional In SingenHohentwiel' showcasing our authentic offerings in food."
+    , alt: "Taste the Traditional In SingenHohentwiel"
   },
   {
     id: "img-82",
-    title: "",
+    title: "Topnotch Dosa",
     imageUrl: "/BAyLeafGallerypics2/Topnotch%20Dosa%20in%20singenGermany.jpeg",
     category: "food",
-    description: "  'Topnotch Dosa in singenGermany' showcasing our authentic offerings in food."
+    description: " 'Topnotch Dosa in singenGermany' showcasing our authentic offerings in food."
     , alt: "Topnotch Dosa in singenGermany"
   }
 
 
 ];
 
-const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
+const GallerySection = React.forwardRef<HTMLElement, GallerySectionProps>((props, ref) => {
+  const { language } = useLanguage();
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
   const [filter, setFilter] = useState('all');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -535,7 +556,14 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
     ? galleryData 
     : galleryData.filter(item => item.category === filter);
 
-  const categories = ['all', 'food', 'restaurant', 'events'];
+  // NOTE: Changed categories to include 'interior' and removed 'events' as per data
+  const categories = ['all', 'food', 'restaurant', 'interior'];
+
+  // SEO Header Content from "SEO Work of Bay leaf restaurant.txt"
+  const h1Text = language === 'de' ? 'Bestes südindisches Essen in Deutschland' : 'Best South Indian Food Germany';
+  const h2Text = language === 'de' ? 'Vor Ort essen oder zum Mitnehmen' : 'Dine-In or Takeaway';
+  const h3Text = language === 'de' ? 'Wo Essen auf die Seele trifft in Singen' : 'Where Food Meets Soul in Singen';
+
 
   // Auto-play functionality
   useEffect(() => {
@@ -617,7 +645,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
     return (
       <img 
         src={item.imageUrl} 
-        alt={item.title}
+        alt={item.title || item.alt} // Use the more descriptive alt text if title is empty
         className={className}
         onError={() => handleImageError(item.id)}
         loading="lazy"
@@ -640,7 +668,8 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
   const currentImages = getCurrentImages();
 
   return (
-    <section id="gallery" className="relative py-12" style={{ backgroundColor: '#ffd647' }}>
+    // Attach the forwarded 'ref' and the 'id' to the root section element
+    <section id={props.id} ref={ref} className="relative py-12" style={{ backgroundColor: '#ffd647' }}>
       <div className="container mx-auto px-4 relative z-10">
         {/* White Container */}
         <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 lg:p-10">
@@ -659,15 +688,26 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
               </span>
             </motion.div>
 
-            <motion.h2
+            {/* H1 Tag for SEO: Best South Indian Food Germany / Bestes südindisches Essen in Deutschland */}
+            <motion.h1
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: 0.05 }}
               className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-800"
             >
-              {translations.gallery.title[language]}
-            </motion.h2>
+              {h1Text}
+            </motion.h1>
+            
+            {/* H2 Tag for SEO: Dine-In or Takeaway / Vor Ort essen oder zum Mitnehmen */}
+            <h2 className="text-xl md:text-2xl font-semibold mb-3 text-gray-700">
+              {h2Text}
+            </h2>
+
+            {/* H3 Tag for SEO: Where Food Meets Soul in Singen / Wo Essen auf die Seele trifft in Singen */}
+            <h3 className="text-lg md:text-xl font-medium mb-6 text-gray-600">
+              {h3Text}
+            </h3>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -705,7 +745,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: index * 0.05 }}
               >
-                {translations.gallery.categories[category as keyof typeof translations.gallery.categories][language]}
+                {categoryTranslations[category as keyof typeof categoryTranslations][language]}
               </motion.button>
             ))}
           </motion.div>
@@ -892,11 +932,11 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
                     className="mb-4"
                   >
                     <p 
-  className="text-[0.65rem] sm:text-base md:text-lg lg:text-xl mb-2 group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-all duration-200 leading-tight max-w-xs sm:max-w-none mx-auto"
-  dangerouslySetInnerHTML={{ 
-    __html: translations.gallery.quote.tamil[language] 
-  }}
-/>
+                      className="text-[0.65rem] sm:text-base md:text-lg lg:text-xl mb-2 group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-all duration-200 leading-tight max-w-xs sm:max-w-none mx-auto"
+                      dangerouslySetInnerHTML={{ 
+                        __html: translations.gallery.quote.tamil[language] 
+                      }}
+                    />
 
                   </motion.div>
 
@@ -935,7 +975,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
               <div className="scroll-indicator-progress" />
             </div>
             <Link
-              to="contact"
+              to="contact-us" // Use consistent ID
               spy={true}
               smooth={true}
               offset={-80}
@@ -997,6 +1037,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({ language = 'en' }) => {
       </div>
     </section>
   );
-};
+});
 
+GallerySection.displayName = 'GallerySection';
 export default GallerySection;

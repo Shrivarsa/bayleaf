@@ -4,7 +4,13 @@ import { Menu, X, Phone } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../context/translations';
 
-const Navbar: React.FC = () => {
+// 1. Define the props interface to include the active section ID
+interface NavbarProps {
+  currentActiveSection: string;
+}
+
+// 2. Accept the prop in the component signature
+const Navbar: React.FC<NavbarProps> = ({ currentActiveSection }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [contactHeaderVisible, setContactHeaderVisible] = useState(true);
@@ -13,12 +19,13 @@ const Navbar: React.FC = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
+  // NOTE: Updated IDs to match the App.tsx scroll logic
   const navItems = [
     { id: 'home', label: translations.navbar.home[language] },
-    { id: 'about', label: translations.navbar.about[language] },
+    { id: 'about-us', label: translations.navbar.about[language] }, // Changed to 'about-us'
     { id: 'menu', label: translations.navbar.menu[language] },
     { id: 'gallery', label: translations.navbar.gallery[language] },
-    { id: 'contact', label: translations.navbar.contact[language] },
+    { id: 'contact-us', label: translations.navbar.contact[language] }, // Changed to 'contact-us'
   ];
 
   useEffect(() => {
@@ -90,7 +97,9 @@ const Navbar: React.FC = () => {
                 smooth={true}
                 offset={contactHeaderVisible ? -120 : -80}
                 duration={100}
+                // 3. Use currentActiveSection for active link styling
                 className={`font-medium cursor-pointer hover:text-spice-500 transition-colors ${
+                  item.id === currentActiveSection ? 'text-spice-500 font-semibold' : 
                   scrolled ? 'text-gray-800' : 'text-white'
                 }`}
               >
@@ -131,7 +140,7 @@ const Navbar: React.FC = () => {
             </div>
 
             <Link
-              to="contact"
+              to="contact-us" // Use consistent ID
               spy={true}
               smooth={true}
               offset={contactHeaderVisible ? -120 : -80}
@@ -198,7 +207,9 @@ const Navbar: React.FC = () => {
                   smooth={true}
                   offset={-80}
                   duration={0}
-                  className="font-medium text-gray-800 hover:text-spice-500 transition-colors py-2"
+                  className={`font-medium cursor-pointer transition-colors py-2 ${
+                    item.id === currentActiveSection ? 'text-spice-500 font-semibold' : 'text-gray-800 hover:text-spice-500'
+                  }`}
                   onClick={closeMenu}
                 >
                   {item.label}
@@ -206,7 +217,7 @@ const Navbar: React.FC = () => {
               ))}
 
               <Link
-                to="contact"
+                to="contact-us" // Use consistent ID
                 spy={true}
                 smooth={true}
                 offset={-80}

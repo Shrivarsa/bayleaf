@@ -1,14 +1,32 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import { Link } from 'react-scroll';
 import { ArrowDown, Utensils } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { translations } from '../../context/translations';
 
-const HeroSection: React.FC = () => {
-  const bgRef = useRef<HTMLDivElement>(null);
+// Add interface for the component props
+interface HeroSectionProps {
+  id: string;
+}
+
+const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
   const { language } = useLanguage();
   const [showInvisibleTooltip, setShowInvisibleTooltip] = useState(true);
   const [showQuoteTooltip, setShowQuoteTooltip] = useState(true);
+
+  // SEO content based on language
+  const seoContent = {
+    en: {
+      h1: "Authentic Indian Food Singen",
+      h2: "Tasty Indian food restaurant",
+      h3: "First South Indian Restaurant in Singen, Germany"
+    },
+    de: {
+      h1: "Authentisches indisches Essen in Singen",
+      h2: "Leckeres indisches Restaurant",
+      h3: "Erstes südindisches Restaurant in Singen, Deutschland"
+    }
+  };
 
   useEffect(() => {
     if (showInvisibleTooltip) {
@@ -26,7 +44,8 @@ const HeroSection: React.FC = () => {
 
   return (
     <section
-      id="home"
+      ref={ref}
+      id={id}
       className="relative w-full overflow-hidden"
       style={{
         minHeight: '100vh',
@@ -43,7 +62,7 @@ const HeroSection: React.FC = () => {
       <div className="absolute inset-0 z-0" style={{ backgroundColor: 'rgba(254, 214, 71, 0.6)' }} />
 
       {/* Rotating Plate - Moved to center right for desktop */}
-      <div ref={bgRef} className="absolute inset-0 z-10 overflow-hidden">
+      <div className="absolute inset-0 z-10 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
             className="
@@ -64,7 +83,7 @@ const HeroSection: React.FC = () => {
             "
           >
             <img
-              src="/this4.png"
+              src="/this4.webp"
               alt="Rotating plate decoration"
               className="w-full h-full object-contain"
             />
@@ -145,7 +164,7 @@ const HeroSection: React.FC = () => {
         </div>
       </Link>
 
-      {/* Foreground Content - Enhanced mobile layout with FIXED Z-INDEX */}
+      {/* Foreground Content with SEO Headers */}
       <div className="absolute inset-0 z-[100]">
         <div className="
           text-gray-900 max-w-[calc(100vw-1rem)]
@@ -160,13 +179,18 @@ const HeroSection: React.FC = () => {
             </span>
           </div>
 
+          {/* SEO Headings */}
           <h1 className="font-display text-xl xs:text-2xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 xs:mb-4 sm:mb-8 leading-tight hero-ultra-small">
-            {translations.hero.title[language]}
+            {seoContent[language].h1}
           </h1>
 
-          <p className="text-xs xs:text-sm sm:text-lg md:text-xl mb-4 xs:mb-6 sm:mb-10 leading-snug max-w-xs xs:max-w-sm sm:max-w-lg hero-mobile-adjust">
-            {translations.hero.description[language]}
-          </p>
+          <h2 className="sr-only">
+            {seoContent[language].h2}
+          </h2>
+
+          <h3 className="text-xs xs:text-sm sm:text-lg md:text-xl mb-4 xs:mb-6 sm:mb-10 leading-snug max-w-xs xs:max-w-sm sm:max-w-lg hero-mobile-adjust">
+            {seoContent[language].h3}
+          </h3>
 
           {/* FIXED BUTTON CONTAINER with higher z-index and pointer-events */}
           <div className="flex flex-row gap-2 xs:gap-3 relative z-[300] pointer-events-auto">
@@ -231,6 +255,9 @@ const HeroSection: React.FC = () => {
       </div>
     </section>
   );
-};
+});
+
+// Add display name for debugging
+HeroSection.displayName = 'HeroSection';
 
 export default HeroSection;

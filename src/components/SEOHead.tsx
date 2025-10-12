@@ -1,76 +1,59 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async'; 
 import { useLanguage } from '../context/LanguageContext';
 
-interface SEOHeadProps {
-  title?: string;
-  description?: string;
-  keywords?: string;
-  image?: string;
-  url?: string;
-  type?: string;
+// Define the required structure for localized SEO content
+interface SEOContent {
+  title: string;
+  metaDescription: string;
 }
 
-const SEOHead: React.FC<SEOHeadProps> = ({
-  title = "Bay Leaf EU | Authentic South Indian Restaurant in Singen",
-  description = "Experience authentic South Indian flavors at Bay Leaf EU, Singen's first Tamil restaurant. Traditional dosas, aromatic biryanis, spicy curries. Book your table today!",
-  keywords = "South Indian Restaurant Singen, Tamil Restaurant Germany, Dosa Singen, Biryani Singen, Indian Restaurant Germany",
-  image = "/faviconv2.png",
-  url = "https://www.bay-leaf.eu/",
-  type = "website"
-}) => {
+// Props for the SEOHead component
+interface SEOHeadProps {
+  en: SEOContent; 
+  de: SEOContent;
+  canonicalUrl: string; // Absolute URL for the current section (e.g., https://www.bay-leaf.eu/#menu)
+}
+
+const SEOHead: React.FC<SEOHeadProps> = ({ en, de, canonicalUrl }) => {
   const { language } = useLanguage();
+  
+  // Select the content based on the current language context
+  const content = language === 'de' ? de : en; 
+  
+  // The base URL without a hash for hreflang links
+  const baseUrl = 'https://www.bay-leaf.eu';
+  
+  // Get the hash part for the hreflang links (e.g., #menu)
+  const canonicalHash = new URL(canonicalUrl).hash;
 
-  // Adjust content based on language
-  const localizedTitle = language === 'de' 
-    ? "Bay Leaf EU | Authentisches Südindisches Restaurant in Singen"
-    : title;
+  return (
+    // Helmet manages the injection of tags into the document <head>
+    <Helmet>
+      {/* Primary Meta Tags */}
+      <title>{content.title}</title>
+      <meta name="description" content={content.metaDescription} />
+      {/* NOTE: If you need keywords, uncomment this and add them to the SEO data in App.tsx */}
+      {/* <meta name="keywords" content={content.keywords} /> */}
 
-  const localizedDescription = language === 'de'
-    ? "Erleben Sie authentische südindische Aromen im Bay Leaf EU, Singens erstem Tamil-Restaurant. Traditionelle Dosas, aromatische Biryanis, würzige Currys. Reservieren Sie jetzt!"
-    : description;
+      {/* Canonical Tag - Crucial for preventing duplicate content issues on SPAs */}
+      <link rel="canonical" href={canonicalUrl} />
+      
+      {/* Hreflang Tags - Essential for multilingual SEO */}
+      {/* English/Default URL */}
+      <link rel="alternate" hrefLang="en" href={`${baseUrl}${canonicalHash || '/'}`} />
+      {/* German URL - Assumes German version uses /de/ in the path for language routing */}
+      <link rel="alternate" hrefLang="de" href={`${baseUrl}/de${canonicalHash || '/'}`} />
+      {/* Default/Fallback URL for all other languages */}
+      <link rel="alternate" hrefLang="x-default" href={`${baseUrl}${canonicalHash || '/'}`} />
 
-  React.useEffect(() => {
-    // Update document title
-    document.title = localizedTitle;
-
-    // Update meta description
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', localizedDescription);
-    }
-
-    // Update Open Graph tags
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) {
-      ogTitle.setAttribute('content', localizedTitle);
-    }
-
-    const ogDescription = document.querySelector('meta[property="og:description"]');
-    if (ogDescription) {
-      ogDescription.setAttribute('content', localizedDescription);
-    }
-
-    // Update Twitter tags
-    const twitterTitle = document.querySelector('meta[property="twitter:title"]');
-    if (twitterTitle) {
-      twitterTitle.setAttribute('content', localizedTitle);
-    }
-
-    const twitterDescription = document.querySelector('meta[property="twitter:description"]');
-    if (twitterDescription) {
-      twitterDescription.setAttribute('content', localizedDescription);
-    }
-
-    // Update canonical URL based on language
-    const canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) {
-      const canonicalUrl = language === 'de' ? 'https://www.bay-leaf.eu/de/' : 'https://www.bay-leaf.eu/';
-      canonical.setAttribute('href', canonicalUrl);
-    }
-
-  }, [localizedTitle, localizedDescription, language]);
-
-  return null; // This component doesn't render anything
+      {/* Open Graph / Social Media Tags */}
+      <meta property="og:title" content={content.title} />
+      <meta property="og:description" content={content.metaDescription} />
+      <meta property="og:url" content={canonicalUrl} />
+      <meta property="og:type" content="website" />
+    </Helmet>
+  );
 };
 
 export default SEOHead;

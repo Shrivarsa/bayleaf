@@ -34,13 +34,25 @@ const menuImages = [
   }
 ];
 
-const MenuSection: React.FC = () => {
+// Define Props including the required id for App.tsx scroll logic
+interface MenuSectionProps {
+  id: string;
+}
+
+// 1. Use React.forwardRef to allow App.tsx to pass a ref for scroll tracking
+const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref) => {
+  const { id } = props;
   const { language } = useLanguage();
   const textRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const [showAllMenus, setShowAllMenus] = useState(false);
   const [selectedImage, setSelectedImage] = useState<typeof menuImages[0] | null>(null);
   const [showQuoteTooltip, setShowQuoteTooltip] = useState(true);
+
+  // SEO Header Content from "SEO Work of Bay leaf restaurant.txt"
+  const h1Text = language === 'de' ? 'Mittagessen, Abendessen, Buffet & Bar' : 'Lunch, Dinner, Buffet & Bar';
+  const h2Text = language === 'de' ? 'Vegetarische & Nicht-vegetarische Speisen' : 'Vegetarian & Non-Vegetarian Foods';
+  const h3Text = language === 'de' ? 'Frisch essen, traditionell genießen' : 'Eat Fresh, Eat Traditional & Enjoy';
 
   // Auto-hide quote tooltip after 5 seconds
   useEffect(() => {
@@ -98,19 +110,32 @@ const MenuSection: React.FC = () => {
   }, []);
 
   return (
-    <section id="menu" className="relative py-24 overflow-hidden" style={{ backgroundColor: '#ffd647' }}>
+    // 2. Attach the forwarded 'ref' and the 'id' to the root section element
+    <section id={id} ref={ref} className="relative py-24 overflow-hidden" style={{ backgroundColor: '#ffd647' }}>
 
       <div className="container mx-auto px-4 relative z-10">
         <div ref={textRef} className="text-center mb-16">
-          <motion.h2
+          
+          {/* H1 Tag for SEO: Lunch, Dinner, Buffet & Bar / Mittagessen, Abendessen, Buffet & Bar */}
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+            className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-3"
           >
-            {translations.menu.title[language]}
-          </motion.h2>
+            {h1Text}
+          </motion.h1>
+
+          {/* H2 Tag for SEO: Vegetarian & Non-Vegetarian Foods / Vegetarische & Nicht-vegetarische Speisen */}
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6">
+            {h2Text}
+          </h2>
+
+          {/* H3 Tag for SEO: Eat Fresh, Eat Traditional & Enjoy / Frisch essen, traditionell genießen */}
+          <h3 className="text-xl md:text-2xl font-medium text-gray-700 mb-8">
+            {h3Text}
+          </h3>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -122,7 +147,7 @@ const MenuSection: React.FC = () => {
             {translations.menu.description[language]}
           </motion.p>
 
-          {/* Menu Subtitle above Rotating Table */}
+          {/* Menu Subtitle above Rotating Table (Can remain as it is, possibly using translations.menu.subtitle[language]) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -181,7 +206,7 @@ const MenuSection: React.FC = () => {
                     if (!quoteText) return '';
                     const words = quoteText.split(' ');
                     const breakPoint = typeof window !== 'undefined' && window.innerWidth < 375 ? 2 : 
-                                     typeof window !== 'undefined' && window.innerWidth < 400 ? 3 : 4;
+                                       typeof window !== 'undefined' && window.innerWidth < 400 ? 3 : 4;
                     if (words.length <= breakPoint) return quoteText;
                     return (
                       <>
@@ -308,7 +333,7 @@ const MenuSection: React.FC = () => {
           className="text-center mt-16"
         >
           <Link
-            to="contact"
+            to="contact-us" // Use consistent ID
             spy={true}
             smooth={true}
             offset={-80}
@@ -357,6 +382,7 @@ const MenuSection: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
+MenuSection.displayName = 'MenuSection';
 export default MenuSection;

@@ -1,15 +1,27 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, Ref } from 'react'; // Import Ref
 import { motion } from 'framer-motion';
 import { Link } from 'react-scroll';
 import { BookOpen, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { translations } from '../../context/translations';
 
-const AboutSection: React.FC = () => {
+// Define Props including the required ref and id for App.tsx scroll logic
+interface AboutSectionProps {
+  id: string;
+}
+
+// Use React.forwardRef to accept the ref passed from App.tsx
+const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>((props, ref) => {
+  const { id } = props;
   const textRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const { language } = useLanguage();
-  
+
+  // SEO Header Content from "SEO Work of Bay leaf restaurant.txt"
+  const h1Text = language === 'de' ? 'Erleben Sie die Traditionen bei Bay Leaf' : 'Taste the Traditions at Bay Leaf';
+  const h2Text = language === 'de' ? 'Südindische Köstlichkeiten in Singen' : 'South Indian Delights in Singen';
+  const h3Text = language === 'de' ? 'Wo Aromen Geschichten erzählen' : 'Where Flavors Tell Stories';
+
   // Image slider state
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const images = [
@@ -66,8 +78,10 @@ const AboutSection: React.FC = () => {
   ];
 
   return (
+    // Apply the forwarded 'ref' and 'id' to the root section element
     <section
-      id="about"
+      id={id} // Use the prop ID 'about-us'
+      ref={ref} 
       className="relative py-12 sm:py-16 md:py-20 lg:py-24 pb-16 sm:pb-20 md:pb-24 lg:pb-32 overflow-hidden"
       style={{ backgroundColor: '#fed647' }}
     >
@@ -91,11 +105,12 @@ const AboutSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex items-center justify-center gap-4 mb-4 sm:mb-6 px-2"
+            className="flex flex-col items-center justify-center gap-4 mb-2 sm:mb-4 px-2"
           >
-            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
-              {translations.about.title[language]}
-            </h2>
+            {/* H1 Tag for SEO: Taste the Traditions at Bay Leaf / Erleben Sie die Traditionen bei Bay Leaf */}
+            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
+              {h1Text}
+            </h1>
             <img 
               src="/this.png" 
               alt="Restaurant logo" 
@@ -103,15 +118,16 @@ const AboutSection: React.FC = () => {
             />
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-gray-600 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4"
-          >
-            {translations.about.description[language]}
-          </motion.p>
+          {/* H2 Tag for SEO: South Indian Delights in Singen / Südindische Köstlichkeiten in Singen */}
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-700 mt-2 mb-2">
+            {h2Text}
+          </h2>
+
+          {/* H3 Tag for SEO: Where Flavors Tell Stories / Wo Aromen Geschichten erzählen */}
+          <h3 className="text-base sm:text-lg md:text-xl font-medium text-gray-600 max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
+            {h3Text}
+          </h3>
+          
         </div>
         
         <div ref={contentRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 xl:gap-16 items-start mt-8 sm:mt-10 lg:mt-12">
@@ -131,15 +147,15 @@ const AboutSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="bg-white/90 rounded-xl shadow-lg p-4 sm:p-6 lg:p-8"
             >
-              <h3 className="font-display text-xl sm:text-2xl md:text-3xl mb-3 sm:mb-4 text-gray-900 font-bold">
+              <h4 className="font-display text-xl sm:text-2xl md:text-3xl mb-3 sm:mb-4 text-gray-900 font-bold">
                 {translations.about.story.title[language]}
-              </h3>
+              </h4>
               <p className="text-gray-700 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
                 {translations.about.story.content[language]}
               </p>
-              <h4 className="font-display text-lg sm:text-xl md:text-2xl mb-2 text-gray-800 font-semibold">
+              <h5 className="font-display text-lg sm:text-xl md:text-2xl mb-2 text-gray-800 font-semibold">
                 {translations.about.legacy.title[language]}
-              </h4>
+              </h5>
               <p className="text-gray-700 mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
                 {translations.about.legacy.story[language]}
               </p>
@@ -187,7 +203,7 @@ const AboutSection: React.FC = () => {
                   {translations.about.stats.customers.number}+
                 </div>
                 <h4 className="font-medium text-gray-900 text-xs sm:text-sm">{translations.about.stats.customers.label[language]}</h4>
-  
+            
               </motion.div>
             </div>
           </motion.div>
@@ -362,6 +378,7 @@ const AboutSection: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
+AboutSection.displayName = 'AboutSection';
 export default AboutSection;
