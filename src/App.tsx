@@ -221,7 +221,7 @@ const MainAppContent: React.FC = () => {
 
             {/* Add ImagePopup before ScrollHideContactHeader */}
             <ImagePopup
-                imageUrl="public\popup.webp"
+                imageUrl="\popup.webp"
                 isOpen={showImagePopup}
                 onClose={handleCloseImagePopup}
                 alt="Onam Festival Special"
