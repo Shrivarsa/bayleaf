@@ -11,6 +11,8 @@ import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import ScrollHideContactHeader from './components/sections/ScrollHideContactHeader';
 // Import the updated SEO Head Component
 import SEOHead from './components/SEOHead'; 
+import ImagePopup from './components/ImagePopup';
+
 // NOTE: You must also wrap your application in <HelmetProvider> in main.tsx or index.jsx
 
 // --- SECTION DATA AND SEO MAPPING (from SEO Work of Bay leaf restaurant.txt) ---
@@ -84,97 +86,122 @@ const MainAppContent: React.FC = () => {
     const { language } = useLanguage();
     const sectionRefs = useSectionRefs();
     const [currentSectionId, setCurrentSectionId] = useState('home');
-    
-    // Modified path change listener with delayed scroll
+    // Move state declarations to the top
+    const [showImagePopup, setShowImagePopup] = useState(true);
+    const [isScrollLocked, setIsScrollLocked] = useState(true);
+
+    // Handle scroll lock
+    useEffect(() => {
+        if (isScrollLocked) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isScrollLocked]);
+
+    // Handler for closing popup
+    const handleCloseImagePopup = () => {
+        setShowImagePopup(false);
+        setIsScrollLocked(false);
+    };
+
+    // Modified path change listener
     useEffect(() => {
         const handlePathChange = () => {
+            if (isScrollLocked) return; // Check scroll lock state
+            
             const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
             
-            const validSections: { [key: string]: keyof typeof sectionRefs } = {
-                '': 'home',
-                'home': 'home',
-                'about-us': 'about',
-                'menu': 'menu',
-                'gallery': 'gallery',
-                'contact-us': 'contact'
+            // Define valid section mappings
+            const sectionMap: Record<string, { ref: keyof typeof sectionRefs; id: string }> = {
+                '': { ref: 'home', id: 'home' },
+                'home': { ref: 'home', id: 'home' },
+                'about-us': { ref: 'about', id: 'about-us' },
+                'menu': { ref: 'menu', id: 'menu' },
+                'gallery': { ref: 'gallery', id: 'gallery' },
+                'contact-us': { ref: 'contact', id: 'contact-us' }
             };
 
-            const sectionKey = validSections[path] || 'home';
+            // Get section or default to home
+            const section = sectionMap[path] || sectionMap[''];
             
-            // Set current section ID immediately
-            setCurrentSectionId(path || 'home');
+            // Set current section ID
+            setCurrentSectionId(section.id);
             
-            // Delay the scroll to ensure the section is mounted
-            setTimeout(() => {
-                const targetSection = sectionRefs[sectionKey]?.current;
+            // Handle scroll after a delay to ensure component mount
+            requestAnimationFrame(() => {
+                const targetSection = sectionRefs[section.ref]?.current;
                 if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 80,
+                        behavior: 'instant'
+                    });
                 }
-            }, 100); // Small delay to ensure DOM is ready
+            });
         };
 
-        // Handle initial path immediately after mount
-        handlePathChange();
+        // Only handle initial path if not locked
+        if (!isScrollLocked) {
+            handlePathChange();
+        }
 
-        // Add event listeners
         window.addEventListener('popstate', handlePathChange);
         return () => window.removeEventListener('popstate', handlePathChange);
-    }, [sectionRefs]);
+    }, [sectionRefs, isScrollLocked]);
 
-    // 2. Modified scroll handler
+    // Modify scroll handler to prevent interference
     useEffect(() => {
+        let scrollTimeout: NodeJS.Timeout;
+        
         const handleScroll = () => {
-            let activeSectionId = 'home';
-            const offset = 150;
+            if (isScrollLocked) return;
+            
+            // Debounce scroll handling
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                let activeSectionId = 'home';
+                const offset = 150;
 
-            try {
-                const sectionElements = [
-                    { id: 'home', ref: sectionRefs.home },
-                    { id: 'about-us', ref: sectionRefs.about },
-                    { id: 'menu', ref: sectionRefs.menu },
-                    { id: 'gallery', ref: sectionRefs.gallery },
-                    { id: 'contact-us', ref: sectionRefs.contact },
-                ];
+                try {
+                    const sectionElements = [
+                        { id: 'home', ref: sectionRefs.home },
+                        { id: 'about-us', ref: sectionRefs.about },
+                        { id: 'menu', ref: sectionRefs.menu },
+                        { id: 'gallery', ref: sectionRefs.gallery },
+                        { id: 'contact-us', ref: sectionRefs.contact },
+                    ];
 
-                for (const section of sectionElements) {
-                    const element = section.ref.current;
-                    if (element) {
-                        const rect = element.getBoundingClientRect();
-                        if (rect.top <= offset && rect.bottom > offset) {
-                            activeSectionId = section.id;
-                            break;
+                    for (const section of sectionElements) {
+                        const element = section.ref.current;
+                        if (element) {
+                            const rect = element.getBoundingClientRect();
+                            if (rect.top <= offset && rect.bottom > offset) {
+                                activeSectionId = section.id;
+                                break;
+                            }
                         }
                     }
-                }
 
-                // Handle last section
-                const lastSection = sectionElements[sectionElements.length - 1];
-                if (lastSection.ref.current && 
-                    window.innerHeight + window.scrollY >= document.body.offsetHeight - 50) {
-                    activeSectionId = lastSection.id;
+                    if (activeSectionId !== currentSectionId) {
+                        setCurrentSectionId(activeSectionId);
+                        const newPath = activeSectionId === 'home' ? '/' : `/${activeSectionId}`;
+                        history.replaceState(null, '', newPath);
+                    }
+                } catch (error) {
+                    console.error("Scroll handling error:", error);
                 }
-
-                // Update URL and state only if section changed
-                if (activeSectionId !== currentSectionId) {
-                    setCurrentSectionId(activeSectionId);
-                    const newPath = activeSectionId === 'home' ? '/' : `/${activeSectionId}`;
-                    
-                    // Use pushState with the new path
-                    history.pushState(null, '', newPath);
-                }
-            } catch (error) {
-                console.error("Scroll handling error:", error);
-            }
+            }, 100);
         };
 
         window.addEventListener('scroll', handleScroll);
-        // Initial check
-        handleScroll();
-
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [currentSectionId, sectionRefs]);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            clearTimeout(scrollTimeout);
+        };
+    }, [currentSectionId, sectionRefs, isScrollLocked]);
 
     // Modify canonicalUrl construction
     const canonicalPath = currentSectionId === 'home' ? '' : `/${currentSectionId}`;
@@ -182,7 +209,6 @@ const MainAppContent: React.FC = () => {
 
     // Add this before the return statement in MainAppContent
     const seoContent = sectionSEOData[currentSectionId as keyof typeof sectionSEOData];
-
 
     return (
         <>
@@ -193,10 +219,21 @@ const MainAppContent: React.FC = () => {
                 canonicalUrl={canonicalUrl}
             />
 
+            {/* Add ImagePopup before ScrollHideContactHeader */}
+            <ImagePopup
+                imageUrl="public\popup.webp"
+                isOpen={showImagePopup}
+                onClose={handleCloseImagePopup}
+                alt="Onam Festival Special"
+            />
+
             <ScrollHideContactHeader />
             <Navbar currentActiveSection={currentSectionId} />
 
-            <main>
+            <main style={{ 
+                opacity: isScrollLocked ? '0.3' : '1',
+                transition: 'opacity 0.3s ease-in-out'
+            }}>
                 {/* Pass ref and id to all section components */}
                 <HeroSection ref={sectionRefs.home} id="home" />
                 <AboutSection ref={sectionRefs.about} id="about-us" />
