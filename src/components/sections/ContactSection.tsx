@@ -1,21 +1,29 @@
-import React, { useState, useRef, Ref } from 'react'; // Import Ref
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-scroll';
 import { Phone, Mail, MapPin, Clock, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-// Assuming contactService and Reservation types are defined and available
-// import { contactService, type Reservation } from '../../lib/supabase'; 
 import { useLanguage } from '../../context/LanguageContext';
 import { translations } from '../../context/translations';
+import { createClient } from '@supabase/supabase-js';
 
-// Placeholder types/service since actual files are missing
-interface Reservation {}
-const contactService = {
-  submitReservation: async (data: any) => {
-    // console.log("Submitting reservation:", data); 
-    return new Promise(resolve => setTimeout(resolve, 1000));
-  }
-};
+// Initialize Supabase client
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+// Type matching your database schema
+interface Reservation {
+  id?: string;
+  created_at?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  date: string;
+  time: string;
+  guests: number;
+  special_requests?: string;
+  status?: string;
+}
 
 interface FormData {
   name: string;
@@ -32,12 +40,10 @@ interface FormStatus {
   message: string;
 }
 
-// Define Props including the required ref and id for App.tsx scroll logic
 interface ContactSectionProps {
   id: string;
 }
 
-// Use React.forwardRef to accept the ref passed from App.tsx
 const ContactSection = React.forwardRef<HTMLElement, ContactSectionProps>((props, ref) => {
   const { id } = props;
   const { language } = useLanguage();
@@ -59,7 +65,6 @@ const ContactSection = React.forwardRef<HTMLElement, ContactSectionProps>((props
     message: ''
   });
   
-  // SEO Header Content from "SEO Work of Bay leaf restaurant.txt"
   const h1Text = language === 'de' ? 'Jetzt geöffnet – Essen vor Ort oder zum Mitnehmen' : 'Open Now – Dine or Take Out';
   const h2Text = language === 'de' ? 'Geöffnet für Mittag- & Abendessen' : 'Open for Lunch & Dinner';
   const h3Text = language === 'de' ? 'Kommen Sie jetzt rein – Ihr Tisch ist bereit' : 'Step In Now – Your Table Is Ready';
@@ -89,19 +94,28 @@ const ContactSection = React.forwardRef<HTMLElement, ContactSectionProps>((props
         throw new Error('Please select a future date');
       }
 
-      // Prepare reservation data
-      const reservationData: Omit<Reservation, 'id' | 'created_at' | 'status'> = {
+      // Prepare reservation data for Supabase
+      const reservationData: Omit<Reservation, 'id' | 'created_at'> = {
         name: formData.name.trim(),
         email: formData.email.trim().toLowerCase(),
         phone: formData.phone.trim() || undefined,
         date: formData.date,
         time: formData.time,
         guests: parseInt(formData.guests),
-        special_requests: formData.special_requests.trim() || undefined
+        special_requests: formData.special_requests.trim() || undefined,
+        status: 'pending'
       };
 
-      // Submit to Supabase (using placeholder service)
-      await contactService.submitReservation(reservationData);
+      // Insert into Supabase
+      const { data, error } = await supabase
+        .from('reservations')
+        .insert([reservationData])
+        .select();
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw new Error(`Failed to submit reservation: ${error.message}`);
+      }
 
       // Success
       setFormStatus({
@@ -149,13 +163,11 @@ const ContactSection = React.forwardRef<HTMLElement, ContactSectionProps>((props
     }));
   };
 
-  // Get minimum date (today)
   const getMinDate = () => {
     const today = new Date();
     return today.toISOString().split('T')[0];
   };
 
-  // Get available time slots
   const getTimeSlots = () => {
     const lunchSlots = ['11:30', '12:00', '12:30', '13:00', '13:30', '14:00'];
     const dinnerSlots = ['17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'];
@@ -191,13 +203,11 @@ const ContactSection = React.forwardRef<HTMLElement, ContactSectionProps>((props
   ];
 
   return (
-    // Attach the forwarded 'ref' and the 'id' to the root section element
     <section 
-      id={id} // Use the prop ID 'contact-us'
+      id={id}
       ref={ref} 
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Background Image */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
         <img
           src="https://ik.imagekit.io/qcf813yjh/banna%20leaf%20food%20pictures%20(1).webp"
@@ -214,22 +224,17 @@ const ContactSection = React.forwardRef<HTMLElement, ContactSectionProps>((props
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {/* H1 Tag for SEO: Open Now – Dine or Take Out / Jetzt geöffnet – Essen vor Ort oder zum Mitnehmen */}
           <h1 className="font-display text-4xl md:text-5xl text-white font-bold text-center mb-2">
             {h1Text}
           </h1>
           
-          {/* H2 Tag for SEO: Open for Lunch & Dinner / Geöffnet für Mittag- & Abendessen */}
           <h2 className="text-xl md:text-2xl font-semibold text-white/90 text-center mb-4">
             {h2Text}
           </h2>
 
-          {/* H3 Tag for SEO: Step In Now – Your Table Is Ready / Kommen Sie jetzt rein – Ihr Tisch ist bereit */}
           <h3 className="text-lg md:text-xl font-medium text-white/80 max-w-2xl mx-auto text-center mb-12">
             {h3Text}
           </h3>
-          
-          {/* Removed old H2 and P tags that were duplicates of H1/H2/H3 for SEO purposes. */}
         </motion.div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
@@ -244,7 +249,6 @@ const ContactSection = React.forwardRef<HTMLElement, ContactSectionProps>((props
               {translations.contact.form.submit[language]}
             </h4>
             
-            {/* Status Message */}
             {formStatus.type !== 'idle' && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
@@ -472,7 +476,6 @@ const ContactSection = React.forwardRef<HTMLElement, ContactSectionProps>((props
         </div>
       </div>
       
-      {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center z-10">
         <div className="scroll-indicator">
           <div className="scroll-indicator-progress" />
