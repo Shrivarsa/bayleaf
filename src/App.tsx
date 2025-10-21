@@ -67,7 +67,6 @@ const sectionSEOData = {
 
 // Custom Hook to manage section refs
 const useSectionRefs = () => {
-    // We use RefObject<HTMLElement> because we pass the ref to an HTMLElement (the section)
     return {
         home: useRef<HTMLElement>(null),
         about: useRef<HTMLElement>(null),
@@ -82,9 +81,9 @@ const MainAppContent: React.FC = () => {
     const { language } = useLanguage();
     const sectionRefs = useSectionRefs();
     const [currentSectionId, setCurrentSectionId] = useState('home');
-    // Move state declarations to the top
     const [showImagePopup, setShowImagePopup] = useState(true);
     const [isScrollLocked, setIsScrollLocked] = useState(true);
+    const isNavigatingRef = useRef(false);
 
     // Handle scroll lock
     useEffect(() => {
@@ -104,14 +103,13 @@ const MainAppContent: React.FC = () => {
         setIsScrollLocked(false);
     };
 
-    // Modified path change listener
+    // Modified path change listener - only for browser back/forward and initial load
     useEffect(() => {
         const handlePathChange = () => {
-            if (isScrollLocked) return; // Check scroll lock state
+            if (isScrollLocked) return;
             
             const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
             
-            // Define valid section mappings
             const sectionMap: Record<string, { ref: keyof typeof sectionRefs; id: string }> = {
                 '': { ref: 'home', id: 'home' },
                 'home': { ref: 'home', id: 'home' },
@@ -121,10 +119,10 @@ const MainAppContent: React.FC = () => {
                 'contact-us': { ref: 'contact', id: 'contact-us' }
             };
 
-            // Get section or default to home
             const section = sectionMap[path] || sectionMap[''];
             
-            // Set current section ID
+            // Set flag to prevent scroll handler interference
+            isNavigatingRef.current = true;
             setCurrentSectionId(section.id);
             
             requestAnimationFrame(() => {
@@ -135,6 +133,10 @@ const MainAppContent: React.FC = () => {
                         behavior: 'instant'
                     });
                 }
+                // Reset flag after scroll completes
+                setTimeout(() => {
+                    isNavigatingRef.current = false;
+                }, 100);
             });
         };
 
@@ -143,18 +145,19 @@ const MainAppContent: React.FC = () => {
             handlePathChange();
         }
 
+        // Only listen to popstate (back/forward buttons)
         window.addEventListener('popstate', handlePathChange);
         return () => window.removeEventListener('popstate', handlePathChange);
     }, [sectionRefs, isScrollLocked]);
 
-    // Modify scroll handler to prevent interference
+    // Scroll handler - detects which section is in view
     useEffect(() => {
         let scrollTimeout: NodeJS.Timeout;
         
         const handleScroll = () => {
-            if (isScrollLocked) return;
+            // Don't interfere when locked or navigating
+            if (isScrollLocked || isNavigatingRef.current) return;
             
-            // Debounce scroll handling
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
                 let activeSectionId = 'home';
@@ -180,10 +183,11 @@ const MainAppContent: React.FC = () => {
                         }
                     }
 
+                    // Only update URL if section actually changed
                     if (activeSectionId !== currentSectionId) {
                         setCurrentSectionId(activeSectionId);
                         const newPath = activeSectionId === 'home' ? '/' : `/${activeSectionId}`;
-                        history.replaceState(null, '', newPath);
+                        window.history.replaceState(null, '', newPath);
                     }
                 } catch (error) {
                     console.error("Scroll handling error:", error);
@@ -191,7 +195,7 @@ const MainAppContent: React.FC = () => {
             }, 100);
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => {
             window.removeEventListener('scroll', handleScroll);
             clearTimeout(scrollTimeout);
@@ -202,19 +206,17 @@ const MainAppContent: React.FC = () => {
     const canonicalPath = currentSectionId === 'home' ? '' : `/${currentSectionId}`;
     const canonicalUrl = `https://www.bay-leaf.eu${canonicalPath}`;
 
-    // Add this before the return statement in MainAppContent
+    // Get SEO content for current section
     const seoContent = sectionSEOData[currentSectionId as keyof typeof sectionSEOData];
 
     return (
         <>
-            {/* Update SEOHead component with correct content */}
             <SEOHead
                 en={seoContent.en}
                 de={seoContent.de}
                 canonicalUrl={canonicalUrl}
             />
 
-            {/* Add ImagePopup before ScrollHideContactHeader */}
             <ImagePopup
                 imageUrl="\popup.webp"
                 isOpen={showImagePopup}
@@ -229,7 +231,6 @@ const MainAppContent: React.FC = () => {
                 opacity: isScrollLocked ? '0.3' : '1',
                 transition: 'opacity 0.3s ease-in-out'
             }}>
-                {/* Pass ref and id to all section components */}
                 <HeroSection ref={sectionRefs.home} id="home" />
                 <AboutSection ref={sectionRefs.about} id="about-us" />
                 <MenuSection ref={sectionRefs.menu} id="menu" />
@@ -247,7 +248,6 @@ function App() {
     return (
         <LoadingProvider>
             <LanguageProvider>
-                {/* Render the main content which contains the context consumers and scroll logic */}
                 <MainAppContent />
             </LanguageProvider>
         </LoadingProvider>
