@@ -128,7 +128,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         aria-label="Learn about Thiruvalluvar"
       >
         {showInvisibleTooltip && (
-          <span className="absolute left-1/2 -translate-x-1/2 -top-6 xs:-top-8 sm:-top-12 bg-black/90 text-yellow-300 text-xs px-2 py-1 xs:px-3 xs:py-2 rounded-lg pointer-events-none z-[201] whitespace-nowrap">
+          <span className="absolute left-1/2 -translate-x-1/2 -top-6 xs:-top-8 sm:-top-12 bg-black/90 text-yellow-300 text-[0.5rem] xs:text-xs sm:text-sm px-2 py-1 xs:px-3 xs:py-2 rounded-lg pointer-events-none z-[201] whitespace-nowrap">
             Learn about Thiruvalluvar!
           </span>
         )}
@@ -144,8 +144,8 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         className="absolute bottom-1 xs:bottom-2 sm:bottom-8 lg:bottom-2 right-2 xs:right-4 sm:right-12 md:right-16 lg:right-20 z-[200] group cursor-pointer"
       >
         <div className="flex flex-col items-center gap-1 xs:gap-2 p-1.5 xs:p-2 sm:p-4 bg-white/20 backdrop-blur-sm rounded-full border-2 border-white/30 hover:bg-white/30 hover:border-white/50 active:bg-white/40 transition-all duration-300 hover:scale-110 active:scale-95 shadow-lg">
-          <ArrowDown size={16} className="xs:w-5 xs:h-5 sm:w-8 sm:h-8 text-brown-700 animate-bounce group-hover:text-brown-800" />
-          <span className="text-brown-700 font-medium text-xs group-hover:text-brown-800 whitespace-nowrap hidden xs:block sm:text-sm">
+          <ArrowDown size={14} className="xs:w-4 xs:h-4 sm:w-7 sm:h-7 md:w-8 md:h-8 text-brown-700 animate-bounce group-hover:text-brown-800" />
+          <span className="text-brown-700 font-medium text-[0.5rem] xs:text-[0.6rem] sm:text-xs md:text-sm group-hover:text-brown-800 whitespace-nowrap hidden xs:block">
             Scroll Down
           </span>
         </div>
@@ -165,15 +165,15 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
           lg:max-w-[45vw]
           xl:max-w-[40vw]
         ">
-          <div className="text-gray-900 flex items-center mb-1.5 xs:mb-2 sm:mb-4 md:mb-6">
-            <Utensils className="mr-1 xs:mr-1.5 sm:mr-2 flex-shrink-0" size={12} />
-            <span className="uppercase tracking-wide text-[0.6rem] xs:text-[0.65rem] sm:text-xs md:text-sm truncate">
+          <div className="text-gray-900 flex items-center mb-1 xs:mb-1.5 sm:mb-3 md:mb-4">
+            <Utensils className="mr-1 xs:mr-1.5 sm:mr-2 flex-shrink-0" size={10} />
+            <span className="uppercase tracking-wide text-[0.5rem] xs:text-[0.55rem] sm:text-[0.65rem] md:text-xs lg:text-sm truncate">
               {translations.hero.tagline[language]}
             </span>
           </div>
 
-          {/* SEO Headings */}
-          <h1 className="font-display text-base xs:text-lg sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-2 xs:mb-3 sm:mb-6 md:mb-8 leading-tight break-words">
+          {/* SEO Headings - Significantly reduced sizes */}
+          <h1 className="font-display text-sm xs:text-base sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1.5 xs:mb-2 sm:mb-4 md:mb-5 lg:mb-6 leading-tight break-words">
             {seoContent[language].h1}
           </h1>
 
@@ -181,7 +181,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             {seoContent[language].h2}
           </h2>
 
-          <h3 className="text-[0.65rem] xs:text-xs sm:text-base md:text-lg lg:text-xl mb-3 xs:mb-4 sm:mb-8 md:mb-10 leading-snug break-words">
+          <h3 className="text-[0.55rem] xs:text-[0.6rem] sm:text-sm md:text-base lg:text-lg mb-2 xs:mb-3 sm:mb-6 md:mb-7 lg:mb-8 leading-snug break-words">
             {seoContent[language].h3}
           </h3>
 
@@ -193,7 +193,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
               smooth={true}
               offset={-80}
               duration={0}
-              className="bg-spice-500 text-white rounded-md font-medium hover:bg-spice-600 active:bg-spice-700 transition-all text-[0.65rem] xs:text-xs sm:text-sm py-1.5 px-2 xs:py-2 xs:px-2.5 sm:py-3 sm:px-4 w-[6.5rem] xs:w-[7.5rem] sm:w-auto text-center cursor-pointer select-none"
+              className="bg-spice-500 text-white rounded-md font-medium hover:bg-spice-600 active:bg-spice-700 transition-all text-[0.6rem] xs:text-[0.65rem] sm:text-xs md:text-sm py-1.5 px-2 xs:py-2 xs:px-2.5 sm:py-2.5 sm:px-3.5 md:py-3 md:px-4 w-[6rem] xs:w-[7rem] sm:w-auto text-center cursor-pointer select-none"
               style={{ pointerEvents: 'auto' }}
             >
               {translations.hero.exploreMenu[language]}
@@ -204,7 +204,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
               smooth={true}
               offset={-80}
               duration={0}
-              className="bg-white text-spice-500 py-1.5 px-2 xs:py-2 xs:px-2.5 sm:py-3 sm:px-4 rounded-md font-medium hover:bg-opacity-90 active:bg-opacity-80 transition-all text-[0.65rem] xs:text-xs sm:text-sm w-[6.5rem] xs:w-[7.5rem] sm:w-auto text-center cursor-pointer select-none"
+              className="bg-white text-spice-500 py-1.5 px-2 xs:py-2 xs:px-2.5 sm:py-2.5 sm:px-3.5 md:py-3 md:px-4 rounded-md font-medium hover:bg-opacity-90 active:bg-opacity-80 transition-all text-[0.6rem] xs:text-[0.65rem] sm:text-xs md:text-sm w-[6rem] xs:w-[7rem] sm:w-auto text-center cursor-pointer select-none"
               style={{ pointerEvents: 'auto' }}
             >
               {translations.hero.bookTable[language]}
@@ -221,7 +221,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             className="group relative inline-block"
             title="Learn more about this quote"
           >
-            <p className="text-brown-700 font-bold italic text-[0.65rem] xs:text-xs sm:text-base md:text-lg lg:text-xl mb-0.5 xs:mb-1 group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-transform duration-200 leading-tight">
+            <p className="text-brown-700 font-bold italic text-[0.55rem] xs:text-[0.6rem] sm:text-sm md:text-base lg:text-lg mb-0.5 xs:mb-1 group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-transform duration-200 leading-tight">
               {
                 (() => {
                   const words = translations.hero.quote[language].split(' ');
@@ -238,12 +238,12 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
               }
             </p>
             {showQuoteTooltip && (
-              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-0.5 xs:mb-1 bg-black/90 text-yellow-300 text-[0.6rem] xs:text-xs px-1.5 xs:px-2 py-0.5 xs:py-1 rounded z-30 whitespace-nowrap">
+              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-0.5 xs:mb-1 bg-black/90 text-yellow-300 text-[0.5rem] xs:text-[0.6rem] sm:text-xs px-1.5 xs:px-2 py-0.5 xs:py-1 rounded z-30 whitespace-nowrap">
                 Want to learn about this quote? Click here!
               </span>
             )}
           </a>
-          <p className="text-black/100 text-[0.6rem] xs:text-xs">- Thiruvalluvar</p>
+          <p className="text-black/100 text-[0.5rem] xs:text-[0.55rem] sm:text-xs">- Thiruvalluvar</p>
         </div>
       </div>
     </section>
