@@ -9,13 +9,9 @@ import ContactSection from './components/sections/ContactSection';
 import Footer from './components/Footer';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import ScrollHideContactHeader from './components/sections/ScrollHideContactHeader';
-// Import the updated SEO Head Component
 import SEOHead from './components/SEOHead'; 
 import ImagePopup from './components/ImagePopup';
 
-// NOTE: You must also wrap your application in <HelmetProvider> in main.tsx or index.jsx
-
-// --- SECTION DATA AND SEO MAPPING (from SEO Work of Bay leaf restaurant.txt) ---
 const sectionSEOData = {
     'home': { 
         en: {
@@ -131,7 +127,6 @@ const MainAppContent: React.FC = () => {
             // Set current section ID
             setCurrentSectionId(section.id);
             
-            // Handle scroll after a delay to ensure component mount
             requestAnimationFrame(() => {
                 const targetSection = sectionRefs[section.ref]?.current;
                 if (targetSection) {
