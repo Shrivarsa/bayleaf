@@ -119,19 +119,6 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         body, html {
           overflow-x: hidden;
         }
-
-        /* Enhanced mobile support */
-        @media (max-width: 479px) and (max-height: 667px) {
-          .hero-mobile-adjust {
-            font-size: 0.75rem;
-          }
-        }
-
-        @media (max-width: 374px) {
-          .hero-ultra-small {
-            font-size: 0.7rem;
-          }
-        }
       `}</style>
 
       {/* Invisible Clickable Button - Enhanced mobile touch target */}
@@ -167,20 +154,26 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
       {/* Foreground Content with SEO Headers */}
       <div className="absolute inset-0 z-[100]">
         <div className="
-          text-gray-900 max-w-[calc(100vw-1rem)]
+          text-gray-900 
           absolute top-[15%] left-2 text-left
           xs:top-[25%] xs:left-3
           sm:top-[30%] sm:left-24 sm:-translate-y-0 sm:text-left
+          max-w-[85vw]
+          xs:max-w-[80vw]
+          sm:max-w-[55vw]
+          md:max-w-[50vw]
+          lg:max-w-[45vw]
+          xl:max-w-[40vw]
         ">
-          <div className="text-gray-900 flex items-center mb-2 xs:mb-3 sm:mb-6">
-            <Utensils className="mr-1.5 xs:mr-2" size={14} />
-            <span className="uppercase tracking-wide text-xs hero-mobile-adjust truncate">
+          <div className="text-gray-900 flex items-center mb-1.5 xs:mb-2 sm:mb-4 md:mb-6">
+            <Utensils className="mr-1 xs:mr-1.5 sm:mr-2 flex-shrink-0" size={12} />
+            <span className="uppercase tracking-wide text-[0.6rem] xs:text-[0.65rem] sm:text-xs md:text-sm truncate">
               {translations.hero.tagline[language]}
             </span>
           </div>
 
           {/* SEO Headings */}
-          <h1 className="font-display text-xl xs:text-2xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 xs:mb-4 sm:mb-8 leading-tight hero-ultra-small">
+          <h1 className="font-display text-base xs:text-lg sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-2 xs:mb-3 sm:mb-6 md:mb-8 leading-tight break-words">
             {seoContent[language].h1}
           </h1>
 
@@ -188,19 +181,19 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             {seoContent[language].h2}
           </h2>
 
-          <h3 className="text-xs xs:text-sm sm:text-lg md:text-xl mb-4 xs:mb-6 sm:mb-10 leading-snug max-w-xs xs:max-w-sm sm:max-w-lg hero-mobile-adjust">
+          <h3 className="text-[0.65rem] xs:text-xs sm:text-base md:text-lg lg:text-xl mb-3 xs:mb-4 sm:mb-8 md:mb-10 leading-snug break-words">
             {seoContent[language].h3}
           </h3>
 
           {/* FIXED BUTTON CONTAINER with higher z-index and pointer-events */}
-          <div className="flex flex-row gap-2 xs:gap-3 relative z-[300] pointer-events-auto">
+          <div className="flex flex-row gap-1.5 xs:gap-2 sm:gap-3 relative z-[300] pointer-events-auto">
             <Link
               to="menu"
               spy={true}
               smooth={true}
               offset={-80}
               duration={0}
-              className="bg-spice-500 text-white rounded-md font-medium hover:bg-spice-600 active:bg-spice-700 transition-all text-xs py-1.5 px-2 xs:py-2 xs:px-3 sm:text-sm sm:py-3 sm:px-4 w-[7rem] xs:w-[8rem] sm:w-auto text-center cursor-pointer select-none"
+              className="bg-spice-500 text-white rounded-md font-medium hover:bg-spice-600 active:bg-spice-700 transition-all text-[0.65rem] xs:text-xs sm:text-sm py-1.5 px-2 xs:py-2 xs:px-2.5 sm:py-3 sm:px-4 w-[6.5rem] xs:w-[7.5rem] sm:w-auto text-center cursor-pointer select-none"
               style={{ pointerEvents: 'auto' }}
             >
               {translations.hero.exploreMenu[language]}
@@ -211,7 +204,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
               smooth={true}
               offset={-80}
               duration={0}
-              className="bg-white text-spice-500 py-1.5 px-2 xs:py-2 xs:px-3 sm:py-3 sm:px-4 rounded-md font-medium hover:bg-opacity-90 active:bg-opacity-80 transition-all text-xs sm:text-sm w-[7rem] xs:w-[8rem] sm:w-auto text-center cursor-pointer select-none"
+              className="bg-white text-spice-500 py-1.5 px-2 xs:py-2 xs:px-2.5 sm:py-3 sm:px-4 rounded-md font-medium hover:bg-opacity-90 active:bg-opacity-80 transition-all text-[0.65rem] xs:text-xs sm:text-sm w-[6.5rem] xs:w-[7.5rem] sm:w-auto text-center cursor-pointer select-none"
               style={{ pointerEvents: 'auto' }}
             >
               {translations.hero.bookTable[language]}
@@ -228,7 +221,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             className="group relative inline-block"
             title="Learn more about this quote"
           >
-            <p className="text-brown-700 font-bold italic text-xs sm:text-base md:text-xl mb-0.5 xs:mb-1 group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-transform duration-200 leading-tight hero-mobile-adjust">
+            <p className="text-brown-700 font-bold italic text-[0.65rem] xs:text-xs sm:text-base md:text-lg lg:text-xl mb-0.5 xs:mb-1 group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-transform duration-200 leading-tight">
               {
                 (() => {
                   const words = translations.hero.quote[language].split(' ');
@@ -245,12 +238,12 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
               }
             </p>
             {showQuoteTooltip && (
-              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-0.5 xs:mb-1 bg-black/90 text-yellow-300 text-xs px-1.5 xs:px-2 py-0.5 xs:py-1 rounded z-30 whitespace-nowrap">
+              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-0.5 xs:mb-1 bg-black/90 text-yellow-300 text-[0.6rem] xs:text-xs px-1.5 xs:px-2 py-0.5 xs:py-1 rounded z-30 whitespace-nowrap">
                 Want to learn about this quote? Click here!
               </span>
             )}
           </a>
-          <p className="text-black/100 text-xs hero-mobile-adjust">- Thiruvalluvar</p>
+          <p className="text-black/100 text-[0.6rem] xs:text-xs">- Thiruvalluvar</p>
         </div>
       </div>
     </section>
