@@ -14,20 +14,6 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
   const [showInvisibleTooltip, setShowInvisibleTooltip] = useState(true);
   const [showQuoteTooltip, setShowQuoteTooltip] = useState(true);
 
-  // SEO content based on language
-  const seoContent = {
-    en: {
-      h1: "Authentic Indian Food Singen",
-      h2: "Tasty Indian food restaurant",
-      h3: "First South Indian Restaurant in Singen, Germany"
-    },
-    de: {
-      h1: "Authentisches indisches Essen in Singen",
-      h2: "Leckeres indisches Restaurant",
-      h3: "Erstes südindisches Restaurant in Singen, Deutschland"
-    }
-  };
-
   useEffect(() => {
     if (showInvisibleTooltip) {
       const timer = setTimeout(() => setShowInvisibleTooltip(false), 5000);
@@ -151,7 +137,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         </div>
       </Link>
 
-      {/* Foreground Content with SEO Headers */}
+      {/* Foreground Content - Removed redundant SEO headers */}
       <div className="absolute inset-0 z-[100]">
         <div className="
           text-gray-900 
@@ -172,20 +158,17 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             </span>
           </div>
 
-          {/* SEO Headings - Significantly reduced sizes */}
-          <h1 className="font-display text-sm xs:text-base sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1.5 xs:mb-2 sm:mb-4 md:mb-5 lg:mb-6 leading-tight break-words">
-            {seoContent[language].h1}
+          {/* Main heading - Using larger, more prominent size for visual hierarchy */}
+          <h1 className="font-display text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-2 xs:mb-3 sm:mb-5 md:mb-6 lg:mb-7 leading-tight break-words">
+            {language === 'en' ? 'Bay Leaf Restaurant' : 'Bay Leaf Restaurant'}
           </h1>
 
-          <h2 className="sr-only">
-            {seoContent[language].h2}
-          </h2>
+          {/* Subtitle with key information */}
+          <p className="text-[0.65rem] xs:text-[0.75rem] sm:text-base md:text-lg lg:text-xl mb-3 xs:mb-4 sm:mb-7 md:mb-8 lg:mb-9 leading-snug break-words font-medium">
+            {translations.hero.tagline[language]}
+          </p>
 
-          <h3 className="text-[0.55rem] xs:text-[0.6rem] sm:text-sm md:text-base lg:text-lg mb-2 xs:mb-3 sm:mb-6 md:mb-7 lg:mb-8 leading-snug break-words">
-            {seoContent[language].h3}
-          </h3>
-
-          {/* FIXED BUTTON CONTAINER with higher z-index and pointer-events */}
+          {/* CTA BUTTONS with higher z-index and pointer-events */}
           <div className="flex flex-row gap-1.5 xs:gap-2 sm:gap-3 relative z-[300] pointer-events-auto">
             <Link
               to="menu"
