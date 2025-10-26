@@ -9,8 +9,7 @@ import ContactSection from './components/sections/ContactSection';
 import Footer from './components/Footer';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import ScrollHideContactHeader from './components/sections/ScrollHideContactHeader';
-import SEOHead from './components/SEOHead'; 
-import ImagePopup from './components/ImagePopup';
+import SEOHead from './components/SEOHead';
 
 const sectionSEOData = {
     'home': { 
@@ -81,33 +80,11 @@ const MainAppContent: React.FC = () => {
     const { language } = useLanguage();
     const sectionRefs = useSectionRefs();
     const [currentSectionId, setCurrentSectionId] = useState('home');
-    const [showImagePopup, setShowImagePopup] = useState(true);
-    const [isScrollLocked, setIsScrollLocked] = useState(true);
     const isNavigatingRef = useRef(false);
-
-    // Handle scroll lock
-    useEffect(() => {
-        if (isScrollLocked) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
-        }
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, [isScrollLocked]);
-
-    // Handler for closing popup
-    const handleCloseImagePopup = () => {
-        setShowImagePopup(false);
-        setIsScrollLocked(false);
-    };
 
     // Modified path change listener - only for browser back/forward and initial load
     useEffect(() => {
         const handlePathChange = () => {
-            if (isScrollLocked) return;
-            
             const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
             
             const sectionMap: Record<string, { ref: keyof typeof sectionRefs; id: string }> = {
@@ -140,23 +117,21 @@ const MainAppContent: React.FC = () => {
             });
         };
 
-        // Only handle initial path if not locked
-        if (!isScrollLocked) {
-            handlePathChange();
-        }
+        // Handle initial path
+        handlePathChange();
 
         // Only listen to popstate (back/forward buttons)
         window.addEventListener('popstate', handlePathChange);
         return () => window.removeEventListener('popstate', handlePathChange);
-    }, [sectionRefs, isScrollLocked]);
+    }, [sectionRefs]);
 
     // Scroll handler - detects which section is in view
     useEffect(() => {
         let scrollTimeout: NodeJS.Timeout;
         
         const handleScroll = () => {
-            // Don't interfere when locked or navigating
-            if (isScrollLocked || isNavigatingRef.current) return;
+            // Don't interfere when navigating
+            if (isNavigatingRef.current) return;
             
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
@@ -200,7 +175,7 @@ const MainAppContent: React.FC = () => {
             window.removeEventListener('scroll', handleScroll);
             clearTimeout(scrollTimeout);
         };
-    }, [currentSectionId, sectionRefs, isScrollLocked]);
+    }, [currentSectionId, sectionRefs]);
 
     // Modify canonicalUrl construction
     const canonicalPath = currentSectionId === 'home' ? '' : `/${currentSectionId}`;
@@ -217,20 +192,10 @@ const MainAppContent: React.FC = () => {
                 canonicalUrl={canonicalUrl}
             />
 
-            <ImagePopup
-                imageUrl="\popup.webp"
-                isOpen={showImagePopup}
-                onClose={handleCloseImagePopup}
-                alt="Onam Festival Special"
-            />
-
             <ScrollHideContactHeader />
             <Navbar currentActiveSection={currentSectionId} />
 
-            <main style={{ 
-                opacity: isScrollLocked ? '0.3' : '1',
-                transition: 'opacity 0.3s ease-in-out'
-            }}>
+            <main>
                 <HeroSection ref={sectionRefs.home} id="home" />
                 <AboutSection ref={sectionRefs.about} id="about-us" />
                 <MenuSection ref={sectionRefs.menu} id="menu" />
