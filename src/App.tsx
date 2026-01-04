@@ -10,7 +10,7 @@ import Footer from './components/Footer';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import ScrollHideContactHeader from './components/sections/ScrollHideContactHeader';
 import SEOHead from './components/SEOHead';
-import ImagePopup from './components/ImagePopup';
+
 
 const sectionSEOData = {
     'home': { 
@@ -194,12 +194,6 @@ const MainAppContent: React.FC = () => {
                 canonicalUrl={canonicalUrl}
             />
 
-            <ImagePopup
-                imageUrl="https://ik.imagekit.io/jacw2jgvs/NewYearEve%20Buffet.jpg"
-                isOpen={showImagePopup}
-                onClose={() => setShowImagePopup(false)}
-                alt="New Year Eve Buffet"
-            />
 
             <ScrollHideContactHeader />
             <Navbar currentActiveSection={currentSectionId} />
