@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, RefObject } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { LoadingProvider } from './context/LoadingContext';
 import Navbar from './components/Navbar';
 import HeroSection from './components/sections/HeroSection';
@@ -10,7 +10,6 @@ import Footer from './components/Footer';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import ScrollHideContactHeader from './components/sections/ScrollHideContactHeader';
 import SEOHead from './components/SEOHead';
-
 
 const sectionSEOData = {
     'home': { 
@@ -65,26 +64,21 @@ const sectionSEOData = {
     }
 };
 
-// Custom Hook to manage section refs
-const useSectionRefs = () => {
-    return {
+const MainAppContent: React.FC = () => {
+    const { language } = useLanguage();
+    const [currentSectionId, setCurrentSectionId] = useState('home');
+    const isNavigatingRef = useRef(false);
+
+    // Section Refs
+    const sectionRefs = {
         home: useRef<HTMLElement>(null),
         about: useRef<HTMLElement>(null),
         menu: useRef<HTMLElement>(null),
         gallery: useRef<HTMLElement>(null),
         contact: useRef<HTMLElement>(null),
     };
-};
 
-// Component to hold the main application logic and scroll tracking
-const MainAppContent: React.FC = () => {
-    const { language } = useLanguage();
-    const sectionRefs = useSectionRefs();
-    const [currentSectionId, setCurrentSectionId] = useState('home');
-    const [showImagePopup, setShowImagePopup] = useState(true);
-    const isNavigatingRef = useRef(false);
-
-    // Modified path change listener - only for browser back/forward and initial load
+    // Modified path change listener - Only runs on page load and Back/Forward buttons
     useEffect(() => {
         const handlePathChange = () => {
             const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
@@ -100,7 +94,6 @@ const MainAppContent: React.FC = () => {
 
             const section = sectionMap[path] || sectionMap[''];
             
-            // Set flag to prevent scroll handler interference
             isNavigatingRef.current = true;
             setCurrentSectionId(section.id);
             
@@ -112,27 +105,23 @@ const MainAppContent: React.FC = () => {
                         behavior: 'instant'
                     });
                 }
-                // Reset flag after scroll completes
+                // Small timeout to ensure the scroll detector doesn't catch the "jump"
                 setTimeout(() => {
                     isNavigatingRef.current = false;
-                }, 100);
+                }, 150);
             });
         };
 
-        // Handle initial path
         handlePathChange();
-
-        // Only listen to popstate (back/forward buttons)
         window.addEventListener('popstate', handlePathChange);
         return () => window.removeEventListener('popstate', handlePathChange);
-    }, [sectionRefs]);
+    }, []); // Empty array stops the infinite loop
 
-    // Scroll handler - detects which section is in view
+    // Scroll handler - detects which section is in view and updates the URL
     useEffect(() => {
         let scrollTimeout: NodeJS.Timeout;
         
         const handleScroll = () => {
-            // Don't interfere when navigating
             if (isNavigatingRef.current) return;
             
             clearTimeout(scrollTimeout);
@@ -140,34 +129,32 @@ const MainAppContent: React.FC = () => {
                 let activeSectionId = 'home';
                 const offset = 150;
 
-                try {
-                    const sectionElements = [
-                        { id: 'home', ref: sectionRefs.home },
-                        { id: 'about-us', ref: sectionRefs.about },
-                        { id: 'menu', ref: sectionRefs.menu },
-                        { id: 'gallery', ref: sectionRefs.gallery },
-                        { id: 'contact-us', ref: sectionRefs.contact },
-                    ];
+                const sectionElements = [
+                    { id: 'home', ref: sectionRefs.home },
+                    { id: 'about-us', ref: sectionRefs.about },
+                    { id: 'menu', ref: sectionRefs.menu },
+                    { id: 'gallery', ref: sectionRefs.gallery },
+                    { id: 'contact-us', ref: sectionRefs.contact },
+                ];
 
-                    for (const section of sectionElements) {
-                        const element = section.ref.current;
-                        if (element) {
-                            const rect = element.getBoundingClientRect();
-                            if (rect.top <= offset && rect.bottom > offset) {
-                                activeSectionId = section.id;
-                                break;
-                            }
+                for (const section of sectionElements) {
+                    const element = section.ref.current;
+                    if (element) {
+                        const rect = element.getBoundingClientRect();
+                        if (rect.top <= offset && rect.bottom > offset) {
+                            activeSectionId = section.id;
+                            break;
                         }
                     }
+                }
 
-                    // Only update URL if section actually changed
-                    if (activeSectionId !== currentSectionId) {
-                        setCurrentSectionId(activeSectionId);
-                        const newPath = activeSectionId === 'home' ? '/' : `/${activeSectionId}`;
+                if (activeSectionId !== currentSectionId) {
+                    setCurrentSectionId(activeSectionId);
+                    const newPath = activeSectionId === 'home' ? '/' : `/${activeSectionId}`;
+                    
+                    if (window.location.pathname !== newPath) {
                         window.history.replaceState(null, '', newPath);
                     }
-                } catch (error) {
-                    console.error("Scroll handling error:", error);
                 }
             }, 100);
         };
@@ -177,14 +164,11 @@ const MainAppContent: React.FC = () => {
             window.removeEventListener('scroll', handleScroll);
             clearTimeout(scrollTimeout);
         };
-    }, [currentSectionId, sectionRefs]);
+    }, [currentSectionId]); // Only watches currentSectionId
 
-    // Modify canonicalUrl construction
     const canonicalPath = currentSectionId === 'home' ? '' : `/${currentSectionId}`;
     const canonicalUrl = `https://www.bay-leaf.eu${canonicalPath}`;
-
-    // Get SEO content for current section
-    const seoContent = sectionSEOData[currentSectionId as keyof typeof sectionSEOData];
+    const seoContent = sectionSEOData[currentSectionId as keyof typeof sectionSEOData] || sectionSEOData['home'];
 
     return (
         <>
@@ -193,7 +177,6 @@ const MainAppContent: React.FC = () => {
                 de={seoContent.de}
                 canonicalUrl={canonicalUrl}
             />
-
 
             <ScrollHideContactHeader />
             <Navbar currentActiveSection={currentSectionId} />
@@ -210,7 +193,6 @@ const MainAppContent: React.FC = () => {
         </>
     );
 };
-
 
 function App() {
     return (
