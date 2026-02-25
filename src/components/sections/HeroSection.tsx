@@ -14,7 +14,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
   const [showQuoteTooltip, setShowQuoteTooltip] = useState(true);
 
   useEffect(() => {
-    // Eagerly preload the plate image before React renders
+    // Eagerly preload the plate image
     const img = new Image();
     img.src = '/this4.webp';
   }, []);
@@ -54,23 +54,24 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         style={{ backgroundColor: 'rgba(254, 214, 71, 0.6)' }}
       />
 
-
+      {/* ─── PLATE ─────────────────────────────────────────────────────────────── */}
       <div
         className="absolute z-10 pointer-events-none"
         style={{
           width: 'clamp(240px, 58vw, 820px)',
           height: 'clamp(240px, 58vw, 820px)',
-          /* Right offset: negative so ~50% of the plate is off-screen right */
-          right: 'clamp(-250px, -26vw, -290px)',
+          right: 'clamp(-260px, -29vw, -160px)',
           top: '50%',
           transform: 'translateY(-50%)',
         }}
       >
-        {/* Spinner wrapper — isolated transform so nothing competes */}
         <div style={{ width: '100%', height: '100%', animation: 'plateSpin 20s linear infinite' }}>
           <img
             src="/this4.webp"
             alt="Rotating plate decoration"
+            // NOTE: fetchPriority (camelCase) is correct for React/JSX.
+            // The HTML attribute is fetchpriority (lowercase) but React maps camelCase.
+            // This is valid in React 18+ with @types/react >=18.2.
             fetchPriority="high"
             decoding="async"
             loading="eager"
@@ -79,18 +80,14 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         </div>
       </div>
 
-      {/* ─── THIRUVALLUVAR ───────────────────────────────────────────────────────
-          Matches screenshot:
-          - Bottom-left corner, base of statue slightly below viewport
-          - Left edge slightly clipped (~10%)
-      ──────────────────────────────────────────────────────────────────────── */}
+      {/* ─── THIRUVALLUVAR ─────────────────────────────────────────────────────── */}
       <div
         className="absolute z-50 pointer-events-none"
         style={{
           width: 'clamp(90px, 15vw, 240px)',
-          height: 'clamp(-200px, 30vw, 180px)',
-          bottom: 'clamp(-200px, 1vw, 30px)',
-          left: 'clamp(-38px, -4vw, -56px)',
+          height: 'clamp(180px, 30vw, 480px)',
+          bottom: 'clamp(10px, 3vw, 60px)',
+          left: 'clamp(-36px, -4vw, -18px)',
         }}
       >
         <img
@@ -101,15 +98,15 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         />
       </div>
 
-      {/* Invisible click target covering the statue */}
+      {/* Invisible click target over Thiruvalluvar */}
       <button
         onClick={() => window.open('https://en.wikipedia.org/wiki/Thiruvalluvar', '_blank')}
         className="absolute z-[200] bg-transparent hover:bg-white/10 active:bg-white/20 cursor-pointer transition-all duration-200"
         style={{
           width: 'clamp(70px, 12vw, 190px)',
           height: 'clamp(140px, 24vw, 380px)',
-          bottom: 'clamp(-40px, -5vw, -70px)',
-          left: 'clamp(-10px, -1vw, -20px)',
+          bottom: 'clamp(8px, 2.5vw, 50px)',
+          left: 'clamp(-20px, -2vw, -10px)',
         }}
         aria-label="Learn about Thiruvalluvar"
       >
@@ -120,7 +117,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         )}
       </button>
 
-      {/* ─── SCROLL DOWN ─────────────────────────────────────────────────────── */}
+      {/* ─── SCROLL DOWN ───────────────────────────────────────────────────────── */}
       <Link
         to="menu"
         spy={true}
@@ -144,10 +141,10 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         </div>
       </Link>
 
-      {/* ─── FOREGROUND TEXT ─────────────────────────────────────────────────── */}
+      {/* ─── FOREGROUND TEXT ───────────────────────────────────────────────────── */}
       <div className="absolute inset-0 z-[100]">
 
-        {/* Main text block — left side, ~30% from top */}
+        {/* Main text block */}
         <div
           className="absolute text-gray-900"
           style={{
@@ -157,7 +154,6 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             maxWidth: 'clamp(220px, 48vw, 580px)',
           }}
         >
-          {/* Tagline row */}
           <div className="flex items-center mb-2 sm:mb-4">
             <Utensils
               className="mr-1.5 sm:mr-2 flex-shrink-0"
@@ -171,7 +167,6 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             </span>
           </div>
 
-          {/* Restaurant name */}
           <h1
             className="font-display font-bold leading-tight mb-3 sm:mb-5 break-words"
             style={{ fontSize: 'clamp(1.5rem, 5vw, 4.5rem)' }}
@@ -179,7 +174,6 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             Bay Leaf Restaurant
           </h1>
 
-          {/* Subtitle */}
           <p
             className="font-medium mb-4 sm:mb-8 leading-snug"
             style={{ fontSize: 'clamp(0.65rem, 1.4vw, 1.2rem)' }}
@@ -187,7 +181,6 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             {translations.hero.tagline[language]}
           </p>
 
-          {/* CTA Buttons */}
           <div className="flex flex-row gap-2 sm:gap-3 pointer-events-auto">
             <Link
               to="menu"
@@ -272,5 +265,4 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
 });
 
 HeroSection.displayName = 'HeroSection';
-
 export default HeroSection;

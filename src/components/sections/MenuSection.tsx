@@ -73,10 +73,17 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
   const [scrollRotation, setScrollRotation] = useState(0);
 
   useEffect(() => {
+    // FIXED: was previously called unconditionally during render in the quote JSX.
+    // window.innerWidth is only safe inside useEffect (client-side).
     const handleScroll = () => setScrollRotation(window.scrollY * 0.1);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // FIXED: Quote text line-breaking no longer calls window.innerWidth during render.
+  // That pattern crashes on Vercel (SSR/build) because `window` is undefined server-side.
+  // Instead we use a CSS-only approach: the text wraps naturally.
+  const quoteText = translations.menu.quote?.tamil?.[language] ?? '';
 
   return (
     <section id={id} ref={ref} className="relative py-24 overflow-hidden" style={{ backgroundColor: '#ffd647' }}>
@@ -155,21 +162,10 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
               className="group relative inline-block"
               title="Learn more about this quote"
             >
-              <p className="text-brown-700 font-bold italic text-xs sm:text-base md:text-xl mb-2 group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-transform duration-200 leading-tight">
-                {(() => {
-                  const quoteText = translations.menu.quote.tamil[language];
-                  if (!quoteText) return '';
-                  const words = quoteText.split(' ');
-                  const breakPoint = typeof window !== 'undefined' && window.innerWidth < 375 ? 2 :
-                    typeof window !== 'undefined' && window.innerWidth < 400 ? 3 : 4;
-                  if (words.length <= breakPoint) return quoteText;
-                  return (
-                    <>
-                      {words.slice(0, breakPoint).join(' ')}<br />
-                      {words.slice(breakPoint).join(' ')}
-                    </>
-                  );
-                })()}
+              {/* FIXED: removed window.innerWidth call during render — SSR crash.
+                  Text now wraps naturally via CSS max-width. */}
+              <p className="text-brown-700 font-bold italic text-xs sm:text-base md:text-xl mb-2 group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-transform duration-200 leading-tight max-w-xs sm:max-w-none mx-auto">
+                {quoteText}
               </p>
               {showQuoteTooltip && (
                 <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-black/90 text-yellow-300 text-xs px-2 py-1 rounded-lg z-30 whitespace-nowrap pointer-events-none">
@@ -178,7 +174,7 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
               )}
             </a>
             <p className="text-black/80 text-xs">
-              - {translations.menu.quote.source[language]}
+              - {translations.menu.quote?.source?.[language] ?? 'Thiruvalluvar'}
             </p>
           </motion.div>
         </div>
@@ -219,7 +215,7 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
             ))}
           </div>
 
-          {/* View More button — only shown when collapsed */}
+          {/* View More button */}
           {!showAllMenus && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -238,7 +234,7 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
             </motion.div>
           )}
 
-          {/* Extended pages — animated expand, 2-column grid */}
+          {/* Extended pages */}
           <AnimatePresence>
             {showAllMenus && (
               <motion.div
@@ -273,7 +269,6 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
                   ))}
                 </div>
 
-                {/* Show Less button — at the very bottom after all images */}
                 <div className="text-center mt-8 mb-2">
                   <button
                     onClick={toggleMenuView}
@@ -307,7 +302,7 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
           </Link>
         </motion.div>
 
-        {/* Image Modal — fixed zoom size */}
+        {/* Image Modal */}
         <AnimatePresence>
           {selectedImage && (
             <motion.div
