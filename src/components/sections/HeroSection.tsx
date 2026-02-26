@@ -114,7 +114,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         />
         {showInvisibleTooltip && (
           <span className="absolute left-full bottom-1/4 -translate-x-1/2 ml-3 bg-black/90 text-yellow-300 text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl border border-yellow-300/20">
-            Learn about Thiruvalluvar!
+            Learn about Thiruvalluvar! Click Here!
           </span>
         )}
       </div>
