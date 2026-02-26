@@ -73,16 +73,11 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
   const [scrollRotation, setScrollRotation] = useState(0);
 
   useEffect(() => {
-    // FIXED: was previously called unconditionally during render in the quote JSX.
-    // window.innerWidth is only safe inside useEffect (client-side).
     const handleScroll = () => setScrollRotation(window.scrollY * 0.1);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // FIXED: Quote text line-breaking no longer calls window.innerWidth during render.
-  // That pattern crashes on Vercel (SSR/build) because `window` is undefined server-side.
-  // Instead we use a CSS-only approach: the text wraps naturally.
   const quoteText = translations.menu.quote?.tamil?.[language] ?? '';
 
   return (
@@ -162,8 +157,6 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
               className="group relative inline-block"
               title="Learn more about this quote"
             >
-              {/* FIXED: removed window.innerWidth call during render — SSR crash.
-                  Text now wraps naturally via CSS max-width. */}
               <p className="text-brown-700 font-bold italic text-xs sm:text-base md:text-xl mb-2 group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-transform duration-200 leading-tight max-w-xs sm:max-w-none mx-auto">
                 {quoteText}
               </p>
@@ -234,7 +227,7 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
             </motion.div>
           )}
 
-          {/* Extended pages */}
+          {/* Extended pages — FIXED: always grid-cols-2 to match default layout */}
           <AnimatePresence>
             {showAllMenus && (
               <motion.div
@@ -244,7 +237,7 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
                 transition={{ duration: 0.5 }}
                 className="overflow-hidden mt-8"
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
+                <div className="grid grid-cols-2 gap-4 md:gap-8">
                   {extendedMenuImages.map((menuImage, index) => (
                     <motion.div
                       key={menuImage.id}
@@ -301,44 +294,48 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
             {translations.hero.bookTable[language]}
           </Link>
         </motion.div>
-
-        {/* Image Modal */}
-        <AnimatePresence>
-          {selectedImage && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-              onClick={closeImageModal}
-            >
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className="relative w-full max-w-2xl"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  onClick={closeImageModal}
-                  className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full p-2"
-                >
-                  <X size={24} />
-                </button>
-                <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-                  <img
-                    src={selectedImage.src}
-                    alt={selectedImage.alt}
-                    className="w-full h-auto object-contain"
-                    style={{ maxHeight: '75vh' }}
-                  />
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
+
+      {/* Image Modal — FIXED: rendered outside section container, z-[9999] to sit above navbar */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+            onClick={closeImageModal}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close button — FIXED: inside the card so it's never clipped by navbar */}
+              <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                  <span className="text-sm font-medium text-gray-600">{selectedImage.alt}</span>
+                  <button
+                    onClick={closeImageModal}
+                    className="text-gray-500 hover:text-gray-800 transition-colors bg-gray-100 hover:bg-gray-200 rounded-full p-1.5"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
+                  className="w-full h-auto object-contain"
+                  style={{ maxHeight: '75vh' }}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 });

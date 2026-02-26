@@ -78,15 +78,20 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         </div>
       </div>
 
-      {/* ─── THIRUVALLUVAR (Fixed Positioning) ───────────────────────── */}
+      {/* ─── THIRUVALLUVAR ───────────────────────────────────────────────
+          On desktop: tall, pushed into the bottom-left corner.
+          On mobile:  same bottom-left anchor, width scales with viewport
+          so it occupies a similar proportional position as on desktop.
+          The negative left offset is kept proportional via a negative
+          margin-equivalent using a small clamp so the figure still bleeds
+          slightly off the left edge just like desktop.
+      ─────────────────────────────────────────────────────────────────── */}
       <div
-        className="absolute z-40 transition-transform duration-300 hover:scale-[1.02]"
+        className="absolute z-40 transition-transform duration-300 hover:scale-[1.02] thiruvalluvar-pos"
         style={{
-          width: 'clamp(180px, 30vw, 480px)',
-          height: 'clamp(400px, 80vh, 900px)',
-          /* Pushed further into corner to ensure no gaps */
-          bottom: '-20px', 
-          left: '-30px',
+          width: 'clamp(200px, 38vw, 480px)',
+          height: 'clamp(420px, 85vh, 900px)',
+          bottom: '-20px',
           cursor: 'pointer',
           pointerEvents: 'auto',
         }}
@@ -95,15 +100,15 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         <img
           src="/thiruvalluvar wo bg final.png"
           alt="Thiruvalluvar"
-          style={{ 
-            width: '100%', 
-            height: '100%', 
-            objectFit: 'contain', 
-            objectPosition: 'bottom left', 
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            objectPosition: 'bottom left',
             display: 'block',
-            /* Scaled up to remove the internal whitespace padding */
-            transform: 'scale(1.25)', 
-            transformOrigin: 'bottom left' 
+            /* Scale up slightly to remove internal whitespace padding in the image */
+            transform: 'scale(1.25)',
+            transformOrigin: 'bottom left',
           }}
           draggable={false}
         />
@@ -114,7 +119,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         )}
       </div>
 
-      {/* ─── MAIN CONTENT BLOCK (Original Styling Restored) ──────────────── */}
+      {/* ─── MAIN CONTENT BLOCK ──────────────────────────────────────── */}
       <div className="absolute inset-0 z-50 flex items-center pointer-events-none">
         <div
           className="pointer-events-auto"
@@ -191,7 +196,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             href="https://en.wikipedia.org/wiki/Kural"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-block pointer-events-auto"
+            className="group relative inline-block pointer-events-auto "
           >
             <p
               className="text-brown-700 font-bold italic group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-transform duration-200 leading-snug mb-0.5"
@@ -238,6 +243,11 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
           to   { transform: rotate(360deg); }
         }
         html, body { overflow-x: hidden; }
+        /* Thiruvalluvar left offset: -100px on mobile, -220px on desktop */
+        .thiruvalluvar-pos { left: -100px; }
+        @media (min-width: 1024px) {
+          .thiruvalluvar-pos { left: -220px; }
+        }
       `}</style>
     </section>
   );
