@@ -44,5 +44,8 @@
     "tsx": "^4.20.4",
     "typescript": "^5.0.2",
     "vite": "^6.3.5"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.59.0"
   }
 }
