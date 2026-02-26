@@ -14,9 +14,10 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
   const [showQuoteTooltip, setShowQuoteTooltip] = useState(true);
 
   useEffect(() => {
-    // Eagerly preload the plate image
-    const img = new Image();
-    img.src = '/this4.webp';
+    const plateImg = new Image();
+    plateImg.src = '/this4.webp';
+    const statueImg = new Image();
+    statueImg.src = '/thiruvalluvar wo bg final.png';
   }, []);
 
   useEffect(() => {
@@ -54,24 +55,21 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         style={{ backgroundColor: 'rgba(254, 214, 71, 0.6)' }}
       />
 
-      {/* ─── PLATE ─────────────────────────────────────────────────────────────── */}
+      {/* ─── PLATE (Decoration) ────────────────────────────────────────── */}
       <div
         className="absolute z-10 pointer-events-none"
         style={{
-          width: 'clamp(240px, 58vw, 820px)',
-          height: 'clamp(240px, 58vw, 820px)',
-          right: 'clamp(-260px, -29vw, -160px)',
+          width: 'clamp(240px, 80vw, 820px)',
+          height: 'clamp(240px, 80vw, 820px)',
+          right: 0,
           top: '50%',
-          transform: 'translateY(-50%)',
+          transform: 'translateY(-50%) translateX(50%)',
         }}
       >
         <div style={{ width: '100%', height: '100%', animation: 'plateSpin 20s linear infinite' }}>
           <img
             src="/this4.webp"
             alt="Rotating plate decoration"
-            // NOTE: fetchPriority (camelCase) is correct for React/JSX.
-            // The HTML attribute is fetchpriority (lowercase) but React maps camelCase.
-            // This is valid in React 18+ with @types/react >=18.2.
             fetchPriority="high"
             decoding="async"
             loading="eager"
@@ -80,81 +78,52 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         </div>
       </div>
 
-      {/* ─── THIRUVALLUVAR ─────────────────────────────────────────────────────── */}
+      {/* ─── THIRUVALLUVAR (Fixed Positioning) ───────────────────────── */}
       <div
-        className="absolute z-50 pointer-events-none"
+        className="absolute z-40 transition-transform duration-300 hover:scale-[1.02]"
         style={{
-          width: 'clamp(90px, 15vw, 240px)',
-          height: 'clamp(180px, 30vw, 480px)',
-          bottom: 'clamp(10px, 3vw, 60px)',
-          left: 'clamp(-36px, -4vw, -18px)',
+          width: 'clamp(180px, 30vw, 480px)',
+          height: 'clamp(400px, 80vh, 900px)',
+          /* Pushed further into corner to ensure no gaps */
+          bottom: '-20px', 
+          left: '-30px',
+          cursor: 'pointer',
+          pointerEvents: 'auto',
         }}
+        onClick={() => window.open('https://en.wikipedia.org/wiki/Thiruvalluvar', '_blank')}
       >
         <img
           src="/thiruvalluvar wo bg final.png"
           alt="Thiruvalluvar"
-          className="w-full h-full object-contain object-bottom"
+          style={{ 
+            width: '100%', 
+            height: '100%', 
+            objectFit: 'contain', 
+            objectPosition: 'bottom left', 
+            display: 'block',
+            /* Scaled up to remove the internal whitespace padding */
+            transform: 'scale(1.25)', 
+            transformOrigin: 'bottom left' 
+          }}
           draggable={false}
         />
-      </div>
-
-      {/* Invisible click target over Thiruvalluvar */}
-      <button
-        onClick={() => window.open('https://en.wikipedia.org/wiki/Thiruvalluvar', '_blank')}
-        className="absolute z-[200] bg-transparent hover:bg-white/10 active:bg-white/20 cursor-pointer transition-all duration-200"
-        style={{
-          width: 'clamp(70px, 12vw, 190px)',
-          height: 'clamp(140px, 24vw, 380px)',
-          bottom: 'clamp(8px, 2.5vw, 50px)',
-          left: 'clamp(-20px, -2vw, -10px)',
-        }}
-        aria-label="Learn about Thiruvalluvar"
-      >
         {showInvisibleTooltip && (
-          <span className="absolute left-1/2 -translate-x-1/2 -top-8 bg-black/90 text-yellow-300 text-xs px-3 py-1.5 rounded-lg pointer-events-none whitespace-nowrap">
+          <span className="absolute left-1/2 -translate-x-1/2 top-1/4 bg-black/90 text-yellow-300 text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl border border-yellow-300/20">
             Learn about Thiruvalluvar!
           </span>
         )}
-      </button>
+      </div>
 
-      {/* ─── SCROLL DOWN ───────────────────────────────────────────────────────── */}
-      <Link
-        to="menu"
-        spy={true}
-        smooth={true}
-        offset={-80}
-        duration={500}
-        className="absolute z-[200] group cursor-pointer"
-        style={{
-          bottom: 'clamp(8px, 2vh, 36px)',
-          right: 'clamp(16px, 5vw, 80px)',
-        }}
-      >
-        <div className="flex flex-col items-center gap-1 p-2 sm:p-4 bg-white/20 backdrop-blur-sm rounded-full border-2 border-white/30 hover:bg-white/30 hover:border-white/50 active:bg-white/40 transition-all duration-300 hover:scale-110 active:scale-95 shadow-lg">
-          <ArrowDown
-            className="text-brown-700 animate-bounce group-hover:text-brown-800"
-            style={{ width: 'clamp(12px, 1.8vw, 32px)', height: 'clamp(12px, 1.8vw, 32px)' }}
-          />
-          <span className="hidden sm:block text-brown-700 font-medium text-xs group-hover:text-brown-800 whitespace-nowrap">
-            Scroll Down
-          </span>
-        </div>
-      </Link>
-
-      {/* ─── FOREGROUND TEXT ───────────────────────────────────────────────────── */}
-      <div className="absolute inset-0 z-[100]">
-
-        {/* Main text block */}
+      {/* ─── MAIN CONTENT BLOCK (Original Styling Restored) ──────────────── */}
+      <div className="absolute inset-0 z-50 flex items-center pointer-events-none">
         <div
-          className="absolute text-gray-900"
+          className="pointer-events-auto"
           style={{
-            left: 'clamp(12px, 6vw, 96px)',
-            top: '30%',
-            transform: 'translateY(-10%)',
+            marginLeft: 'clamp(12px, 6vw, 96px)',
             maxWidth: 'clamp(220px, 48vw, 580px)',
           }}
         >
-          <div className="flex items-center mb-2 sm:mb-4">
+          <div className="flex items-center mb-2 sm:mb-4 text-gray-900">
             <Utensils
               className="mr-1.5 sm:mr-2 flex-shrink-0"
               style={{ width: 'clamp(8px, 1vw, 14px)', height: 'clamp(8px, 1vw, 14px)' }}
@@ -168,29 +137,28 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
           </div>
 
           <h1
-            className="font-display font-bold leading-tight mb-3 sm:mb-5 break-words"
+            className="font-display font-bold leading-tight mb-3 sm:mb-5 text-gray-900 break-words"
             style={{ fontSize: 'clamp(1.5rem, 5vw, 4.5rem)' }}
           >
             Bay Leaf Restaurant
           </h1>
 
           <p
-            className="font-medium mb-4 sm:mb-8 leading-snug"
+            className="font-medium mb-4 sm:mb-8 leading-snug text-gray-800"
             style={{ fontSize: 'clamp(0.65rem, 1.4vw, 1.2rem)' }}
           >
             {translations.hero.tagline[language]}
           </p>
 
-          <div className="flex flex-row gap-2 sm:gap-3 pointer-events-auto">
+          <div className="flex flex-row gap-2 sm:gap-3">
             <Link
               to="menu"
               spy={true}
               smooth={true}
               offset={-80}
-              duration={0}
+              duration={500}
               className="bg-spice-500 text-white rounded-md font-medium hover:bg-spice-600 active:bg-spice-700 transition-all text-center cursor-pointer select-none"
               style={{
-                pointerEvents: 'auto',
                 fontSize: 'clamp(0.6rem, 1vw, 0.875rem)',
                 padding: 'clamp(6px, 0.9vw, 12px) clamp(10px, 1.4vw, 20px)',
               }}
@@ -202,10 +170,9 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
               spy={true}
               smooth={true}
               offset={-80}
-              duration={0}
+              duration={500}
               className="bg-white text-spice-500 rounded-md font-medium hover:bg-opacity-90 active:bg-opacity-80 transition-all text-center cursor-pointer select-none"
               style={{
-                pointerEvents: 'auto',
                 fontSize: 'clamp(0.6rem, 1vw, 0.875rem)',
                 padding: 'clamp(6px, 0.9vw, 12px) clamp(10px, 1.4vw, 20px)',
               }}
@@ -214,22 +181,17 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             </Link>
           </div>
         </div>
+      </div>
 
-        {/* Quote — bottom center */}
-        <div
-          className="absolute left-1/2 -translate-x-1/2 text-center z-[150]"
-          style={{
-            bottom: 'clamp(8px, 2vh, 36px)',
-            width: '100%',
-            paddingInline: 'clamp(8px, 3vw, 32px)',
-          }}
-        >
+      {/* ─── QUOTE & SCROLL DOWN ────────────────────────────────────────── */}
+      <div className="absolute bottom-0 left-0 w-full z-[60] pointer-events-none pb-[clamp(8px, 2vh, 36px)]">
+        {/* Quote */}
+        <div className="text-center px-[clamp(8px, 3vw, 32px)]">
           <a
             href="https://en.wikipedia.org/wiki/Kural"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-block"
-            title="Learn more about this quote"
+            className="group relative inline-block pointer-events-auto"
           >
             <p
               className="text-brown-700 font-bold italic group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-transform duration-200 leading-snug mb-0.5"
@@ -238,20 +200,37 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
               {translations.hero.quote[language]}
             </p>
             {showQuoteTooltip && (
-              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 bg-black/90 text-yellow-300 text-xs px-2 py-1 rounded z-30 whitespace-nowrap">
+              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 bg-black/90 text-yellow-300 text-xs px-2 py-1 rounded whitespace-nowrap">
                 Want to learn about this quote? Click here!
               </span>
             )}
           </a>
-          <p
-            className="text-black font-medium"
-            style={{ fontSize: 'clamp(0.5rem, 0.9vw, 0.8rem)' }}
-          >
+          <p className="text-black font-medium" style={{ fontSize: 'clamp(0.5rem, 0.9vw, 0.8rem)' }}>
             - Thiruvalluvar
           </p>
         </div>
-
       </div>
+
+      {/* Scroll Down Indicator */}
+      <Link
+        to="menu"
+        smooth={true}
+        offset={-80}
+        duration={500}
+        className="absolute z-[100] group cursor-pointer"
+        style={{
+          bottom: 'clamp(8px, 2vh, 36px)',
+          right: 'clamp(16px, 5vw, 80px)',
+          pointerEvents: 'auto'
+        }}
+      >
+        <div className="flex flex-col items-center gap-1 p-2 sm:p-4 bg-white/20 backdrop-blur-sm rounded-full border-2 border-white/30 hover:bg-white/30 transition-all shadow-lg">
+          <ArrowDown
+            className="text-brown-700 animate-bounce"
+            style={{ width: 'clamp(12px, 1.8vw, 32px)', height: 'clamp(12px, 1.8vw, 32px)' }}
+          />
+        </div>
+      </Link>
 
       <style>{`
         @keyframes plateSpin {
