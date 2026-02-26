@@ -113,7 +113,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
           draggable={false}
         />
         {showInvisibleTooltip && (
-          <span className="absolute left-1/2 -translate-x-1/2 top-1/4 bg-black/90 text-yellow-300 text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl border border-yellow-300/20">
+          <span className="absolute left-full bottom-1/4 -translate-x-1/2 ml-3 bg-black/90 text-yellow-300 text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl border border-yellow-300/20">
             Learn about Thiruvalluvar!
           </span>
         )}
@@ -196,7 +196,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             href="https://en.wikipedia.org/wiki/Kural"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-block pointer-events-auto "
+            className="group relative inline-block pointer-events-auto"
           >
             <p
               className="text-brown-700 font-bold italic group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-transform duration-200 leading-snug mb-0.5"
