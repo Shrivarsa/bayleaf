@@ -218,7 +218,7 @@ const MainAppContent: React.FC = () => {
             />
 
             <ImagePopup
-                imageUrl="/€12_90.mp4"
+                imageUrl="/0705menu.png"
                 isOpen={showImagePopup}
                 onClose={handleCloseImagePopup}
                 alt="Special Offer"
