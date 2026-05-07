@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './VideoPopup.css'; // You can reuse the same CSS for popup styling
+import './VideoPopup.css';
 
 interface ImagePopupProps {
   imageUrl: string;
@@ -16,6 +16,9 @@ const ImagePopup: React.FC<ImagePopupProps> = ({
 }) => {
   const [isClosing, setIsClosing] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
+
+  // Check if the file is a video based on extension
+  const isVideo = /\.(mp4|webm|ogg)$/i.test(imageUrl);
 
   useEffect(() => {
     if (isOpen) {
@@ -38,7 +41,7 @@ const ImagePopup: React.FC<ImagePopupProps> = ({
       if (el) {
         setTimeout(() => {
           el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 50); // small delay to ensure popup unmount finishes
+        }, 50);
       }
     }
   };
@@ -60,17 +63,31 @@ const ImagePopup: React.FC<ImagePopupProps> = ({
         <button
           className="video-popup-close"
           onClick={handleClose}
-          aria-label="Close image"
+          aria-label={isVideo ? "Close video" : "Close image"}
         >
           ×
         </button>
         <div className="video-wrapper">
-          <img
-            src={imageUrl}
-            alt={alt}
-            className="popup-video"
-            style={{ maxWidth: '100%', maxHeight: '80vh', display: 'block', margin: '0 auto' }}
-          />
+          {isVideo ? (
+            <video
+              src={imageUrl}
+              className="popup-video"
+              controls
+              autoPlay
+              loop
+              muted
+              style={{ maxWidth: '100%', maxHeight: '80vh', display: 'block', margin: '0 auto' }}
+            >
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            <img
+              src={imageUrl}
+              alt={alt}
+              className="popup-video"
+              style={{ maxWidth: '100%', maxHeight: '80vh', display: 'block', margin: '0 auto' }}
+            />
+          )}
         </div>
       </div>
     </div>

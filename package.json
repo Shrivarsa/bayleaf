@@ -47,5 +47,17 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.59.0"
-  }
+  },
+  "description": "",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shrivarsa/bayleaf.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shrivarsa/bayleaf/issues"
+  },
+  "homepage": "https://github.com/Shrivarsa/bayleaf#readme"
 }

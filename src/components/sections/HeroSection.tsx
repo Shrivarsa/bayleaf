@@ -38,15 +38,20 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
     <section
       ref={ref}
       id={id}
-      className="relative w-full overflow-hidden"
+      className="relative w-full"
       style={{
         minHeight: '100vh',
         height: '100vh',
+        overflow: 'hidden',
         backgroundImage: 'url(this3.png)',
         backgroundSize: 'contain',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundColor: '#fed647',
+        // KEY FIX: isolate this section's stacking context so it never
+        // competes with the navbar's z-50. The navbar is fixed z-50;
+        // everything inside this section stays below it automatically.
+        isolation: 'isolate',
       }}
     >
       {/* Yellow Tint Overlay */}
@@ -78,14 +83,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         </div>
       </div>
 
-      {/* ─── THIRUVALLUVAR ───────────────────────────────────────────────
-          On desktop: tall, pushed into the bottom-left corner.
-          On mobile:  same bottom-left anchor, width scales with viewport
-          so it occupies a similar proportional position as on desktop.
-          The negative left offset is kept proportional via a negative
-          margin-equivalent using a small clamp so the figure still bleeds
-          slightly off the left edge just like desktop.
-      ─────────────────────────────────────────────────────────────────── */}
+      {/* ─── THIRUVALLUVAR ─────────────────────────────────────────────── */}
       <div
         className="absolute z-40 transition-transform duration-300 hover:scale-[1.02] thiruvalluvar-pos"
         style={{
@@ -106,7 +104,6 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             objectFit: 'contain',
             objectPosition: 'bottom left',
             display: 'block',
-            /* Scale up slightly to remove internal whitespace padding in the image */
             transform: 'scale(1.25)',
             transformOrigin: 'bottom left',
           }}
@@ -120,7 +117,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
       </div>
 
       {/* ─── MAIN CONTENT BLOCK ──────────────────────────────────────── */}
-      <div className="absolute inset-0 z-50 flex items-center pointer-events-none">
+      <div className="absolute inset-0 z-20 flex items-center pointer-events-none">
         <div
           className="pointer-events-auto"
           style={{
@@ -189,9 +186,8 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
       </div>
 
       {/* ─── QUOTE & SCROLL DOWN ────────────────────────────────────────── */}
-      <div className="absolute bottom-0 left-0 w-full z-[60] pointer-events-none pb-[clamp(8px, 2vh, 36px)]">
-        {/* Quote */}
-        <div className="text-center px-[clamp(8px, 3vw, 32px)]">
+      <div className="absolute bottom-0 left-0 w-full z-20 pointer-events-none pb-[clamp(8px,2vh,36px)]">
+        <div className="text-center px-[clamp(8px,3vw,32px)]">
           <a
             href="https://en.wikipedia.org/wiki/Kural"
             target="_blank"
@@ -222,11 +218,11 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         smooth={true}
         offset={-80}
         duration={500}
-        className="absolute z-[100] group cursor-pointer"
+        className="absolute z-20 group cursor-pointer"
         style={{
           bottom: 'clamp(8px, 2vh, 36px)',
           right: 'clamp(16px, 5vw, 80px)',
-          pointerEvents: 'auto'
+          pointerEvents: 'auto',
         }}
       >
         <div className="flex flex-col items-center gap-1 p-2 sm:p-4 bg-white/20 backdrop-blur-sm rounded-full border-2 border-white/30 hover:bg-white/30 transition-all shadow-lg">
@@ -243,7 +239,6 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
           to   { transform: rotate(360deg); }
         }
         html, body { overflow-x: hidden; }
-        /* Thiruvalluvar left offset: -100px on mobile, -220px on desktop */
         .thiruvalluvar-pos { left: -100px; }
         @media (min-width: 1024px) {
           .thiruvalluvar-pos { left: -220px; }

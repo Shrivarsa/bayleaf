@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, RefObject } from 'react';
 import { LoadingProvider } from './context/LoadingContext';
 import Navbar from './components/Navbar';
 import HeroSection from './components/sections/HeroSection';
@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import ScrollHideContactHeader from './components/sections/ScrollHideContactHeader';
 import SEOHead from './components/SEOHead';
+import ImagePopup from './components/ImagePopup';
 
 const sectionSEOData = {
     'home': { 
@@ -64,23 +65,49 @@ const sectionSEOData = {
     }
 };
 
-const MainAppContent: React.FC = () => {
-    const { language } = useLanguage();
-    const [currentSectionId, setCurrentSectionId] = useState('home');
-    const isNavigatingRef = useRef(false);
-
-    // Section Refs
-    const sectionRefs = {
+// Custom Hook to manage section refs
+const useSectionRefs = () => {
+    return {
         home: useRef<HTMLElement>(null),
         about: useRef<HTMLElement>(null),
         menu: useRef<HTMLElement>(null),
         gallery: useRef<HTMLElement>(null),
         contact: useRef<HTMLElement>(null),
     };
+};
 
-    // Modified path change listener - Only runs on page load and Back/Forward buttons
+// Component to hold the main application logic and scroll tracking
+const MainAppContent: React.FC = () => {
+    const { language } = useLanguage();
+    const sectionRefs = useSectionRefs();
+    const [currentSectionId, setCurrentSectionId] = useState('home');
+    const [showImagePopup, setShowImagePopup] = useState(true);
+    const [isScrollLocked, setIsScrollLocked] = useState(true);
+    const isNavigatingRef = useRef(false);
+
+    // Handle scroll lock
+    useEffect(() => {
+        if (isScrollLocked) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isScrollLocked]);
+
+    // Handler for closing popup
+    const handleCloseImagePopup = () => {
+        setShowImagePopup(false);
+        setIsScrollLocked(false);
+    };
+
+    // Modified path change listener - only for browser back/forward and initial load
     useEffect(() => {
         const handlePathChange = () => {
+            if (isScrollLocked) return;
+            
             const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
             
             const sectionMap: Record<string, { ref: keyof typeof sectionRefs; id: string }> = {
@@ -94,6 +121,7 @@ const MainAppContent: React.FC = () => {
 
             const section = sectionMap[path] || sectionMap[''];
             
+            // Set flag to prevent scroll handler interference
             isNavigatingRef.current = true;
             setCurrentSectionId(section.id);
             
@@ -105,56 +133,64 @@ const MainAppContent: React.FC = () => {
                         behavior: 'instant'
                     });
                 }
-                // Small timeout to ensure the scroll detector doesn't catch the "jump"
+                // Reset flag after scroll completes
                 setTimeout(() => {
                     isNavigatingRef.current = false;
-                }, 150);
+                }, 100);
             });
         };
 
-        handlePathChange();
+        // Only handle initial path if not locked
+        if (!isScrollLocked) {
+            handlePathChange();
+        }
+
+        // Only listen to popstate (back/forward buttons)
         window.addEventListener('popstate', handlePathChange);
         return () => window.removeEventListener('popstate', handlePathChange);
-    }, []); // Empty array stops the infinite loop
+    }, [sectionRefs, isScrollLocked]);
 
-    // Scroll handler - detects which section is in view and updates the URL
+    // Scroll handler - detects which section is in view
     useEffect(() => {
         let scrollTimeout: NodeJS.Timeout;
         
         const handleScroll = () => {
-            if (isNavigatingRef.current) return;
+            // Don't interfere when locked or navigating
+            if (isScrollLocked || isNavigatingRef.current) return;
             
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
                 let activeSectionId = 'home';
                 const offset = 150;
 
-                const sectionElements = [
-                    { id: 'home', ref: sectionRefs.home },
-                    { id: 'about-us', ref: sectionRefs.about },
-                    { id: 'menu', ref: sectionRefs.menu },
-                    { id: 'gallery', ref: sectionRefs.gallery },
-                    { id: 'contact-us', ref: sectionRefs.contact },
-                ];
+                try {
+                    const sectionElements = [
+                        { id: 'home', ref: sectionRefs.home },
+                        { id: 'about-us', ref: sectionRefs.about },
+                        { id: 'menu', ref: sectionRefs.menu },
+                        { id: 'gallery', ref: sectionRefs.gallery },
+                        { id: 'contact-us', ref: sectionRefs.contact },
+                    ];
 
-                for (const section of sectionElements) {
-                    const element = section.ref.current;
-                    if (element) {
-                        const rect = element.getBoundingClientRect();
-                        if (rect.top <= offset && rect.bottom > offset) {
-                            activeSectionId = section.id;
-                            break;
+                    for (const section of sectionElements) {
+                        const element = section.ref.current;
+                        if (element) {
+                            const rect = element.getBoundingClientRect();
+                            if (rect.top <= offset && rect.bottom > offset) {
+                                activeSectionId = section.id;
+                                break;
+                            }
                         }
                     }
-                }
 
-                if (activeSectionId !== currentSectionId) {
-                    setCurrentSectionId(activeSectionId);
-                    const newPath = activeSectionId === 'home' ? '/' : `/${activeSectionId}`;
-                    
-                    if (window.location.pathname !== newPath) {
+                    // Only update URL if section actually changed
+                    if (activeSectionId !== currentSectionId) {
+                        setCurrentSectionId(activeSectionId);
+                        const newPath = activeSectionId === 'home' ? '/' : `/${activeSectionId}`;
                         window.history.replaceState(null, '', newPath);
                     }
+                } catch (error) {
+                    console.error("Scroll handling error:", error);
                 }
             }, 100);
         };
@@ -164,11 +200,14 @@ const MainAppContent: React.FC = () => {
             window.removeEventListener('scroll', handleScroll);
             clearTimeout(scrollTimeout);
         };
-    }, [currentSectionId]); // Only watches currentSectionId
+    }, [currentSectionId, sectionRefs, isScrollLocked]);
 
+    // Modify canonicalUrl construction
     const canonicalPath = currentSectionId === 'home' ? '' : `/${currentSectionId}`;
     const canonicalUrl = `https://www.bay-leaf.eu${canonicalPath}`;
-    const seoContent = sectionSEOData[currentSectionId as keyof typeof sectionSEOData] || sectionSEOData['home'];
+
+    // Get SEO content for current section
+    const seoContent = sectionSEOData[currentSectionId as keyof typeof sectionSEOData];
 
     return (
         <>
@@ -178,10 +217,20 @@ const MainAppContent: React.FC = () => {
                 canonicalUrl={canonicalUrl}
             />
 
+            <ImagePopup
+                imageUrl="/€12_90.mp4"
+                isOpen={showImagePopup}
+                onClose={handleCloseImagePopup}
+                alt="Special Offer"
+            />
+
             <ScrollHideContactHeader />
             <Navbar currentActiveSection={currentSectionId} />
 
-            <main>
+            <main style={{ 
+                opacity: isScrollLocked ? '0.3' : '1',
+                transition: 'opacity 0.3s ease-in-out'
+            }}>
                 <HeroSection ref={sectionRefs.home} id="home" />
                 <AboutSection ref={sectionRefs.about} id="about-us" />
                 <MenuSection ref={sectionRefs.menu} id="menu" />
@@ -193,6 +242,7 @@ const MainAppContent: React.FC = () => {
         </>
     );
 };
+
 
 function App() {
     return (
