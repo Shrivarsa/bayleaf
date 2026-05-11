@@ -41,7 +41,7 @@ const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>((props, ref)
     return (
         // Pass the forwarded 'ref' and the 'id' to the root section element
         <section id={id} ref={ref} className="relative min-h-screen w-full">
-            <div ref={bgRef} className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+            <div ref={bgRef} className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
                 <video
                     autoPlay
                     muted
@@ -56,7 +56,7 @@ const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>((props, ref)
             </div>
 
             <div className="absolute inset-0 z-10">
-                <div className="absolute top-1/4 left-16 md:left-24 lg:left-32 text-white">
+                <div className="absolute top-1/4 left-16 md:left-24 lg:left-32 text-white z-50 pointer-events-auto">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -83,7 +83,7 @@ const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>((props, ref)
                         {/* Note: If you want the H3 text ('First South Indian Restaurant in Singen, Germany') visible, you can add it here as a <p> or <h3> */}
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-4 mb-16">
+                    <div className="flex flex-wrap items-center gap-4 mb-16 translate-x-8 md:translate-x-12 relative z-50 pointer-events-auto">
                         <Link
                             to="menu"
                             spy={true}
