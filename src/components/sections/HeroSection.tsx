@@ -48,10 +48,9 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundColor: '#fed647',
-        // KEY FIX: isolate this section's stacking context so it never
-        // competes with the navbar's z-50. The navbar is fixed z-50;
-        // everything inside this section stays below it automatically.
         isolation: 'isolate',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
       }}
     >
       {/* Yellow Tint Overlay */}
@@ -84,16 +83,18 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
       </div>
 
       {/* ─── THIRUVALLUVAR ─────────────────────────────────────────────── */}
+      {/*
+        Outer div: positions & sizes the image — pointer-events OFF so the
+        large transparent bounding box is never clickable.
+      */}
       <div
-        className="absolute z-40 transition-transform duration-300 hover:scale-[1.02] thiruvalluvar-pos"
+        className="absolute z-40 thiruvalluvar-pos"
         style={{
           width: 'clamp(200px, 38vw, 480px)',
           height: 'clamp(420px, 85vh, 900px)',
           bottom: '-20px',
-          cursor: 'pointer',
-          pointerEvents: 'auto',
+          pointerEvents: 'none',
         }}
-        onClick={() => window.open('https://en.wikipedia.org/wiki/Thiruvalluvar', '_blank')}
       >
         <img
           src="/thiruvalluvar wo bg final.png"
@@ -109,11 +110,39 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
           }}
           draggable={false}
         />
-        {showInvisibleTooltip && (
-          <span className="absolute left-full bottom-1/4 -translate-x-1/2 ml-3 bg-black/90 text-yellow-300 text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl border border-yellow-300/20">
-            Learn about Thiruvalluvar! Click Here!
-          </span>
-        )}
+
+        {/*
+          Inner click target: tightened to the visible statue torso.
+          left: 38% — sits over the actual figure, not the transparent left padding.
+          Tooltip flips RIGHT so it stays in viewport (never clips off-screen left).
+        */}
+        <div
+          className="absolute transition-transform duration-300 hover:scale-105 active:scale-95"
+          style={{
+            bottom: '15%',
+            left: '52%',                          // pushed right to sit on the visible statue body
+            width: 'clamp(55px, 9vw, 120px)',
+            height: 'clamp(140px, 22vw, 260px)', // tall — covers head down to waist
+            cursor: 'pointer',
+            pointerEvents: 'auto',
+            borderRadius: '35%',
+            /* outline: '2px dashed red', */     // uncomment to debug hit zone
+          }}
+          onClick={() => window.open('https://en.wikipedia.org/wiki/Thiruvalluvar', '_blank')}
+        >
+          {showInvisibleTooltip && (
+            <span
+              className="absolute bg-black/90 text-yellow-300 text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl border border-yellow-300/20"
+              style={{
+                bottom: '105%',
+                left: '50%',
+                transform: 'translateX(-50%)',
+              }}
+            >
+              Learn about Thiruvalluvar! Click Here!
+            </span>
+          )}
+        </div>
       </div>
 
       {/* ─── MAIN CONTENT BLOCK ──────────────────────────────────────── */}
@@ -121,11 +150,19 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         <div
           className="pointer-events-auto"
           style={{
-            marginLeft: 'clamp(12px, 6vw, 96px)',
-            maxWidth: 'clamp(220px, 48vw, 580px)',
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+            /* Reduced left margin so content block shifts left */
+            marginLeft: 'clamp(110px, 26vw, 260px)',
+            /* Constrain so it doesn't bleed into the plate on the right */
+            maxWidth: 'clamp(200px, 44vw, 560px)',
           }}
         >
-          <div className="flex items-center mb-2 sm:mb-4 text-gray-900">
+          {/* Tagline row — small rightward indent to sit under the title visually */}
+          <div
+            className="flex items-center mb-2 sm:mb-4 text-gray-900"
+            style={{ paddingLeft: 'clamp(2px, 0.5vw, 8px)' }}
+          >
             <Utensils
               className="mr-1.5 sm:mr-2 flex-shrink-0"
               style={{ width: 'clamp(8px, 1vw, 14px)', height: 'clamp(8px, 1vw, 14px)' }}
@@ -147,7 +184,10 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
 
           <p
             className="font-medium mb-4 sm:mb-8 leading-snug text-gray-800"
-            style={{ fontSize: 'clamp(0.65rem, 1.4vw, 1.2rem)' }}
+            style={{
+              fontSize: 'clamp(0.65rem, 1.4vw, 1.2rem)',
+              paddingLeft: 'clamp(2px, 0.5vw, 8px)', // mirrors tagline indent
+            }}
           >
             {translations.hero.tagline[language]}
           </p>
@@ -193,6 +233,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             target="_blank"
             rel="noopener noreferrer"
             className="group relative inline-block pointer-events-auto"
+            style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
           >
             <p
               className="text-brown-700 font-bold italic group-hover:text-brown-800 group-hover:scale-105 active:scale-95 transition-transform duration-200 leading-snug mb-0.5"
@@ -206,7 +247,10 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
               </span>
             )}
           </a>
-          <p className="text-black font-medium" style={{ fontSize: 'clamp(0.5rem, 0.9vw, 0.8rem)' }}>
+          <p
+            className="text-black font-medium"
+            style={{ fontSize: 'clamp(0.5rem, 0.9vw, 0.8rem)', userSelect: 'none' }}
+          >
             - Thiruvalluvar
           </p>
         </div>
@@ -242,6 +286,13 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         .thiruvalluvar-pos { left: -100px; }
         @media (min-width: 1024px) {
           .thiruvalluvar-pos { left: -220px; }
+        }
+        /* Kill text selection everywhere inside the hero section */
+        #${id}, #${id} * {
+          -webkit-user-select: none !important;
+          -moz-user-select: none !important;
+          -ms-user-select: none !important;
+          user-select: none !important;
         }
       `}</style>
     </section>

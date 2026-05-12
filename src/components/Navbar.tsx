@@ -281,7 +281,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentActiveSection }) => {
           <span
             className="ticker-track"
             data-text={closureMessage}
-            style={{ color: scrolled ? '#1f2937' : '#ffffff' }}
+            style={{ color: '#dc2626' }}
           >
             {closureMessage}
           </span>
