@@ -82,52 +82,34 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         </div>
       </div>
 
-      {/* ─── THIRUVALLUVAR ─────────────────────────────────────────────── */}
-      {/*
-        Outer div: positions & sizes the image — pointer-events OFF so the
-        large transparent bounding box is never clickable.
-      */}
+      {/* ─── THIRUVALLUVAR — small, bottom-right corner ────────────────── */}
       <div
-        className="absolute z-40 thiruvalluvar-pos"
+        className="absolute z-40"
         style={{
-          width: 'clamp(200px, 38vw, 480px)',
-          height: 'clamp(420px, 85vh, 900px)',
-          bottom: '-20px',
+          width: 'clamp(55px, 7vw, 110px)',
+          height: 'clamp(110px, 16vh, 210px)',
+          bottom: '0px',
+          right: 'clamp(70px, 9vw, 150px)',
           pointerEvents: 'none',
         }}
       >
-        <img
+        {/* <img
           src="/thiruvalluvar wo bg final.png"
           alt="Thiruvalluvar"
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'contain',
-            objectPosition: 'bottom left',
+            objectPosition: 'bottom center',
             display: 'block',
-            transform: 'scale(1.25)',
-            transformOrigin: 'bottom left',
           }}
           draggable={false}
-        />
+        /> */}
 
-        {/*
-          Inner click target: tightened to the visible statue torso.
-          left: 38% — sits over the actual figure, not the transparent left padding.
-          Tooltip flips RIGHT so it stays in viewport (never clips off-screen left).
-        */}
+        {/* Clickable hotspot */}
         <div
-          className="absolute transition-transform duration-300 hover:scale-105 active:scale-95"
-          style={{
-            bottom: '15%',
-            left: '52%',                          // pushed right to sit on the visible statue body
-            width: 'clamp(55px, 9vw, 120px)',
-            height: 'clamp(140px, 22vw, 260px)', // tall — covers head down to waist
-            cursor: 'pointer',
-            pointerEvents: 'auto',
-            borderRadius: '35%',
-            /* outline: '2px dashed red', */     // uncomment to debug hit zone
-          }}
+          className="absolute inset-0 transition-transform duration-300 hover:scale-105 active:scale-95"
+          style={{ cursor: 'pointer', pointerEvents: 'auto' }}
           onClick={() => window.open('https://en.wikipedia.org/wiki/Thiruvalluvar', '_blank')}
         >
           {showInvisibleTooltip && (
@@ -139,7 +121,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
                 transform: 'translateX(-50%)',
               }}
             >
-              Learn about Thiruvalluvar! Click Here!
+              Learn about Thiruvalluvar!
             </span>
           )}
         </div>
@@ -148,21 +130,17 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
       {/* ─── MAIN CONTENT BLOCK ──────────────────────────────────────── */}
       <div className="absolute inset-0 z-20 flex items-center pointer-events-none">
         <div
-          className="pointer-events-auto"
+          className="pointer-events-auto hero-content"
           style={{
             userSelect: 'none',
             WebkitUserSelect: 'none',
-            /* Reduced left margin so content block shifts left */
-            marginLeft: 'clamp(110px, 26vw, 260px)',
-            /* Constrain so it doesn't bleed into the plate on the right */
-            maxWidth: 'clamp(200px, 44vw, 560px)',
+            paddingLeft: 'clamp(16px, 3vw, 40px)',
+            maxWidth: 'clamp(300px, 55vw, 680px)',
+            textAlign: 'left',
           }}
         >
-          {/* Tagline row — small rightward indent to sit under the title visually */}
-          <div
-            className="flex items-center mb-2 sm:mb-4 text-gray-900"
-            style={{ paddingLeft: 'clamp(2px, 0.5vw, 8px)' }}
-          >
+          {/* Tagline row */}
+          <div className="flex items-center mb-2 sm:mb-4 text-gray-900">
             <Utensils
               className="mr-1.5 sm:mr-2 flex-shrink-0"
               style={{ width: 'clamp(8px, 1vw, 14px)', height: 'clamp(8px, 1vw, 14px)' }}
@@ -177,7 +155,10 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
 
           <h1
             className="font-display font-bold leading-tight mb-3 sm:mb-5 text-gray-900 break-words"
-            style={{ fontSize: 'clamp(1.5rem, 5vw, 4.5rem)' }}
+            style={{
+              fontSize: 'clamp(1.5rem, 5vw, 4.5rem)',
+              textAlign: 'left',
+            }}
           >
             Bay Leaf Restaurant
           </h1>
@@ -186,13 +167,16 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             className="font-medium mb-4 sm:mb-8 leading-snug text-gray-800"
             style={{
               fontSize: 'clamp(0.65rem, 1.4vw, 1.2rem)',
-              paddingLeft: 'clamp(2px, 0.5vw, 8px)', // mirrors tagline indent
+              textAlign: 'left',
             }}
           >
             {translations.hero.tagline[language]}
           </p>
 
-          <div className="flex flex-row gap-2 sm:gap-3">
+          <div
+            className="flex flex-row gap-2 sm:gap-3 hero-buttons"
+            style={{ justifyContent: 'flex-start' }}
+          >
             <Link
               to="menu"
               spy={true}
@@ -225,7 +209,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         </div>
       </div>
 
-      {/* ─── QUOTE & SCROLL DOWN ────────────────────────────────────────── */}
+      {/* ─── QUOTE & AUTHOR ────────────────────────────────────────────── */}
       <div className="absolute bottom-0 left-0 w-full z-20 pointer-events-none pb-[clamp(8px,2vh,36px)]">
         <div className="text-center px-[clamp(8px,3vw,32px)]">
           <a
@@ -256,7 +240,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         </div>
       </div>
 
-      {/* Scroll Down Indicator */}
+      {/* ─── SCROLL DOWN INDICATOR ─────────────────────────────────────── */}
       <Link
         to="menu"
         smooth={true}
@@ -265,7 +249,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         className="absolute z-20 group cursor-pointer"
         style={{
           bottom: 'clamp(8px, 2vh, 36px)',
-          right: 'clamp(16px, 5vw, 80px)',
+          right: 'clamp(16px, 2.5vw, 48px)',
           pointerEvents: 'auto',
         }}
       >
@@ -283,11 +267,32 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
           to   { transform: rotate(360deg); }
         }
         html, body { overflow-x: hidden; }
-        .thiruvalluvar-pos { left: -100px; }
-        @media (min-width: 1024px) {
-          .thiruvalluvar-pos { left: -220px; }
+
+        .hero-content,
+        .hero-content h1,
+        .hero-content p,
+        .hero-content span,
+        .hero-content div {
+          text-align: left !important;
         }
-        /* Kill text selection everywhere inside the hero section */
+
+        @media (max-width: 640px) {
+          .hero-content {
+            padding-left: 16px !important;
+            max-width: 80vw !important;
+          }
+          .hero-content h1,
+          .hero-content p,
+          .hero-content span,
+          .hero-content div {
+            text-align: left !important;
+            margin-left: 0 !important;
+          }
+          .hero-buttons {
+            margin-left: 0 !important;
+          }
+        }
+
         #${id}, #${id} * {
           -webkit-user-select: none !important;
           -moz-user-select: none !important;

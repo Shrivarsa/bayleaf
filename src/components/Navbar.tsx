@@ -33,8 +33,8 @@ const Navbar: React.FC<NavbarProps> = ({ currentActiveSection }) => {
 
   const closureMessage =
     language === 'de'
-      ? '  Bitte beachten: Unser Restaurant ist vom 19. Mai bis 22. Juni 2026 geschlossen. Wir freuen uns, Sie danach wieder begrüßen zu dürfen!'
-      : '  Please note: Our restaurant will be closed from May 19 to June 22, 2026. We look forward to welcoming you back after that!';
+      ? '  Bitte beachten: Unser Restaurant ist vom 19. Mai bis 22. Juni 2026 geschlossen. Wir freuen uns, Sie danach wieder begrüßen zu dürfen!       Please note: Our restaurant will be closed from May 19 to June 22, 2026. We look forward to welcoming you back after that!'
+      : '  Bitte beachten: Unser Restaurant ist vom 19. Mai bis 22. Juni 2026 geschlossen. Wir freuen uns, Sie danach wieder begrüßen zu dürfen!       Please note: Our restaurant will be closed from May 19 to June 22, 2026. We look forward to welcoming you back after that!';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -252,7 +252,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentActiveSection }) => {
             top: navHeight,
             left: 0,
             width: '100%',
-            height: '36px',
+            height: '44px',
             backgroundColor: 'transparent',
             zIndex: 49,
             overflow: 'hidden',
@@ -266,13 +266,13 @@ const Navbar: React.FC<NavbarProps> = ({ currentActiveSection }) => {
               100% { transform: translateX(-100%); }
             }
             .ticker-track {
-              display: inline-block;
-              white-space: nowrap;
-              animation: ticker-scroll 28s linear infinite;
-              font-size: 13px;
-              font-weight: 500;
-              letter-spacing: 0.02em;
-            }
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker-scroll 36s linear infinite;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
             .ticker-track::after {
               content: attr(data-text);
               padding-left: 8rem;
