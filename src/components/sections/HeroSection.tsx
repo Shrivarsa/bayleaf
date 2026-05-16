@@ -12,12 +12,15 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
   const { language } = useLanguage();
   const [showInvisibleTooltip, setShowInvisibleTooltip] = useState(true);
   const [showQuoteTooltip, setShowQuoteTooltip] = useState(true);
+  const [showStatueTooltip, setShowStatueTooltip] = useState(true);
 
   useEffect(() => {
     const plateImg = new Image();
     plateImg.src = '/this4.webp';
     const statueImg = new Image();
     statueImg.src = '/thiruvalluvar wo bg final.png';
+    const heroStatueImg = new Image();
+    heroStatueImg.src = '/thiruvalluvar12.png';
   }, []);
 
   useEffect(() => {
@@ -33,6 +36,13 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
       return () => clearTimeout(timer);
     }
   }, [showQuoteTooltip]);
+
+  useEffect(() => {
+    if (showStatueTooltip) {
+      const timer = setTimeout(() => setShowStatueTooltip(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showStatueTooltip]);
 
   return (
     <section
@@ -207,6 +217,48 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             </Link>
           </div>
         </div>
+      </div>
+
+      {/* ─── THIRUVALLUVAR — bottom-left ───────────────────────────────── */}
+      <div
+        className="absolute z-30"
+        style={{
+          bottom: 0,
+          left: 0,
+          transform: 'translateX(clamp(-12px, -1.5vw, -4px))',
+        }}
+      >
+        <a
+          href="https://en.wikipedia.org/wiki/Thiruvalluvar"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative block transition-transform duration-300 hover:scale-105 active:scale-95"
+          style={{ cursor: 'pointer' }}
+        >
+          {showStatueTooltip && (
+            <span
+              className="absolute bg-black/90 text-yellow-300 text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl border border-yellow-300/20 pointer-events-none"
+              style={{
+                bottom: '105%',
+                left: '50%',
+                transform: 'translateX(-50%)',
+              }}
+            >
+              Click to know more
+            </span>
+          )}
+          <img
+            src="/thiruvalluvar12.png"
+            alt="Thiruvalluvar"
+            style={{
+              width: 'clamp(48px, 7vw, 88px)',
+              height: 'auto',
+              objectFit: 'contain',
+              display: 'block',
+            }}
+            draggable={false}
+          />
+        </a>
       </div>
 
       {/* ─── QUOTE & AUTHOR ────────────────────────────────────────────── */}
