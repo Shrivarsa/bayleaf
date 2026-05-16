@@ -61,7 +61,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
 
       {/* ─── PLATE (Decoration) ────────────────────────────────────────── */}
       <div
-        className="absolute z-10 pointer-events-none"
+        className="hero-plate absolute z-10 pointer-events-none"
         style={{
           width: 'clamp(240px, 80vw, 820px)',
           height: 'clamp(240px, 80vw, 820px)',
@@ -181,15 +181,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
           style={{ cursor: 'pointer' }}
         >
           {showStatueTooltip && (
-            <span
-              className="absolute bg-black/90 text-yellow-300 text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl border border-yellow-300/20 pointer-events-none"
-              style={{
-                left: '100%',
-                bottom: '55%',
-                marginLeft: 'clamp(6px, 1vw, 10px)',
-                transform: 'translateY(50%)',
-              }}
-            >
+            <span className="statue-tooltip absolute bg-black/90 text-yellow-300 text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl border border-yellow-300/20 pointer-events-none">
               Click to know more
             </span>
           )}
@@ -266,6 +258,13 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         }
         html, body { overflow-x: hidden; }
 
+        .statue-tooltip {
+          left: 100%;
+          bottom: 55%;
+          margin-left: clamp(6px, 1vw, 10px);
+          transform: translateY(50%);
+        }
+
         .hero-content,
         .hero-content h1,
         .hero-content p,
@@ -275,6 +274,21 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
         }
 
         @media (max-width: 640px) {
+          .hero-plate {
+            width: clamp(340px, 125vw, 560px) !important;
+            height: clamp(340px, 125vw, 560px) !important;
+            right: 0 !important;
+            transform: translateY(-50%) translateX(58%) !important;
+          }
+
+          .statue-tooltip {
+            left: 0;
+            bottom: 100%;
+            margin-left: 0;
+            margin-bottom: clamp(4px, 1vh, 8px);
+            transform: none;
+          }
+
           .hero-content {
             padding-left: 16px !important;
             max-width: 80vw !important;
