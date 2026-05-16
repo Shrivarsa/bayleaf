@@ -10,25 +10,15 @@ interface HeroSectionProps {
 
 const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
   const { language } = useLanguage();
-  const [showInvisibleTooltip, setShowInvisibleTooltip] = useState(true);
   const [showQuoteTooltip, setShowQuoteTooltip] = useState(true);
   const [showStatueTooltip, setShowStatueTooltip] = useState(true);
 
   useEffect(() => {
     const plateImg = new Image();
     plateImg.src = '/this4.webp';
-    const statueImg = new Image();
-    statueImg.src = '/thiruvalluvar wo bg final.png';
     const heroStatueImg = new Image();
     heroStatueImg.src = '/thiruvalluvar12.png';
   }, []);
-
-  useEffect(() => {
-    if (showInvisibleTooltip) {
-      const timer = setTimeout(() => setShowInvisibleTooltip(false), 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [showInvisibleTooltip]);
 
   useEffect(() => {
     if (showQuoteTooltip) {
@@ -89,51 +79,6 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             loading="eager"
             style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
           />
-        </div>
-      </div>
-
-      {/* ─── THIRUVALLUVAR — small, bottom-right corner ────────────────── */}
-      <div
-        className="absolute z-40"
-        style={{
-          width: 'clamp(55px, 7vw, 110px)',
-          height: 'clamp(110px, 16vh, 210px)',
-          bottom: '0px',
-          right: 'clamp(70px, 9vw, 150px)',
-          pointerEvents: 'none',
-        }}
-      >
-        {/* <img
-          src="/thiruvalluvar wo bg final.png"
-          alt="Thiruvalluvar"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            objectPosition: 'bottom center',
-            display: 'block',
-          }}
-          draggable={false}
-        /> */}
-
-        {/* Clickable hotspot */}
-        <div
-          className="absolute inset-0 transition-transform duration-300 hover:scale-105 active:scale-95"
-          style={{ cursor: 'pointer', pointerEvents: 'auto' }}
-          onClick={() => window.open('https://en.wikipedia.org/wiki/Thiruvalluvar', '_blank')}
-        >
-          {showInvisibleTooltip && (
-            <span
-              className="absolute bg-black/90 text-yellow-300 text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl border border-yellow-300/20"
-              style={{
-                bottom: '105%',
-                left: '50%',
-                transform: 'translateX(-50%)',
-              }}
-            >
-              Learn about Thiruvalluvar!
-            </span>
-          )}
         </div>
       </div>
 
@@ -239,9 +184,10 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             <span
               className="absolute bg-black/90 text-yellow-300 text-xs px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl border border-yellow-300/20 pointer-events-none"
               style={{
-                bottom: '105%',
-                left: '50%',
-                transform: 'translateX(-50%)',
+                left: '100%',
+                bottom: '55%',
+                marginLeft: 'clamp(6px, 1vw, 10px)',
+                transform: 'translateY(50%)',
               }}
             >
               Click to know more
