@@ -151,6 +151,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
               scrollTo="contact-us"
               offset={-80}
               duration={500}
+              mobileTooltipAlign="start"
               className="bg-white text-spice-500 rounded-md font-medium hover:bg-opacity-90 active:bg-opacity-80 transition-all text-center cursor-pointer select-none"
               style={{
                 fontSize: 'clamp(0.6rem, 1vw, 0.875rem)',

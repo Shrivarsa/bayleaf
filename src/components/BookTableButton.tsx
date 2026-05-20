@@ -11,6 +11,8 @@ interface BookTableButtonProps {
   offset?: number;
   duration?: number;
   onAfterClick?: () => void;
+  /** On mobile, anchor tooltip to the left (for left-aligned buttons like hero). */
+  mobileTooltipAlign?: 'start' | 'end';
 }
 
 const BookTableButton: React.FC<BookTableButtonProps> = ({
@@ -21,6 +23,7 @@ const BookTableButton: React.FC<BookTableButtonProps> = ({
   offset = -80,
   duration = 500,
   onAfterClick,
+  mobileTooltipAlign = 'end',
 }) => {
   const { language } = useLanguage();
   const [showClosedNotice, setShowClosedNotice] = useState(false);
@@ -46,7 +49,11 @@ const BookTableButton: React.FC<BookTableButtonProps> = ({
         {showClosedNotice && (
           <p
             role="status"
-            className="absolute right-0 top-full z-50 mt-2 w-max max-w-[min(280px,calc(100vw-2rem))] rounded-md bg-amber-50 px-3 py-2 text-xs font-medium text-amber-900 border border-amber-200 shadow-sm text-left"
+            className={`book-closed-tooltip absolute top-full z-50 mt-2 w-max max-w-[min(280px,calc(100vw-2rem))] rounded-md bg-amber-50 px-3 py-2 text-xs font-medium text-amber-900 border border-amber-200 shadow-sm text-left ${
+              mobileTooltipAlign === 'start'
+                ? 'right-0 max-sm:left-0 max-sm:right-auto'
+                : 'right-0'
+            }`}
           >
             {getBookingsClosedMessage(language)}
           </p>
