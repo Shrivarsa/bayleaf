@@ -4,6 +4,7 @@ import { Link } from 'react-scroll';
 import { Menu, ChevronDown, Eye, EyeOff, X, ZoomIn } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { translations } from '../../context/translations';
+import BookTableButton from '../BookTableButton';
 
 // Default "view less" images — shown side by side
 const defaultMenuImages = [
@@ -283,16 +284,13 @@ const MenuSection = React.forwardRef<HTMLElement, MenuSectionProps>((props, ref)
           transition={{ duration: 0.6, delay: 0.6 }}
           className="text-center mt-16"
         >
-          <Link
-            to="contact-us"
-            spy={true}
-            smooth={true}
+          <BookTableButton
             offset={-80}
             duration={800}
             className="btn-primary"
           >
             {translations.hero.bookTable[language]}
-          </Link>
+          </BookTableButton>
         </motion.div>
       </div>
 

@@ -3,6 +3,7 @@ import { Link } from 'react-scroll';
 import { Menu, X } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../context/translations';
+import BookTableButton from './BookTableButton';
 
 interface NavbarProps {
   currentActiveSection: string;
@@ -151,16 +152,13 @@ const Navbar: React.FC<NavbarProps> = ({ currentActiveSection }) => {
                 </div>
               </div>
 
-              <Link
-                to="contact-us"
-                spy={true}
-                smooth={true}
+              <BookTableButton
                 offset={contactHeaderVisible ? -120 : -80}
                 duration={100}
                 className="btn-primary text-sm cursor-pointer"
               >
                 {translations.navbar.bookTable[language]}
-              </Link>
+              </BookTableButton>
             </div>
 
             {/* Mobile: Hamburger + Language Toggle */}
@@ -227,17 +225,14 @@ const Navbar: React.FC<NavbarProps> = ({ currentActiveSection }) => {
                     {item.label}
                   </Link>
                 ))}
-                <Link
-                  to="contact-us"
-                  spy={true}
-                  smooth={true}
+                <BookTableButton
                   offset={-80}
                   duration={100}
-                  className="btn-primary text-center cursor-pointer"
-                  onClick={closeMenu}
+                  className="btn-primary text-center cursor-pointer w-full"
+                  onAfterClick={closeMenu}
                 >
                   {translations.navbar.bookTable[language]}
-                </Link>
+                </BookTableButton>
               </div>
             </div>
           )}
