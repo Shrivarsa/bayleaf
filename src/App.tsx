@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, RefObject } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { LoadingProvider } from './context/LoadingContext';
 import Navbar from './components/Navbar';
 import HeroSection from './components/sections/HeroSection';
@@ -65,25 +65,32 @@ const sectionSEOData = {
     }
 };
 
-// Custom Hook to manage section refs
-const useSectionRefs = () => {
-    return {
-        home: useRef<HTMLElement>(null),
-        about: useRef<HTMLElement>(null),
-        menu: useRef<HTMLElement>(null),
-        gallery: useRef<HTMLElement>(null),
-        contact: useRef<HTMLElement>(null),
-    };
-};
-
 // Component to hold the main application logic and scroll tracking
 const MainAppContent: React.FC = () => {
     const { language } = useLanguage();
-    const sectionRefs = useSectionRefs();
+    const homeRef = useRef<HTMLElement>(null);
+    const aboutRef = useRef<HTMLElement>(null);
+    const menuRef = useRef<HTMLElement>(null);
+    const galleryRef = useRef<HTMLElement>(null);
+    const contactRef = useRef<HTMLElement>(null);
+
+    const sectionRefs = useMemo(
+        () => ({
+            home: homeRef,
+            about: aboutRef,
+            menu: menuRef,
+            gallery: galleryRef,
+            contact: contactRef,
+        }),
+        []
+    );
+
     const [currentSectionId, setCurrentSectionId] = useState('home');
     const [showImagePopup, setShowImagePopup] = useState(true);
     const [isScrollLocked, setIsScrollLocked] = useState(true);
     const isNavigatingRef = useRef(false);
+    const currentSectionIdRef = useRef('home');
+    const hasInitializedFromPathRef = useRef(false);
 
     // Handle scroll lock
     useEffect(() => {
@@ -103,61 +110,70 @@ const MainAppContent: React.FC = () => {
         setIsScrollLocked(false);
     };
 
-    // Modified path change listener - only for browser back/forward and initial load
-    useEffect(() => {
-        const handlePathChange = () => {
-            if (isScrollLocked) return;
-            
-            const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
-            
-            const sectionMap: Record<string, { ref: keyof typeof sectionRefs; id: string }> = {
-                '': { ref: 'home', id: 'home' },
-                'home': { ref: 'home', id: 'home' },
-                'about-us': { ref: 'about', id: 'about-us' },
-                'menu': { ref: 'menu', id: 'menu' },
-                'gallery': { ref: 'gallery', id: 'gallery' },
-                'contact-us': { ref: 'contact', id: 'contact-us' }
-            };
-
-            const section = sectionMap[path] || sectionMap[''];
-            
-            // Set flag to prevent scroll handler interference
-            isNavigatingRef.current = true;
-            setCurrentSectionId(section.id);
-            
-            requestAnimationFrame(() => {
-                const targetSection = sectionRefs[section.ref]?.current;
-                if (targetSection) {
-                    window.scrollTo({
-                        top: targetSection.offsetTop - 80,
-                        behavior: 'instant'
-                    });
-                }
-                // Reset flag after scroll completes
-                setTimeout(() => {
-                    isNavigatingRef.current = false;
-                }, 100);
-            });
+    const scrollToSectionForPath = (path: string) => {
+        const sectionMap: Record<string, { ref: React.RefObject<HTMLElement | null>; id: string }> = {
+            '': { ref: homeRef, id: 'home' },
+            home: { ref: homeRef, id: 'home' },
+            'about-us': { ref: aboutRef, id: 'about-us' },
+            menu: { ref: menuRef, id: 'menu' },
+            gallery: { ref: galleryRef, id: 'gallery' },
+            'contact-us': { ref: contactRef, id: 'contact-us' },
         };
 
-        // Only handle initial path if not locked
-        if (!isScrollLocked) {
-            handlePathChange();
-        }
+        const section = sectionMap[path] ?? sectionMap[''];
 
-        // Only listen to popstate (back/forward buttons)
-        window.addEventListener('popstate', handlePathChange);
-        return () => window.removeEventListener('popstate', handlePathChange);
-    }, [sectionRefs, isScrollLocked]);
+        isNavigatingRef.current = true;
+        currentSectionIdRef.current = section.id;
+        setCurrentSectionId(section.id);
 
-    // Scroll handler - detects which section is in view
+        requestAnimationFrame(() => {
+            const targetSection = section.ref.current;
+            if (targetSection) {
+                window.scrollTo({
+                    top: targetSection.offsetTop - 80,
+                    behavior: 'instant',
+                });
+            }
+            setTimeout(() => {
+                isNavigatingRef.current = false;
+            }, 100);
+        });
+    };
+
+    // Sync scroll position only on first unlock (deep link / refresh) and browser back/forward
     useEffect(() => {
-        let scrollTimeout: NodeJS.Timeout;
-        
+        const handlePopState = () => {
+            if (isScrollLocked) return;
+            const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+            scrollToSectionForPath(path);
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, [isScrollLocked]);
+
+    useEffect(() => {
+        if (isScrollLocked || hasInitializedFromPathRef.current) return;
+
+        hasInitializedFromPathRef.current = true;
+        const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+
+        if (path && path !== 'home') {
+            scrollToSectionForPath(path);
+        } else {
+            const id = 'home';
+            currentSectionIdRef.current = id;
+            setCurrentSectionId(id);
+        }
+    }, [isScrollLocked]);
+
+    // Scroll handler — updates URL only, never scrolls the page
+    useEffect(() => {
+        let scrollTimeout: ReturnType<typeof setTimeout>;
+
         const handleScroll = () => {
-            // Don't interfere when locked or navigating
             if (isScrollLocked || isNavigatingRef.current) return;
-            
+
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
                 let activeSectionId = 'home';
@@ -165,34 +181,34 @@ const MainAppContent: React.FC = () => {
 
                 try {
                     const sectionElements = [
-                        { id: 'home', ref: sectionRefs.home },
-                        { id: 'about-us', ref: sectionRefs.about },
-                        { id: 'menu', ref: sectionRefs.menu },
-                        { id: 'gallery', ref: sectionRefs.gallery },
-                        { id: 'contact-us', ref: sectionRefs.contact },
+                        { id: 'home', ref: homeRef },
+                        { id: 'about-us', ref: aboutRef },
+                        { id: 'menu', ref: menuRef },
+                        { id: 'gallery', ref: galleryRef },
+                        { id: 'contact-us', ref: contactRef },
                     ];
 
-                    for (const section of sectionElements) {
-                        const element = section.ref.current;
+                    for (let i = sectionElements.length - 1; i >= 0; i--) {
+                        const element = sectionElements[i].ref.current;
                         if (element) {
                             const rect = element.getBoundingClientRect();
-                            if (rect.top <= offset && rect.bottom > offset) {
-                                activeSectionId = section.id;
+                            if (rect.top <= offset) {
+                                activeSectionId = sectionElements[i].id;
                                 break;
                             }
                         }
                     }
 
-                    // Only update URL if section actually changed
-                    if (activeSectionId !== currentSectionId) {
+                    if (activeSectionId !== currentSectionIdRef.current) {
+                        currentSectionIdRef.current = activeSectionId;
                         setCurrentSectionId(activeSectionId);
                         const newPath = activeSectionId === 'home' ? '/' : `/${activeSectionId}`;
                         window.history.replaceState(null, '', newPath);
                     }
                 } catch (error) {
-                    console.error("Scroll handling error:", error);
+                    console.error('Scroll handling error:', error);
                 }
-            }, 100);
+            }, 150);
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -200,7 +216,7 @@ const MainAppContent: React.FC = () => {
             window.removeEventListener('scroll', handleScroll);
             clearTimeout(scrollTimeout);
         };
-    }, [currentSectionId, sectionRefs, isScrollLocked]);
+    }, [isScrollLocked]);
 
     // Modify canonicalUrl construction
     const canonicalPath = currentSectionId === 'home' ? '' : `/${currentSectionId}`;
