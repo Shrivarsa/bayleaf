@@ -6,13 +6,6 @@ export const translations = {
     viewLess: { en: "View Less", de: "Weniger anzeigen" },
   },
 
-  bookings: {
-    closed: {
-      en: 'Bookings are closed till 22nd June.',
-      de: 'Buchungen sind bis zum 22. Juni geschlossen.',
-    },
-  },
-  
   navbar: {
     home: {
       en: 'Home',

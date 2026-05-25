@@ -3,8 +3,6 @@ import { Link } from 'react-scroll';
 import { Menu, X } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../context/translations';
-import BookTableButton from './BookTableButton';
-
 interface NavbarProps {
   currentActiveSection: string;
 }
@@ -25,17 +23,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentActiveSection }) => {
     { id: 'gallery', label: translations.navbar.gallery[language] },
     { id: 'contact-us', label: translations.navbar.contact[language] },
   ];
-
-  // Closure dates
-  const CLOSURE_START = new Date('2026-05-19');
-  const CLOSURE_END = new Date('2026-06-22');
-  const today = new Date();
-  const showClosureBanner = today < CLOSURE_END;
-
-  const closureMessage =
-    language === 'de'
-      ? '  Bitte beachten: Unser Restaurant ist vom 19. Mai bis 22. Juni 2026 geschlossen. Wir freuen uns, Sie danach wieder begrüßen zu dürfen!       Please note: Our restaurant will be closed from May 19 to June 22, 2026. We look forward to welcoming you back after that!'
-      : '  Bitte beachten: Unser Restaurant ist vom 19. Mai bis 22. Juni 2026 geschlossen. Wir freuen uns, Sie danach wieder begrüßen zu dürfen!       Please note: Our restaurant will be closed from May 19 to June 22, 2026. We look forward to welcoming you back after that!';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,14 +56,8 @@ const Navbar: React.FC<NavbarProps> = ({ currentActiveSection }) => {
     };
   }, []);
 
-  // Navbar height estimate (py-4 = 1rem top+bottom + logo ~96px ≈ 80px scrolled, 96px not scrolled)
-  // We use a CSS custom property trick: banner sits at `top: var(--nav-height)`
-  // For simplicity we use fixed pixel values matching the Tailwind classes used.
-  const navHeight = scrolled ? 56 : 96;
-
   return (
     <>
-      {/* ── Main Navbar ── */}
       <nav
         className={`fixed left-0 w-full z-50 transition-all duration-300 ${
           scrolled ? 'nav-scrolled py-2' : 'py-4 bg-transparent'
@@ -152,13 +133,16 @@ const Navbar: React.FC<NavbarProps> = ({ currentActiveSection }) => {
                 </div>
               </div>
 
-              <BookTableButton
+              <Link
+                to="contact-us"
+                spy={true}
+                smooth={true}
                 offset={contactHeaderVisible ? -120 : -80}
                 duration={100}
                 className="btn-primary text-sm cursor-pointer"
               >
                 {translations.navbar.bookTable[language]}
-              </BookTableButton>
+              </Link>
             </div>
 
             {/* Mobile: Hamburger + Language Toggle */}
@@ -225,63 +209,22 @@ const Navbar: React.FC<NavbarProps> = ({ currentActiveSection }) => {
                     {item.label}
                   </Link>
                 ))}
-                <BookTableButton
+                <Link
+                  to="contact-us"
+                  spy={true}
+                  smooth={true}
                   offset={-80}
                   duration={100}
-                  className="btn-primary text-center cursor-pointer w-full"
-                  onAfterClick={closeMenu}
+                  className="btn-primary text-center cursor-pointer"
+                  onClick={closeMenu}
                 >
                   {translations.navbar.bookTable[language]}
-                </BookTableButton>
+                </Link>
               </div>
             </div>
           )}
         </div>
       </nav>
-
-      {/* ── Scrolling closure banner — sits just below the navbar ── */}
-      {showClosureBanner && (
-        <div
-          style={{
-            position: 'fixed',
-            top: navHeight,
-            left: 0,
-            width: '100%',
-            height: '44px',
-            backgroundColor: 'transparent',
-            zIndex: 49,
-            overflow: 'hidden',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <style>{`
-            @keyframes ticker-scroll {
-              0%   { transform: translateX(100vw); }
-              100% { transform: translateX(-100%); }
-            }
-            .ticker-track {
-  display: inline-block;
-  white-space: nowrap;
-  animation: ticker-scroll 36s linear infinite;
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-}
-            .ticker-track::after {
-              content: attr(data-text);
-              padding-left: 8rem;
-            }
-          `}</style>
-          <span
-            className="ticker-track"
-            data-text={closureMessage}
-            style={{ color: '#dc2626' }}
-          >
-            {closureMessage}
-          </span>
-        </div>
-      )}
     </>
   );
 };

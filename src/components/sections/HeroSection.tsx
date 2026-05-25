@@ -3,7 +3,6 @@ import { Link } from 'react-scroll';
 import { ArrowDown, Utensils } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { translations } from '../../context/translations';
-import BookTableButton from '../BookTableButton';
 
 interface HeroSectionProps {
   id: string;
@@ -147,11 +146,12 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
             >
               {translations.hero.exploreMenu[language]}
             </Link>
-            <BookTableButton
-              scrollTo="contact-us"
+            <Link
+              to="contact-us"
+              spy={true}
+              smooth={true}
               offset={-80}
               duration={500}
-              mobileTooltipAlign="start"
               className="bg-white text-spice-500 rounded-md font-medium hover:bg-opacity-90 active:bg-opacity-80 transition-all text-center cursor-pointer select-none"
               style={{
                 fontSize: 'clamp(0.6rem, 1vw, 0.875rem)',
@@ -159,7 +159,7 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({ id }, ref) => {
               }}
             >
               {translations.hero.bookTable[language]}
-            </BookTableButton>
+            </Link>
           </div>
         </div>
       </div>
