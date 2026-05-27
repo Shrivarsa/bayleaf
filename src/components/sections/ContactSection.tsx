@@ -4,6 +4,7 @@ import { Phone, Mail, MapPin, Clock, CheckCircle, AlertCircle, Loader2 } from 'l
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
 import { translations } from '../../context/translations';
+import { getBookingsClosedMessage, isBookingsClosed } from '../../lib/bookings';
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
@@ -71,6 +72,15 @@ const ContactSection = React.forwardRef<HTMLElement, ContactSectionProps>((props
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (isBookingsClosed()) {
+      setFormStatus({
+        type: 'error',
+        message: getBookingsClosedMessage(language),
+      });
+      return;
+    }
+
     setFormStatus({ type: 'loading', message: 'Submitting your reservation...' });
 
     try {
@@ -405,11 +415,21 @@ const ContactSection = React.forwardRef<HTMLElement, ContactSectionProps>((props
               </div>
               
               <motion.button
-                type="submit"
+                type={isBookingsClosed() ? 'button' : 'submit'}
                 className="w-full btn-primary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                whileHover={{ scale: formStatus.type === 'loading' ? 1 : 1.02 }}
-                whileTap={{ scale: formStatus.type === 'loading' ? 1 : 0.98 }}
+                whileHover={{ scale: formStatus.type === 'loading' || isBookingsClosed() ? 1 : 1.02 }}
+                whileTap={{ scale: formStatus.type === 'loading' || isBookingsClosed() ? 1 : 0.98 }}
                 disabled={formStatus.type === 'loading'}
+                onClick={
+                  isBookingsClosed()
+                    ? () =>
+                        setFormStatus({
+                          type: 'error',
+                          message: getBookingsClosedMessage(language),
+                        })
+                    : undefined
+                }
+                style={isBookingsClosed() ? { opacity: 0.6, cursor: 'not-allowed' } : undefined}
               >
                 {formStatus.type === 'loading' && <Loader2 size={20} className="animate-spin" />}
                 {formStatus.type === 'loading'
